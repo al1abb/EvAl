@@ -15,7 +15,6 @@ class PostController extends Controller
     public function index()
     {
         // was using Post::all() before
-        // below method
         $posts = Post::paginate(20);
 
 
