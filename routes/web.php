@@ -20,3 +20,6 @@ Route::get('/', function () {
 
 // SinglePageController redirect to vue
 Route::get('/{any}', [SinglePageController::class, 'index'])->where('any', '.*');
+
+// DELETE -> PostController
+Route::delete('/post/{id}', [PostController::class, 'destroy']);

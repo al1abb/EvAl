@@ -21,6 +21,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('/posts', [PostController::class, 'index']);
 Route::get('/post/{id}', [PostController::class, 'show']);
-
-// move "delete" to web.php as it's not an api route
-Route::delete('/post/{id}', [PostController::class, 'destroy']);
