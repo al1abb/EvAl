@@ -30,11 +30,14 @@
                         style=""
                     ></v-skeleton-loader>
                 </template> -->
+
             </v-img>
+
             <v-card-title
                 style=""
                 class="postPrice"
             >{{ formattedPrice }} ₼ (AZN)</v-card-title>
+
             <div class="d-flex flex-column">
                 <div style="">
                     <v-card-subtitle class="p-0 pl-3 pb-2">

@@ -17,7 +17,7 @@
                 </div>
 
                 <v-row>
-                    <v-col class="" v-for="(listing, i) in responseData" :key="i"
+                    <v-col class="d-flex justify-content-center" v-for="(listing, i) in responseData" :key="i"
                         lg="3"
                         md="6"
                         sm="12"

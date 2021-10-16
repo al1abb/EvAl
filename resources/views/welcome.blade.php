@@ -7,10 +7,10 @@
         <title>Laravel</title>
 
         {{-- Local --}}
-        {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
         {{-- Production --}}
-        <link href="css/app.css" rel="stylesheet">
+        {{-- <link href="css/app.css" rel="stylesheet"> --}}
 
         <!-- Fonts -->
         {{-- <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"> --}}
@@ -43,8 +43,8 @@
     </body>
 
     {{-- Local --}}
-    {{-- <script src="{{ mix('/js/app.js') }}"></script> --}}
+    <script src="{{ mix('/js/app.js') }}"></script>
     
     {{-- Production --}}
-    <script src="/js/app.js"></script>
+    {{-- <script src="/js/app.js"></script> --}}
 </html>
