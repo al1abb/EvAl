@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Agency;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,17 +23,19 @@ class PostFactory extends Factory
      */
     public function definition()
     {
+        $rand_user = User::all()->random();
 
         return [
             //
-            'user_id' => User::factory(),
+            'user_id' => $rand_user,
+            'agency_id' => $rand_user->agency,
             'estate_type' => $this->faker->randomElement(['new apartment', 'apartment', 'house-villa', 'office', 'garage']),
             'estate_city' => $this->faker->city(),
             'estate_area' => $this->faker->numberBetween($min = 10, $max = 500),
             'estate_description' => $this->faker->text(),
             'estate_price' => $this->faker->numberBetween($min = 50000, $max = 1000000),
             'estate_address' => $this->faker->address(),
-            'estate_district' => $this->faker->sentence(),
+            'estate_district' => $this->faker->city(),
             'estate_viewsTotal' => $this->faker->numberBetween($min = 10, $max = 100),
             'estate_viewsToday' => $this->faker->numberBetween($min = 0, $max = 10),
             'estate_roomCount' => $this->faker->numberBetween($min = 1, $max = 9),

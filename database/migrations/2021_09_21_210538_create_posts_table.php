@@ -19,6 +19,7 @@ class CreatePostsTable extends Migration
             // foreign key
             //$table->foreign('user_id')->references('id')->on('users');
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('agency_id')->nullable()->constrained();
 
             $table->enum('estate_type', ['new apartment', 'apartment', 'house-villa', 'office', 'garage', 'land']);
             $table->string('estate_city');

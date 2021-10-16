@@ -17,20 +17,12 @@ class PostController extends Controller
         // was using Post::all() before
         $posts = Post::paginate(20);
 
+        $posts->map(function($post) {
+            $post['user'] = [$post->user];
+            return $post;
+        });
 
-        //return response()->json($posts, 200);
-        //return ['posts' => $posts];
         return response()->json($posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -54,19 +46,9 @@ class PostController extends Controller
     {
         //
         $asked_post = Post::where('id', $id)->firstOrFail();
+        $asked_post['user'] = $asked_post->user;
 
         return response()->json($asked_post, 200, [/*headers here*/], JSON_PRETTY_PRINT);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Post $post)
-    {
-        //
     }
 
     /**
