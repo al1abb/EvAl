@@ -45,4 +45,9 @@ Route::get('/posts', [PostController::class, 'index']);
 Route::post('/posts', [PostController::class, 'store']);
 Route::get('/posts/{id}', [PostController::class, 'show']);
 Route::put('/posts/{id}', [PostController::class, 'update']);
-Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+Route::delete('/posts/{id}', [PostController::class, 'destroy']);// Flag api routes
+Route::get('/flags', [FlagController::class, 'index']);
+Route::post('/flags', [FlagController::class, 'store']);
+Route::get('/flags/{id}', [FlagController::class, 'show']);
+Route::put('/flags/{id}', [FlagController::class, 'update']);
+Route::delete('/flags/{id}', [FlagController::class, 'destroy']);
