@@ -50,4 +50,19 @@ Route::get('/flags', [FlagController::class, 'index']);
 Route::post('/flags', [FlagController::class, 'store']);
 Route::get('/flags/{id}', [FlagController::class, 'show']);
 Route::put('/flags/{id}', [FlagController::class, 'update']);
-Route::delete('/flags/{id}', [FlagController::class, 'destroy']);
+Route::delete('/flags/{id}', [FlagController::class, 'destroy']);/**
+ * Relationship routes
+ */
+
+// User-Post route
+Route::get('users/{id}/posts', [UserController::class, 'showUserPosts']);
+
+// Agency-User route
+Route::get('agencies/{id}/users', [AgencyController::class, 'showAgencyUsers']);
+
+// User-Flag route
+Route::get('users/{id}/flags', [UserController::class, 'showUserFlags']);
+
+// Route::get('posts/{id}/user', [PostController::class, 'showPostUser']);
+
+// Route::get('posts/{id}/flags', [PostController::class, 'showPostFlags']);
