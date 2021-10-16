@@ -47,22 +47,7 @@ export default {
         toggleListings() {
             this.showListings=!this.showListings
         },
-        handleListings() {
-            //this.toggleListings()
-            if(true) {
-                axios.get('/api/posts?page=' + this.currentPage)
-                    .then((response) => {
-                        console.log(response.data) // chaining 'data' to this fixes bug
-                        this.responseData = response.data.data
-                        this.currentPage = response.data.current_page
-                        this.firstPage = response.data.prev_page_url ? false : true
-                        this.lastPage = response.data.next_page_url ? false : true
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                    })
-            }
-        },
+        
         handleDelete(id) {
             axios.delete(`/api/post/${id}`)
                 .then((response) => {
