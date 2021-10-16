@@ -1,6 +1,7 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import VueRouter from 'vue-router';
 import Home from './pages/Home.vue';
 import RouterTest from './pages/RouterTest.vue';
+import PostPage from './pages/PostPage.vue';
 
 const routes = [
     {
@@ -12,14 +13,17 @@ const routes = [
         path: '/test',
         name: 'test',
         component: RouterTest,
+    },
+    {
+        path: '/post/:id',
+        name: 'postPage',
+        component: PostPage,
+        props: true
     }
 ];
 
-const routerHistory = createWebHistory()
-
-const router = createRouter({
-    history: routerHistory,
+const router = new VueRouter({
+    mode: 'history',
     routes: routes,
 });
-
 export default router;
