@@ -14,12 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 // SinglePageController redirect to vue
 Route::get('/{any}', [SinglePageController::class, 'index'])->where('any', '.*');
 
 // DELETE -> PostController
-Route::delete('/post/{id}', [PostController::class, 'destroy']);
+// Route::delete('/post/{id}', [PostController::class, 'destroy']);
