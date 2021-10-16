@@ -84,3 +84,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Auth
     Route::post('/logout', [AuthController::class, 'logout']);
 });
+
+/**
+ * Method not allowed error handling
+ */
+
+Route::delete('/{any}', function() {
+    return response()->json(['Bad method' => 'This route does not support DELETE method'], 405, []);
+});
