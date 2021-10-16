@@ -39,5 +39,10 @@ Route::post('/agencies', [AgencyController::class, 'store']);
 Route::get('/agencies/{id}', [AgencyController::class, 'show']);
 Route::put('/agencies/{id}', [AgencyController::class, 'update']);
 Route::delete('/agencies/{id}', [AgencyController::class, 'destroy']);
+
+// Posts api routes
 Route::get('/posts', [PostController::class, 'index']);
-Route::get('/post/{id}', [PostController::class, 'show']);
+Route::post('/posts', [PostController::class, 'store']);
+Route::get('/posts/{id}', [PostController::class, 'show']);
+Route::put('/posts/{id}', [PostController::class, 'update']);
+Route::delete('/posts/{id}', [PostController::class, 'destroy']);
