@@ -1,9 +1,13 @@
 <?php
 
 use App\Http\Controllers\AgencyController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FlagController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Models\Agency;
+use App\Models\Flag;
+use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,9 +22,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 /**
  * Public routes
@@ -45,12 +46,16 @@ Route::get('/posts', [PostController::class, 'index']);
 Route::post('/posts', [PostController::class, 'store']);
 Route::get('/posts/{id}', [PostController::class, 'show']);
 Route::put('/posts/{id}', [PostController::class, 'update']);
-Route::delete('/posts/{id}', [PostController::class, 'destroy']);// Flag api routes
+Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+
+// Flag api routes
 Route::get('/flags', [FlagController::class, 'index']);
 Route::post('/flags', [FlagController::class, 'store']);
 Route::get('/flags/{id}', [FlagController::class, 'show']);
 Route::put('/flags/{id}', [FlagController::class, 'update']);
-Route::delete('/flags/{id}', [FlagController::class, 'destroy']);/**
+Route::delete('/flags/{id}', [FlagController::class, 'destroy']);
+
+/**
  * Relationship routes
  */
 
@@ -66,3 +71,16 @@ Route::get('users/{id}/flags', [UserController::class, 'showUserFlags']);
 // Route::get('posts/{id}/user', [PostController::class, 'showPostUser']);
 
 // Route::get('posts/{id}/flags', [PostController::class, 'showPostFlags']);
+
+// Auth 
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register']);
+
+/**
+ * Protected routes
+ */
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+    // Auth
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
