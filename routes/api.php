@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AgencyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FlagController;
@@ -27,48 +28,60 @@ use Illuminate\Support\Facades\Route;
  * Public routes
  */
 
-// User api routes
+// User API routes
 Route::get('/users', [UserController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
-Route::get('/users/{id}', [UserController::class, 'show']);
-Route::put('/users/{id}', [UserController::class, 'update']);
-Route::delete('/users/{id}', [UserController::class, 'destroy']);
+Route::get('/user/{id}', [UserController::class, 'show']);
+Route::put('/user/{id}', [UserController::class, 'update']);
+Route::delete('/user/{id}', [UserController::class, 'destroy']);
 
-// Agencies api routes
-Route::get('/agencies', [AgencyController::class, 'index']);
-Route::post('/agencies', [AgencyController::class, 'store']);
-Route::get('/agencies/{id}', [AgencyController::class, 'show']);
-Route::put('/agencies/{id}', [AgencyController::class, 'update']);
-Route::delete('/agencies/{id}', [AgencyController::class, 'destroy']);
-
-// Posts api routes
+// Posts API routes
+// CRUD
 Route::get('/posts', [PostController::class, 'index']);
 Route::post('/posts', [PostController::class, 'store']);
-Route::get('/posts/{id}', [PostController::class, 'show']);
-Route::put('/posts/{id}', [PostController::class, 'update']);
-Route::delete('/posts/{id}', [PostController::class, 'destroy']);
+Route::get('/post/{id}', [PostController::class, 'show']);
+Route::put('/post/{id}', [PostController::class, 'update']);
+Route::delete('/post/{id}', [PostController::class, 'destroy']);
 
-// Flag api routes
+// Get vip posts
+Route::get('/posts/vip', [PostController::class, 'vipPosts']);
+
+// Agencies API routes
+Route::get('/agencies', [AgencyController::class, 'index']);
+Route::post('/agencies', [AgencyController::class, 'store']);
+Route::get('/agency/{id}', [AgencyController::class, 'show']);
+Route::put('/agency/{id}', [AgencyController::class, 'update']);
+Route::delete('/agency/{id}', [AgencyController::class, 'destroy']);
+
+// Admins API routes
+Route::get('/admins', [AdminController::class, 'index']);
+Route::post('/admins', [AdminController::class, 'store']);
+Route::get('/admin/{id}', [AdminController::class, 'show']);
+Route::put('/admin/{id}', [AdminController::class, 'update']);
+Route::delete('/admin/{id}', [AdminController::class, 'destroy']);
+
+// Flag API routes
 Route::get('/flags', [FlagController::class, 'index']);
 Route::post('/flags', [FlagController::class, 'store']);
-Route::get('/flags/{id}', [FlagController::class, 'show']);
-Route::put('/flags/{id}', [FlagController::class, 'update']);
-Route::delete('/flags/{id}', [FlagController::class, 'destroy']);
+Route::get('/flag/{id}', [FlagController::class, 'show']);
+Route::put('/flag/{id}', [FlagController::class, 'update']);
+Route::delete('/flag/{id}', [FlagController::class, 'destroy']);
 
 /**
- * Relationship routes
+ * Relationship routes (!!! REDUNDANT FOR NOW !!!)
  */
 
-// User-Post route
-Route::get('users/{id}/posts', [UserController::class, 'showUserPosts']);
+// User-Post route (Show posts of a user)
+// Route::get('user/{id}/posts', [UserController::class, 'showUserPosts']);
 
-// Agency-User route
-Route::get('agencies/{id}/users', [AgencyController::class, 'showAgencyUsers']);
+// User-Agency route (Show agency of a user)
+// Route::get('user/{id}/agency', [UserController::class, 'showUserAgency']);
 
-// User-Flag route
-Route::get('users/{id}/flags', [UserController::class, 'showUserFlags']);
+// Agency-User route (Show users of an agency)
+// Route::get('agency/{id}/users', [AgencyController::class, 'showAgencyUsers']);
 
-// Route::get('posts/{id}/user', [PostController::class, 'showPostUser']);
+// User-Flag route (Show flags of a user)
+// Route::get('user/{id}/flags', [UserController::class, 'showUserFlags']);
 
 // Route::get('posts/{id}/flags', [PostController::class, 'showPostFlags']);
 
@@ -89,6 +102,18 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
  * Method not allowed error handling
  */
 
+Route::get('/{any}', function() {
+    return response()->json(['Not Found (404)' => 'This page does not exist'], 404, [], JSON_PRETTY_PRINT);
+});
+
+Route::post('/{any}', function() {
+    return response()->json(['Bad method (405)' => 'This route does not support POST method'], 404, [], JSON_PRETTY_PRINT);
+});
+
+Route::put('/{any}', function() {
+    return response()->json(['Bad method (405)' => 'This route does not support PUT method'], 404, [], JSON_PRETTY_PRINT);
+});
+
 Route::delete('/{any}', function() {
-    return response()->json(['Bad method' => 'This route does not support DELETE method'], 405, []);
+    return response()->json(['Bad method (405)' => 'This route does not support DELETE method'], 405, [], JSON_PRETTY_PRINT);
 });
