@@ -16,24 +16,36 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
 
-            // foreign key
-            //$table->foreign('user_id')->references('id')->on('users');
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('agency_id')->nullable()->constrained();
+            // foreign keys [ another example: $table->foreign('user_id')->references('id')->on('users'); ]
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('agency_id')->nullable()->constrained()->onDelete('cascade');
 
-            $table->enum('estate_type', ['new apartment', 'apartment', 'house-villa', 'office', 'garage', 'land']);
-            $table->string('estate_city');
-            $table->integer('estate_area');
-            $table->longText('estate_description');
-            $table->integer('estate_price');
-            $table->text('estate_address');
-            $table->text('estate_district');
-            $table->integer('estate_viewsTotal');
-            $table->integer('estate_viewsToday');
-            $table->integer('estate_roomCount');
-            $table->string('estate_apartmentFloor');
-            $table->enum('estate_tradeType', ['sell', 'rent']);
+            $table->enum('estate_type', ['New Apartment', 'Apartment', 'House-Villa', 'Office', 'Garage', 'Land']);
 
+            $table->string('city');
+            $table->integer('area');
+            $table->integer('room_count');
+            $table->text('address');
+            $table->text('district');
+
+            $table->string('apartment_floor');
+            $table->string('total_floors');
+
+            $table->longText('description');
+            $table->integer('price');
+
+            $table->string('contact_email');
+            $table->string('contact_phone_number');
+
+            $table->enum('trade_type', ['sell', 'rent']);
+            $table->enum('realtor_type', ['self', 'agent']);
+
+            $table->boolean('is_vip');
+            $table->boolean('has_voucher');
+
+            $table->integer('views_today');
+            $table->integer('views_total');
+            
             $table->timestamps();
         });
     }

@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Flag;
+use App\Models\Admin;
 use Illuminate\Database\Seeder;
 
-class FlagSeeder extends Seeder
+class AdminSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,9 +14,8 @@ class FlagSeeder extends Seeder
      */
     public function run()
     {
-        //
-        Flag::factory()
-                ->count(50)
-                ->create();
+        Admin::factory()
+                    ->count(20)
+                    ->create();
     }
 }

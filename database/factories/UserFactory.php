@@ -26,9 +26,13 @@ class UserFactory extends Factory
         return [
             'agency_id' => $this->faker->randomElement([Agency::all()->random(), null]),
             'name' => $this->faker->name(),
-            'email' => $this->faker->unique()->safeEmail(),
-            'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'email' => $this->faker->unique()->safeEmail(),
+            'email_is_verified' => $this->faker->boolean(),
+            'email_verified_at' => now(),
+            'phone_number' => $this->faker->phoneNumber(),
+            'last_seen' => $this->faker->dateTime(),
+            
             'remember_token' => Str::random(10),
         ];
     }
