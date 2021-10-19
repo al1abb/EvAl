@@ -11,35 +11,24 @@ class AgencyController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $agencies = Agency::paginate(20);
 
-        // include agency users
         $agencies->map(function($agency) {
             $agency['users'] = $agency->users;
-            return $agency;
-        });
-
-        $agencies->map(function($agency) {
             $agency['posts'] = $agency->posts;
             return $agency;
         });
-
         
         return response()->json($agencies, 200, [], JSON_PRETTY_PRINT);
     }
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store()
     {
         $attributes = request()->validate([
             'agency_name' => ['string', 'required', 'max:40', 'unique:agencies,agency_name'],
@@ -52,57 +41,59 @@ class AgencyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Agency  $agency
-     * @return \Illuminate\Http\Response
+     * @param  \ID $id
      */
     public function show($id)
     {
-        $asked_agency = Agency::where('id', $id)->firstOrFail();
+        $asked_agency = Agency::findOrFail($id);
 
-        // $asked_agency['users'] = $asked_agency->users;
+        $asked_agency['users'] = $asked_agency->users;
+        $asked_agency['posts'] = $asked_agency->posts;
 
         return response()->json($asked_agency, 200, [/* headers */], JSON_PRETTY_PRINT);
     }
 
     /**
      * Show the users of a specified agency
+     * 
+     * @param  \ID $id
      */
-    public function showAgencyUsers($id) {
-        $asked_agency = Agency::where('id', $id)->firstOrFail();
+    // public function showAgencyUsers($id) {
+    //     $asked_agency = Agency::findOrFail($id);
 
-        $asked_agency['users'] = $asked_agency->users;
+    //     $asked_agency['users'] = $asked_agency->users;
 
-        return response()->json($asked_agency, 200, [/* headers */], JSON_PRETTY_PRINT);
-    }
+    //     return response()->json($asked_agency, 200, [/* headers */], JSON_PRETTY_PRINT);
+    // }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Agency  $agency
-     * @return \Illuminate\Http\Response
      */
-    public function update(User $user)
+    public function update($id)
     {
+        $agency = Agency::findOrFail($id);
         $attributes = request()->validate([
-            'agency_name' => ['string', 'required', Rule::unique('agencies')->ignore($user)],
+            'agency_name' => ['string', 'required', Rule::unique('agencies')->ignore($agency)],
             'agency_description' => ['string', 'required', 'max:70'],
             // 'agency_logo' => ['file']
         ]);
 
-        $user->update($attributes);
-
+        $agency->update($attributes);
+        return response()->json([], 204, [/*headers here*/], JSON_PRETTY_PRINT);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Agency  $agency
-     * @return \Illuminate\Http\Response
+     * @param  \ID $id
      */
     public function destroy($id)
     {
-        $asked_agency = Agency::where('id', $id)->firstOrFail();
+        $asked_agency = Agency::findOrFail($id);
         $asked_agency->delete();
+
+        return response()->json([], 204, [/*headers here*/], JSON_PRETTY_PRINT);
     }
 }

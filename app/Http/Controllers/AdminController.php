@@ -2,26 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Flag;
+use App\Models\Admin;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class FlagController extends Controller
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $flags = Flag::paginate(20);
+        $admins = Admin::paginate(20);
 
-        $flags->map(function($flag) {
-            $flag['post'] = [$flag->post];
-            $flag['user'] = [$flag->user];
-            return $flag;
+        $admins->map(function($admin) {
+            $admin['user'] = $admin->user;
+
+            return $admin;
         });
-        
-        return response()->json($flags, 200, [/*headers here*/], JSON_PRETTY_PRINT);
+
+        return response()->json($admins, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
 
     /**
@@ -32,32 +31,30 @@ class FlagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = auth()->user();
     }
 
     /**
      * Display the specified resource.
-     *
+     * 
      * @param  \ID $id
      */
     public function show($id)
     {
-        $asked_flag = Flag::findOrFail($id);
+        $asked_admin = Admin::findOrFail($id);
+        $asked_admin['user'] = $asked_admin->user;
 
-        $asked_flag['post'] = $asked_flag->post;
-        $asked_flag['user'] = $asked_flag->user;
-
-        return response()->json($asked_flag, 200, [/* headers */], JSON_PRETTY_PRINT);
+        return response()->json($asked_admin, 200, [/* headers */], JSON_PRETTY_PRINT);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Flag  $flag
+     * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Flag $flag)
+    public function update(Request $request, Admin $admin)
     {
         //
     }
@@ -69,9 +66,9 @@ class FlagController extends Controller
      */
     public function destroy($id)
     {
-        $asked_flag = Flag::findOrFail($id);
-        $asked_flag->delete();
-        
+        $admin = Admin::findOrFail($id);
+        $admin->delete();
+
         return response()->json([], 204, [/*headers here*/], JSON_PRETTY_PRINT);
     }
 }

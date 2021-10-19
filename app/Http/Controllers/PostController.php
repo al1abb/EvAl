@@ -9,16 +9,29 @@ class PostController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        // was using Post::all() before
         $posts = Post::paginate(20);
 
         $posts->map(function($post) {
             $post['user'] = [$post->user];
+            $post['agency'] = [$post->agency];
+            return $post;
+        });
+
+        return response()->json($posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
+    }
+
+    /**
+     * Display a listing of vip resource.
+     */
+    public function vipPosts() {
+        $posts = Post::where('is_vip', true)->paginate(20);
+
+        $posts->map(function($post) {
+            $post['user'] = [$post->user];
+            $post['agency'] = [$post->agency];
             return $post;
         });
 
@@ -33,20 +46,19 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
+     * @param  \ID $id
      */
     public function show($id)
     {
-        //
-        $asked_post = Post::where('id', $id)->firstOrFail();
+        $asked_post = Post::findOrFail($id);
         $asked_post['user'] = $asked_post->user;
+        $asked_post['agency'] = $asked_post->agency;
 
         return response()->json($asked_post, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
@@ -66,14 +78,13 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
+     * @param  \ID $id
      */
     public function destroy($id)
     {
-        //
-        $post = Post::where('id', $id)->firstOrFail();
-
+        $post = Post::findOrFail($id);
         $post->delete();
+
+        return response()->json([], 204, [/*headers here*/], JSON_PRETTY_PRINT);
     }
 }

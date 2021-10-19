@@ -50,4 +50,12 @@ class User extends Authenticatable
     public function agency() {
         return $this->belongsTo(Agency::class);
     }
+
+    public function admin() {
+        return $this->hasOne(Admin::class);
+    }
+
+    public function flags() {
+        return $this->hasMany(Flag::class);
+    }
 }
