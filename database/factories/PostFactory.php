@@ -29,7 +29,7 @@ class PostFactory extends Factory
             'user_id' => $rand_user,
             'agency_id' => $rand_user->agency,
 
-            'estate_type' => $this->faker->randomElement(['new apartment', 'apartment', 'house-villa', 'office', 'garage']),
+            'estate_type' => $this->faker->randomElement(['new_apartment', 'apartment', 'house_villa', 'office', 'garage', 'land']),
             'city' => $this->faker->city(),
             'area' => $this->faker->numberBetween($min = 10, $max = 500),
             'room_count' => $this->faker->numberBetween($min = 1, $max = 9),
