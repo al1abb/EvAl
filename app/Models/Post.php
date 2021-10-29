@@ -19,4 +19,8 @@ class Post extends Model
     public function agency() {
         return $this->belongsTo(Agency::class);
     }
+
+    public function flags() {
+        return $this->hasMany(Flag::class);
+    }
 }

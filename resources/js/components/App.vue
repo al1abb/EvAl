@@ -33,9 +33,6 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
-
-
 p {
     margin: 0px !important;
     padding: 0px !important;
@@ -44,6 +41,6 @@ p {
 .appMain {
     background-color: #f7f2f2 !important;
 
-    font-family: 'Noto Sans', sans-serif;
+    
 }
 </style>

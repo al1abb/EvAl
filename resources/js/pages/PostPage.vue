@@ -5,17 +5,17 @@
         <div v-show="!loading">
             <p>id: {{ post.id }}</p>
             <p>type: {{ post.estate_type }}</p>
-            <p>city: {{ post.estate_city }}</p>
-            <p>area: {{ post.estate_area }}</p>
-            <p>description: {{ post.estate_description }}</p>
-            <p>price: {{ post.estate_price }}</p>
-            <p>address: {{ post.estate_address }}</p>
-            <p>district: {{ post.estate_district }}</p>
-            <p>viewsTotal: {{ post.estate_viewsTotal }}</p>
-            <p>viewsToday: {{ post.estate_viewsToday }}</p>
-            <p>roomCount: {{ post.estate_roomCount }}</p>
-            <p>apartmentFloor: {{ post.estate_apartmentFloor }}</p>
-            <p>tradeType: {{ post.estate_tradeType }}</p>
+            <p>city: {{ post.city }}</p>
+            <p>area: {{ post.area }}</p>
+            <p>description: {{ post.description }}</p>
+            <p>price: {{ post.price }}</p>
+            <p>address: {{ post.address }}</p>
+            <p>district: {{ post.district }}</p>
+            <p>viewsToday: {{ post.views_today }}</p>
+            <p>viewsTotal: {{ post.views_total }}</p>
+            <p>roomCount: {{ post.room_count }}</p>
+            <p>apartmentFloor: {{ post.apartment_floor }}</p>
+            <p>tradeType: {{ post.trade_type }}</p>
             <p>user: {{ post.user }}</p>
         </div>
     </div>
@@ -37,7 +37,7 @@ export default {
             this.loading = true
             const fetchId = this.$route.params.id
 
-            axios.get('/api/posts/' + fetchId)
+            axios.get('/api/post/' + fetchId)
                 .then((response) => {
                     this.post = response.data
                     console.log(this.post)

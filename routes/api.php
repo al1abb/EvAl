@@ -68,22 +68,23 @@ Route::put('/flag/{id}', [FlagController::class, 'update']);
 Route::delete('/flag/{id}', [FlagController::class, 'destroy']);
 
 /**
- * Relationship routes (!!! REDUNDANT FOR NOW !!!)
+ * Relationship routes
  */
 
 // User-Post route (Show posts of a user)
-// Route::get('user/{id}/posts', [UserController::class, 'showUserPosts']);
+Route::get('user/{id}/posts', [UserController::class, 'showUserPosts']);
 
 // User-Agency route (Show agency of a user)
-// Route::get('user/{id}/agency', [UserController::class, 'showUserAgency']);
+Route::get('user/{id}/agency', [UserController::class, 'showUserAgency']);
 
 // Agency-User route (Show users of an agency)
-// Route::get('agency/{id}/users', [AgencyController::class, 'showAgencyUsers']);
+Route::get('agency/{id}/users', [AgencyController::class, 'showAgencyUsers']);
 
 // User-Flag route (Show flags of a user)
-// Route::get('user/{id}/flags', [UserController::class, 'showUserFlags']);
+Route::get('user/{id}/flags', [UserController::class, 'showUserFlags']);
 
-// Route::get('posts/{id}/flags', [PostController::class, 'showPostFlags']);
+// Post-Flag route (Show flags of a post)
+Route::get('post/{id}/flags', [PostController::class, 'showPostFlags']);
 
 // Auth 
 Route::post('/login', [AuthController::class, 'login']);

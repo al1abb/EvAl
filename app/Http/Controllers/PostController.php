@@ -38,6 +38,13 @@ class PostController extends Controller
         return response()->json($posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
 
+    public function showPostFlags($id) {
+        $post = Post::findOrFail($id);
+        $post_flags = $post->flags;
+
+        return response()->json($post_flags, 200, [/*headers here*/], JSON_PRETTY_PRINT);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

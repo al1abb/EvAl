@@ -35,7 +35,10 @@ class AgencyController extends Controller
             'agency_description' => ['string', 'required', 'max:70'],
         ]);
 
-        Agency::create($attributes);
+        // return new agency as an instance because we will use it in return
+        $newAgency = Agency::create($attributes);
+
+        return response()->json($newAgency, 200, [], JSON_PRETTY_PRINT);
     }
 
     /**
@@ -58,13 +61,13 @@ class AgencyController extends Controller
      * 
      * @param  \ID $id
      */
-    // public function showAgencyUsers($id) {
-    //     $asked_agency = Agency::findOrFail($id);
+    public function showAgencyUsers($id) {
+        $asked_agency = Agency::findOrFail($id);
 
-    //     $asked_agency['users'] = $asked_agency->users;
+        $asked_agency_users = $asked_agency->users;
 
-    //     return response()->json($asked_agency, 200, [/* headers */], JSON_PRETTY_PRINT);
-    // }
+        return response()->json($asked_agency_users, 200, [/* headers */], JSON_PRETTY_PRINT);
+    }
 
     /**
      * Update the specified resource in storage.

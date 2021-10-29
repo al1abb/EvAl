@@ -51,32 +51,31 @@ class UserController extends Controller
      * 
      * @param  \ID $id
      */
-    // public function showUserPosts($id) {
-    //     $asked_user = User::findOrFail($id);
-    //     $asked_user_posts = $asked_user->posts;
+    public function showUserPosts($id) {
+        $asked_user = User::findOrFail($id);
+        $asked_user_posts = $asked_user->posts; 
 
-    //     return response()->json($asked_user_posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
-    // }
+        return response()->json($asked_user_posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
+    }
 
     /**
      * Display agency of the user
      * 
      * @param  \ID $id
      */
-    // public function showUserAgency($id) {
-    //     $asked_user = User::findOrFail($id);
-    //     $asked_user_agency = $asked_user->agency;
-    //     $asked_user_agency['users'] = $asked_user->agency->users;
+    public function showUserAgency($id) {
+        $asked_user = User::findOrFail($id);
+        $asked_user_agency = $asked_user->agency;
 
-    //     return response()->json($asked_user_agency, 200, [/*headers here*/], JSON_PRETTY_PRINT);
-    // }
+        return response()->json($asked_user_agency, 200, [/*headers here*/], JSON_PRETTY_PRINT);
+    }
 
-    // public function showUserFlags($id) {
-    //     $asked_user = User::findOrFail($id);
-    //     $asked_user_flags = $asked_user->flags;
+    public function showUserFlags($id) {
+        $asked_user = User::findOrFail($id);
+        $asked_user_flags = $asked_user->flags;
 
-    //     return response()->json($asked_user_flags, 200, [/*headers here*/], JSON_PRETTY_PRINT);
-    // }
+        return response()->json($asked_user_flags, 200, [/*headers here*/], JSON_PRETTY_PRINT);
+    }
 
     public function update($id) {
 
