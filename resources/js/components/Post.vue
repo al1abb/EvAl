@@ -1,103 +1,159 @@
 <template>
-    <router-link 
+    <!-- <router-link 
         style="text-decoration: none; color: inherit;" 
         :to="{ name: 'postPage', params: { id } }"
         class=""
-    >
-        <v-card
-            class="postMain"
-            min-width="14.5rem"
-            max-width="14.5rem"
-            @click="$router.push('test')"
-            :elevation="elevation"
-            @mouseover="elevation=1"
-            @mouseleave="elevation=0"
-            style="border-radius: 7px; position: relative;"
-        >
-            <!-- <div style="display: flex; position: relative; top: 5px; left: 5px; z-index: 1;">
-                <div v-if="isVip" style="background-color: white; border-radius: 0px; margin-right: 10px;" title="VIP elan">
-                    <p><span>&#11088;</span></p>
-                </div>
-                
-                <div v-if="hasVoucher" style="background-color: white; border-radius: 0px;" title="Kupça var">
-                    <p><span>Kupça</span></p>
-                </div>
-            </div> -->
-
-            <!-- max-height="32rem"
-            min-height="32rem" -->
-            <v-img
-                class="white--text align-end"
-                height="11rem"
-                src="https://picsum.photos/300"
+    > -->
+        <div class="cardParent" style="position: relative;">
+            <v-card
+                class="postMain"
+                min-width="14.5rem"
+                max-width="14.5rem"
+                :elevation="elevation"
+                @mouseover="elevation=2"
+                @mouseleave="elevation=0"
+                style="text-decoration: none; color: inherit;" 
+                :to="{ name: 'postPage', params: { id } }"
             >
-                <template v-slot:placeholder>
-                    <v-skeleton-loader
-                        :loading="true"
-                        class="mx-auto"
-                        type="card"
-                        style=""
-                    ></v-skeleton-loader>
-                </template>
 
-            </v-img>
+                <div class="postBadges d-flex rounded">
+                    <div v-if="isVip" class="" style="background-color: transparent;" title="VIP elan">
+                        <span>
+                            <v-icon
+                                color="red"
+                                size="20"
+                            >
+                                mdi-crown
+                            </v-icon>
+                        </span>
+                    </div>
+                    
+                    <div v-if="hasVoucher" class="" style="background-color: transparent;" title="Kupça var">
+                        <span>
+                            <v-icon
+                                color="orange"
+                                size="20"   
+                            >
+                                mdi-text-box-check
+                            </v-icon>
+                        </span>
+                    </div>
+                </div>
 
-            <v-card-title
-                style=""
-                class="postPrice pl-3"
-            >{{ formattedPrice }} AZN</v-card-title> <!--₼ () -->
+                <!-- max-height="32rem"
+                min-height="32rem" -->
+                <v-img
+                    class="white--text align-end"
+                    height="10.8rem"
+                    src="https://picsum.photos/300"
+                >
+                    <template v-slot:placeholder>
+                        <v-skeleton-loader
+                            :loading="true"
+                            class="mx-auto"
+                            type="card"
+                            style=""
+                        ></v-skeleton-loader>
+                    </template>
 
-            <div class="d-flex flex-column">
-                <div style="">
-                    <v-card-subtitle class="p-0 pl-3 pb-2">
+                    <div class="postAgency rounded" v-if="agency" title="Agency" @mouseover="elevation=2">
                         <!-- <v-chip
-                            color="primary"
-                            class="mb-2"
                             small
+                            label 
+                            color="primary"
                         >
-                            {{ type }}
+                            Agency
                         </v-chip> -->
                     
-                        <p class="districtName">{{ district }}</p>
-                        <p class="postStats">
-                            <span v-if="roomCount">{{ roomCount }} rooms</span>
-                            <span v-if="area">
-                                <span>•</span>
-                                {{ area }} m²
-                            </span>
-                            <span v-if="apartmentFloor && totalFloors">
-                                <span>•</span>
-                                {{ apartmentFloor }}/{{ totalFloors }} floor
-                            </span>
+                        <div style="background-color: transparent; margin: 2px;">
+                            <v-icon
+                                size="20"
+                                color="white"
+                            >
+                                mdi-domain
+                            </v-icon>
+                        </div>
 
-                        </p>
-                        <p class="cityName">
-                            {{ cityAndTime }}
-                        </p>
-                    </v-card-subtitle>
-                    <!-- <div>
-                        by {{ user.name }}
+                    </div>
+                </v-img>
+
+                <v-card-title
+                    style=""
+                    class="postPrice pl-3"
+                >
+                    {{ formattedPrice }} AZN
+                </v-card-title> <!--₼ () -->
+
+                <div class="d-flex flex-column">
+                    <div style="">
+                        <v-card-subtitle class="p-0 pl-3 pb-2">
+                            <!-- <v-chip
+                                color="primary"
+                                class="mb-2"
+                                small
+                            >
+                                {{ type }}
+                            </v-chip> -->
+                        
+                            <p class="districtName">{{ district }}</p>
+                            <p class="postStats">
+                                <span v-if="roomCount">{{ roomCount }} rooms</span>
+                                <span v-if="area">
+                                    <span>•</span>
+                                    {{ area }} m²
+                                </span>
+                                <span v-if="apartmentFloor && totalFloors">
+                                    <span>•</span>
+                                    {{ apartmentFloor }}/{{ totalFloors }} floor
+                                </span>
+
+                            </p>
+                            <p class="postFooter">
+                                {{ cityAndTime }}
+                            </p>
+                        </v-card-subtitle>
+                        <!-- <div>
+                            by {{ user.name }}
+                        </div> -->
+                    </div>
+                    
+                    <!-- <div style="">
+                        <v-card-actions>
+                            <v-btn
+                                color="orange"
+                                text
+                            >
+                                See more
+                            </v-btn>
+                        </v-card-actions>
                     </div> -->
                 </div>
-                
-                <!-- <div style="">
-                    <v-card-actions>
-                        <v-btn
-                            color="orange"
-                            text
-                        >
-                            See more
-                        </v-btn>
-                    </v-card-actions>
-                </div> -->
-            </div>
-        </v-card>
-    </router-link>
+            </v-card>
+
+            <transition name="bookmark" mode="in-out">
+                <div 
+                    class="postLike"
+                    @click="liked=!liked"
+                    @mouseover="elevation=2"
+                    :style="liked ? '-webkit-text-fill-color: red;' : '-webkit-text-fill-color: #00000050;'"
+                >
+                    <v-icon
+                        class="bookmark_icon"
+                        color="#00000090"
+                    >
+                        mdi-bookmark
+                    </v-icon>
+                </div>
+            </transition>
+            
+        </div>
+    <!-- </router-link> -->
 
     
 </template>
 
 <script>
+
 export default {
     props: [
         "id", 
@@ -120,6 +176,7 @@ export default {
     data() {
         return {
             elevation: 0,
+            liked: false,
         }
     },
     computed: {
@@ -139,14 +196,68 @@ export default {
 </script>
 
 <style>
-.postMain {
-    
+.cardParent {
+    cursor: pointer;
 }
 
-.postMain:hover {
-    cursor: pointer;
-    background-color: aqua;
+.postMain {
+    border-radius: 7px !important; 
+    overflow: hidden; /* fixes round border issue */
 }
+
+.postBadges {
+    position: absolute;
+    top: 7px;
+    left: 7px;
+    z-index: 1;
+
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.postLike {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    z-index: 1;
+}
+
+.bookmark-enter-active .bookmark-leave-active {
+    transition: all 0.5s;
+}
+
+.bookmark-enter .bookmark-leave-to {
+    transition: all 0.5s;
+}
+
+.postAgency {
+    position: absolute;
+    bottom: 7px;
+    left: 7px;
+    z-index: 1;
+
+    background-color: rgb(0, 83, 192);
+}
+
+/* adds stroke to heart icon in post component */
+.mdi-bookmark::before {
+    /* -webkit-text-fill-color: #00000050; */
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: white;
+}
+
+/* .mdi-crown::before {
+    -webkit-text-stroke-width: 0px;
+    -webkit-text-stroke-color: white;
+}
+
+.mdi-text-box-check::before {
+    -webkit-text-stroke-width: 0px;
+    -webkit-text-stroke-color: white;
+} */
+
+/* .mdi-domain::before {
+    background-color: white;
+} */
 
 .postPrice {
     /* border-radius: 7px !important; */
@@ -170,18 +281,20 @@ export default {
 }
 
 .postStats {
-    font-size: 0.85rem;
+    font-size: 14px;
     font-weight: 400 !important;
     letter-spacing: 0px !important;
     line-height: 17px;
-    font-weight: 500;
+
+    margin-top: 1px;
+    margin-bottom: 1px;
 }
 
-.cityName {
-    font-size: 0.81rem;
+.postFooter {
+    font-size: 14px;
+    line-height: 17px;
 
     letter-spacing: 0px !important;
     color: #969595;
-    line-height: 17px
 }
 </style>
