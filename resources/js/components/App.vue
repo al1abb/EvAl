@@ -1,29 +1,28 @@
 <template>
+
     <v-app
         class="appMain"
     >
         <v-container>
-            <v-row
-                class="text-center"
-            >
+
+            <v-row class="text-center">
                 <v-col>
                     <p><router-link to="/">Home</router-link></p>
                 </v-col>
+
                 <v-col>
                     <p><router-link to="/test">Test</router-link></p>
                 </v-col>
             </v-row>
-            <v-btn
-                elevation="2"
-            >
-                Hello
-            </v-btn>
+
         </v-container>
 
         <router-view v-slot="{ Component }">
             <component :is="Component" />
         </router-view>
+
     </v-app>
+
 </template>
 
 <script>
