@@ -81,7 +81,7 @@
                     style=""
                     class="postPrice pl-3"
                 >
-                    {{ formattedPrice }} AZN
+                    {{ formattedPrice }} AZN<span v-if="tradeType=='rent'">/month</span>
                 </v-card-title> <!--₼ () -->
 
                 <div class="d-flex flex-column">
@@ -145,7 +145,7 @@
                     </v-icon>
                 </div>
             </transition>
-            
+
         </div>
     <!-- </router-link> -->
 
@@ -167,7 +167,8 @@ export default {
         "district", 
         "apartmentFloor", 
         "totalFloors", 
-        "price", 
+        "price",
+        "tradeType",
         "isVip", 
         "hasVoucher", 
         "createdAt", 

@@ -25,6 +25,14 @@ class PostFactory extends Factory
     {
         $rand_user = User::all()->random();
 
+        $trade_type = $this->faker->randomElement(['sell', 'rent']);
+
+        $numSell = $this->faker->numberBetween($min = 50000, $max = 1000000, 'linearLow');
+        $numSell = $numSell - ($numSell % 100);
+
+        $numRent = $this->faker->numberBetween($min = 100, $max = 1500, 'linearLow');
+        $numRent = $numRent - ($numRent % 10);
+
         return [
             'user_id' => $rand_user,
             'agency_id' => $rand_user->agency,
@@ -40,12 +48,12 @@ class PostFactory extends Factory
             'total_floors' => $this->faker->numberBetween($min = 5, $max = 20),
 
             'description' => $this->faker->text(),
-            'price' => $this->faker->numberBetween($min = 50000, $max = 1000000),
+            'price' => $trade_type == 'sell' ? $numSell : $numRent,
 
             'contact_email' => $this->faker->safeEmail(),
             'contact_phone_number' => $this->faker->phoneNumber(),
 
-            'trade_type' => $this->faker->randomElement(['sell', 'rent']),
+            'trade_type' => $trade_type,
             'realtor_type' => $this->faker->randomElement(['self', 'agent']),
 
             'is_vip' => $this->faker->boolean(30),
@@ -55,7 +63,7 @@ class PostFactory extends Factory
             'views_today' => $this->faker->numberBetween($min = 0, $max = 10),
             
             'updated_at' => $this->faker->date(),
-            'created_at' => $this->faker->date()
+            'created_at' => $this->faker->date(),
         ];
     }
 }

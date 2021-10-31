@@ -34,6 +34,9 @@
                                 :totalFloors="listing.total_floors"
                                 
                                 :price="listing.price"
+
+                                :tradeType="listing.trade_type"
+
                                 :isVip="listing.is_vip"
                                 :hasVoucher="listing.has_voucher"
                                 
