@@ -45,7 +45,7 @@
                 <v-img
                     class="white--text align-end"
                     height="10.8rem"
-                    src="https://picsum.photos/300"
+                    :src="image"
                 >
                     <template v-slot:placeholder>
                         <v-skeleton-loader
@@ -81,7 +81,7 @@
                     style=""
                     class="postPrice pl-3"
                 >
-                    {{ formattedPrice }} AZN<span v-if="tradeType=='rent'">/month</span>
+                    {{ formattedPrice }} AZN<span v-if="tradeType=='rent'">/ay</span>
                 </v-card-title> <!--₼ () -->
 
                 <div class="d-flex flex-column">
@@ -135,7 +135,7 @@
                     class="postLike"
                     @click="liked=!liked"
                     @mouseover="elevation=2"
-                    :style="liked ? '-webkit-text-fill-color: red;' : '-webkit-text-fill-color: #00000050;'"
+                    :style="liked ? '-webkit-text-fill-color: #4caf50;' : '-webkit-text-fill-color: #00000050;'"
                 >
                     <v-icon
                         class="bookmark_icon"
@@ -156,7 +156,8 @@
 
 export default {
     props: [
-        "id", 
+        "id",
+        "image",
         "user", 
         "agency", 
         "type", 

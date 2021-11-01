@@ -21,6 +21,7 @@
                         >
                             <Post 
                                 :id="listing.id"
+                                :image="'https://picsum.photos/id/' + listing.id+2 + '/300/300'"
                                 :user="listing.user"
                                 :agency="listing.agency"
                                 :type="listing.estate_type"
