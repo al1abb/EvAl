@@ -6,16 +6,16 @@
         </div>
 
         <PostSection 
-            title="VIP Posts"
-            :responseData="vipData"
+            title="All Posts"
+            :responseData="allData"
             :loading="loading"
         />
 
         <hr style="border: none; margin-top: 5rem; margin-bottom: 5rem;">
 
         <PostSection 
-            title="All Posts"
-            :responseData="allData"
+            title="VIP Posts"
+            :responseData="vipData"
             :loading="loading"
         />
 
@@ -97,8 +97,8 @@ export default {
         }
     },
     mounted() {
-        this.handleVipPosts()
         this.handleListings()
+        this.handleVipPosts()
     },
     watch: {
         currentPage: function() {

@@ -1,6 +1,6 @@
 <template>
     <div>
-        THis is test page
+        This is test page
     </div>
 </template>
 
