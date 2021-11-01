@@ -3,7 +3,9 @@
     <v-app
         class="appMain"
     >
-        <v-container>
+        <Navbar />
+
+        <!-- <v-container>
 
             <v-row class="text-center">
                 <v-col>
@@ -15,7 +17,7 @@
                 </v-col>
             </v-row>
 
-        </v-container>
+        </v-container> -->
 
         <router-view v-slot="{ Component }">
             <component :is="Component" />
@@ -26,20 +28,44 @@
 </template>
 
 <script>
+import Navbar from './navbar/Navbar.vue';
 export default {
-    
+    components: { Navbar },
 }
 </script>
 
 <style>
+/**
+    Resets
+*/
+
+.reset_word_spacing {
+    letter-spacing: 0px !important;
+}
+
+.no-uppercase {
+    text-transform: none;
+}
+
+a, a:hover, a:focus, a:active {
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
 p {
     margin: 0px !important;
     padding: 0px !important;
 }
 
-.appMain {
-    background-color: #f7f2f2 !important;
 
-    
+
+.appMain {
+    background-color: #f7f2f2 !important;    
+}
+
+.brandName {
+    color: white;
+
+    font-size: 1.5rem;
 }
 </style>
