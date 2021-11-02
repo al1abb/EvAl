@@ -16,27 +16,23 @@
                 :to="{ name: 'postPage', params: { id } }"
             >
 
-                <div class="postBadges d-flex rounded">
-                    <div v-if="isVip" class="" style="background-color: transparent;" title="VIP elan">
-                        <span>
-                            <v-icon
-                                color="red"
-                                size="20"
-                            >
-                                mdi-crown
-                            </v-icon>
-                        </span>
+                <div class="postBadges d-flex rounded align-items-center">
+                    <div v-if="isVip" class="d-flex" style="background-color: transparent;" title="VIP elan">
+                        <v-icon
+                            color="red"
+                            size="25"
+                        >
+                            mdi-crown
+                        </v-icon>
                     </div>
                     
-                    <div v-if="hasVoucher" class="" style="background-color: transparent;" title="Kupça var">
-                        <span>
-                            <v-icon
-                                color="orange"
-                                size="20"   
-                            >
-                                mdi-text-box-check
-                            </v-icon>
-                        </span>
+                    <div v-if="hasVoucher" class="d-flex" style="background-color: transparent;" title="Kupça var">
+                        <v-icon
+                            color="orange"
+                            size="25"
+                        >
+                            mdi-text-box-check
+                        </v-icon>
                     </div>
                 </div>
 
@@ -56,7 +52,7 @@
                         ></v-skeleton-loader>
                     </template>
 
-                    <div class="postAgency rounded" v-if="agency" title="Agency" @mouseover="elevation=2">
+                    <div class="postAgency rounded" v-if="agency" title="Agentlik" @mouseover="elevation=2">
                         <!-- <v-chip
                             small
                             label 
@@ -140,6 +136,7 @@
                     <v-icon
                         class="bookmark_icon"
                         color="#00000090"
+                        title="Yadda saxla"
                     >
                         mdi-bookmark
                     </v-icon>
