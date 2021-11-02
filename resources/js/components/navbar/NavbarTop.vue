@@ -4,7 +4,7 @@
         style="background-color: #FFFFFF;"
     >
         <router-link
-            to="/daxil"
+            to="/daxil-ol"
             class="no-uppercase reset_word_spacing text-success p-2"
         >
             Daxil ol

@@ -1,6 +1,7 @@
 import VueRouter from 'vue-router';
 import Home from './pages/Home.vue';
-import RouterTest from './pages/RouterTest.vue';
+import SignIn from './pages/SignIn.vue';
+import SignUp from './pages/SignUp.vue';
 import PostPage from './pages/PostPage.vue';
 
 const routes = [
@@ -10,9 +11,14 @@ const routes = [
         component: Home,
     },
     {
-        path: '/test',
-        name: 'test',
-        component: RouterTest,
+        path: '/daxil-ol',
+        name: 'signin',
+        component: SignIn,
+    },
+    {
+        path: '/qeydiyyat',
+        name: 'signup',
+        component: SignUp
     },
     {
         path: '/post/:id',
