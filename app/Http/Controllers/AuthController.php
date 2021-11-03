@@ -65,4 +65,11 @@ class AuthController extends Controller
             'message' => 'Logged out'
         ];
     }
+
+    public function refresh(Request $request) {
+        $user = $request->user();
+        $user->tokens()->delete();
+
+        return response()->json(['token' => $user->createToken('refreshToken')->plainTextToken]);
+    }
 }
