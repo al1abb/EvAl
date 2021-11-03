@@ -6,9 +6,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FlagController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
-use App\Models\Agency;
-use App\Models\Flag;
-use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 /**
  * Public routes
@@ -86,6 +86,7 @@ Route::get('user/{id}/flags', [UserController::class, 'showUserFlags']);
 // Post-Flag route (Show flags of a post)
 Route::get('post/{id}/flags', [PostController::class, 'showPostFlags']);
 
+
 // Auth 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -95,8 +96,11 @@ Route::post('/register', [AuthController::class, 'register']);
  */
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+
     // Auth
     Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::get('/refresh', [AuthController::class, 'refresh']);
 });
 
 /**
