@@ -4,7 +4,7 @@
             <p class="signIn_mainLabel mb-4">Şəxsi hesaba daxil ol</p>
 
             <v-form
-                @submit.prevent="handleSignIn"
+                @submit.prevent="submit"
             >
                 <!-- csrf -->
                 <input type="hidden" name="_token" :value="csrf" />
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 export default {
     data() {
         return {
@@ -48,6 +49,15 @@ export default {
         }
     },
     methods: {
+        ...mapActions([
+            "signIn"
+        ]),
+        
+        async submit() {
+            await this.signIn(this.formData)
+
+            this.$router.replace({ name: 'home' })
+        },
         handleSignIn() {
             axios.get('/sanctum/csrf-cookie')
             .then((response) => {
