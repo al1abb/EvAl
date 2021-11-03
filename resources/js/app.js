@@ -9,10 +9,106 @@ require('./bootstrap');
 window.Vue = require('vue').default;
 
 import VueRouter from "vue-router";
+import Vuex from "vuex";
 import router from "./routes";
 import vuetify from './vuetify';
 
-Vue.use(VueRouter);
+import axios from "axios";
+
+const store = new Vuex.Store({
+    state: {
+        authenticated: false,
+        user: {}
+    },
+
+    getters: {
+        authenticated(state) {
+            return state.authenticated;
+        },
+        user(state) {
+            return state.user;
+        },
+    },
+
+    mutations: {
+        setAuthenticated(state, payload) {
+            state.authenticated = payload
+        },
+        setUser(state, payload) {
+            state.user = payload;
+        },
+        initialiseStore(state) {
+            if(localStorage.getItem('sanctum_token')) {
+                let token = localStorage.getItem('sanctum_token');
+                if(token) {
+                    console.log(token)
+                    axios.get('/api/user', {
+                        headers: {
+                            'Authorization': 'Bearer '+token
+                        }
+                    })
+                    .then((response) => {
+                        state.user = response.data;
+                        state.authenticated = true;
+                    })
+                }
+            }
+            else {
+                localStorage.removeItem('sanctum_token')
+                state.user = null
+                state.authenticated = false;
+            }
+        }
+    },
+
+    actions: {
+        async signIn({ dispatch }, credentials) {
+            await axios.get('/sanctum/csrf-cookie')
+            const res = await axios.post('/api/login', credentials)
+            localStorage.setItem('sanctum_token', res.data.token)
+
+            return dispatch('me')
+        },
+
+        async signOut ({ dispatch }) {
+            let token = localStorage.getItem('sanctum_token');
+            
+            await axios.post('/api/logout', {}, {
+                headers: {
+                    'Authorization': 'Bearer '+token
+                }
+            });
+
+            localStorage.removeItem('sanctum_token');
+
+            return dispatch('me')
+        },
+
+        me ({ commit }) {
+
+            let token = localStorage.getItem('sanctum_token');
+            console.log(token);
+            if(token) {
+                return axios.get('/api/user', {
+                    headers: {
+                        'Authorization': 'Bearer '+token
+                    }
+                })
+                .then((response) => {
+                    // console.log(response)
+                    commit('setAuthenticated', true)
+                    commit('setUser', response.data)
+                })
+            }
+            else {
+                commit('setAuthenticated', false)
+                commit('setUser', null)
+            }
+        }
+    }
+})
+
+Vue.use(VueRouter).use(store);
 
 /**
  * The following block of code may be used to automatically register your
@@ -41,6 +137,7 @@ const app = new Vue({
         App
     },
     router,
+    store,
     vuetify
 });
 
