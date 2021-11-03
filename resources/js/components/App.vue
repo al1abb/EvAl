@@ -29,8 +29,17 @@
 
 <script>
 import Navbar from './navbar/Navbar.vue';
+
+import { mapState } from "vuex";
+
 export default {
     components: { Navbar },
+    computed: {
+        ...mapState(["authenticated, user"]),
+    },
+    beforeCreate() {
+        this.$store.commit('initialiseStore')
+    }
 }
 </script>
 
