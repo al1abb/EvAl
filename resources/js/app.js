@@ -18,7 +18,8 @@ import axios from "axios";
 const store = new Vuex.Store({
     state: {
         authenticated: false,
-        user: {}
+        user: {},
+        loading: false,
     },
 
     getters: {
@@ -28,16 +29,23 @@ const store = new Vuex.Store({
         user(state) {
             return state.user;
         },
+        loading(state) {
+            return state.loading;
+        }
     },
 
     mutations: {
         setAuthenticated(state, payload) {
-            state.authenticated = payload
+            state.authenticated = payload;
         },
         setUser(state, payload) {
             state.user = payload;
         },
+        setLoading(state, payload) {
+            state.loading = payload;
+        },
         initialiseStore(state) {
+            state.loading = true;
             if(localStorage.getItem('sanctum_token')) {
                 let token = localStorage.getItem('sanctum_token');
                 if(token) {
@@ -50,6 +58,13 @@ const store = new Vuex.Store({
                     .then((response) => {
                         state.user = response.data;
                         state.authenticated = true;
+                        state.loading = false;
+                    })
+                    .catch((err) => {
+                        localStorage.removeItem('sanctum_token')
+                        state.user = null
+                        state.authenticated = false;
+                        state.loading = false;
                     })
                 }
             }
@@ -57,17 +72,18 @@ const store = new Vuex.Store({
                 localStorage.removeItem('sanctum_token')
                 state.user = null
                 state.authenticated = false;
+                state.loading = false;
             }
         }
     },
 
     actions: {
         async signIn({ dispatch }, credentials) {
-            await axios.get('/sanctum/csrf-cookie')
-            const res = await axios.post('/api/login', credentials)
-            localStorage.setItem('sanctum_token', res.data.token)
+            await axios.get('/sanctum/csrf-cookie');
+            const res = await axios.post('/api/login', credentials);
+            localStorage.setItem('sanctum_token', res.data.token);
 
-            return dispatch('me')
+            return dispatch('me');
         },
 
         async signOut ({ dispatch }) {
@@ -75,7 +91,7 @@ const store = new Vuex.Store({
             
             await axios.post('/api/logout', {}, {
                 headers: {
-                    'Authorization': 'Bearer '+token
+                    'Authorization': 'Bearer '+ token
                 }
             });
 
@@ -85,6 +101,7 @@ const store = new Vuex.Store({
         },
 
         me ({ commit }) {
+
 
             let token = localStorage.getItem('sanctum_token');
             console.log(token);
@@ -102,7 +119,7 @@ const store = new Vuex.Store({
             }
             else {
                 commit('setAuthenticated', false)
-                commit('setUser', null)
+                commit('setUser', null);
             }
         }
     }
