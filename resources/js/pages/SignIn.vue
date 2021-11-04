@@ -4,7 +4,10 @@
             <p class="signIn_mainLabel mb-4">Şəxsi hesaba daxil ol</p>
 
             <v-form
+                v-model="formValid"
+                lazy-validation 
                 @submit.prevent="submit"
+                ref="form"
             >
                 <!-- csrf -->
                 <input type="hidden" name="_token" :value="csrf" />
@@ -12,23 +15,47 @@
                 <v-text-field
                     v-model="formData.email"
                     label="E-mail"
-                    append-icon="mdi-email"
-                    outlined
+                    :rules="emailRules"
+                    prepend-icon="mdi-email"
+                    flat
+                    solo
+                    :loading="loading"
                 >
                 </v-text-field>
                 <v-text-field
                     v-model="formData.password"
                     label="Şifrə"
-                    append-icon="mdi-lock"
-                    outlined
+                    :type="passwordVisible ? 'text' : 'password'"
+                    :rules="passwordRules"
+                    prepend-icon="mdi-lock"
+                    flat
+                    solo
+                    :loading="loading"
                 >
+                    <template v-slot:append>
+                        <v-icon @click="passwordVisible=!passwordVisible">{{ passwordVisible ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
+                    </template>
                 </v-text-field>
+
+                <v-alert 
+                    v-if="error"
+                    type="error"
+                    dismissible
+                >
+                    Yanlış parametrlər daxil olunub və ya hesab mövcud deyil. 
+                    <router-link :to="{ path: '/qeydiyyat' }" class="text-warning">
+                        Qeydiyyatdan keç
+                    </router-link>
+                </v-alert>
 
                 <v-btn
                     type="submit"
                     color="success"
                     class="shadow no-uppercase"
                     depressed
+                    :loading="loading"
+                    :disabled="!formValid"
+                    @click="validateForm"
                 >
                     Daxil ol
                 </v-btn>
@@ -45,7 +72,23 @@ export default {
             formData: {
                 email: '',
                 password: '',
-            }
+            },
+            formValid: true,
+            loading: false,
+            error: false,
+
+            passwordVisible: false,
+
+            emailRules: [
+                v => !!v || 'E-mail tələb olunur',
+                v => /.+@.+\..+/.test(v) || 'E-mail adresi etibarlı deyil',
+            ],
+            passwordRules: [
+                v => !!v || 'Şifrə tələb olunur',
+                // (value) => (value && value.length >= 6) || 'minimum 6 characters',
+            ],
+
+            timeout: null,
         }
     },
     methods: {
@@ -54,29 +97,51 @@ export default {
         ]),
         
         async submit() {
-            await this.signIn(this.formData)
+            this.loading = true
+            try {
+                const response = await this.signIn(this.formData)
+                this.$router.replace({ name: 'home' })
+            } catch(err) {
+                clearTimeout(this.timeout)
+                this.showError()
+                this.formData.email = ''
+                this.formData.password = ''
+            }
+            this.loading = false
 
-            this.$router.replace({ name: 'home' })
         },
-        handleSignIn() {
-            axios.get('/sanctum/csrf-cookie')
-            .then((response) => {
-                // console.log(response)
 
-                axios.post('/api/login', this.formData)
-                .then((response) => {
-                    console.log(response)
-
-                    this.redirectToHome()
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-            })
+        validateForm() {
+            this.$refs.form.validate()
         },
-        redirectToHome() {
-            this.$router.push({ name: 'home' })
+
+        showError() {
+            clearTimeout(this.timeout)
+            this.error = true
+
+            this.timeout = setTimeout(() => {
+                this.error = false
+            }, 7000)
         }
+        // handleSignIn() {
+        //     axios.get('/sanctum/csrf-cookie')
+        //     .then((response) => {
+        //         // console.log(response)
+
+        //         axios.post('/api/login', this.formData)
+        //         .then((response) => {
+        //             console.log(response)
+
+        //             this.redirectToHome()
+        //         })
+        //         .catch((err) => {
+        //             console.log(err)
+        //         })
+        //     })
+        // },
+        // redirectToHome() {
+        //     this.$router.push({ name: 'home' })
+        // }
     },
     computed: {
         csrf() {
