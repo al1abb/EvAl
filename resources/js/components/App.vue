@@ -37,6 +37,9 @@ export default {
     computed: {
         ...mapState(["authenticated, user"]),
     },
+    mounted() {
+        axios.get('/sanctum/csrf-cookie');
+    },
     beforeCreate() {
         this.$store.commit('initialiseStore')
     }
