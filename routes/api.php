@@ -112,11 +112,11 @@ Route::get('/{any}', function() {
 });
 
 Route::post('/{any}', function() {
-    return response()->json(['Bad method (405)' => 'This route does not support POST method'], 404, [], JSON_PRETTY_PRINT);
+    return response()->json(['Bad method (405)' => 'This route does not support POST method'], 405, [], JSON_PRETTY_PRINT);
 });
 
 Route::put('/{any}', function() {
-    return response()->json(['Bad method (405)' => 'This route does not support PUT method'], 404, [], JSON_PRETTY_PRINT);
+    return response()->json(['Bad method (405)' => 'This route does not support PUT method'], 405, [], JSON_PRETTY_PRINT);
 });
 
 Route::delete('/{any}', function() {
