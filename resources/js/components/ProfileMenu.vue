@@ -61,7 +61,7 @@ export default {
     props: ["auth", "user"],
     data() {
         return {
-            loading: null,
+            loading: false,
         }
     },
     methods: {
