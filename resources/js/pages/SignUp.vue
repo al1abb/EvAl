@@ -141,7 +141,7 @@ export default {
             this.loading = true
             axios.get('/sanctum/csrf-cookie')
             .then((response) => {
-                
+                console.log(response)
                 axios.post('/api/register', this.formData)
                 .then((response) => {
                     console.log(response)
