@@ -79,6 +79,7 @@ const store = new Vuex.Store({
 
     actions: {
         async signIn({ dispatch }, credentials) {
+            await axios.get('/sanctum/csrf-cookie');
             const res = await axios.post('/api/login', credentials);
             localStorage.setItem('sanctum_token', res.data.token);
 
