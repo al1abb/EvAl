@@ -10,7 +10,7 @@
                 ref="form"
             >
                 <!-- csrf -->
-                <input type="hidden" name="_token" :value="csrf" />
+                <!-- <input type="hidden" name="_token" :value="csrf" /> -->
 
                 <v-text-field
                     v-model="formData.name"
@@ -125,40 +125,30 @@ export default {
     },
     methods: {
         ...mapActions([
-            "signIn"
+            "register"
         ]),
 
-        async submit() {
-            await this.signIn({
-                email: this.formData.email,
-                password: this.formData.password
-            })
+        // async submit() {
+        //     await this.signIn({
+        //         email: this.formData.email,
+        //         password: this.formData.password
+        //     })
 
-            this.$router.replace({ name: 'home' })
-        },
+        //     this.$router.replace({ name: 'home' })
+        // },
 
-        submitRegister() {
+        async submitRegister() {
             this.loading = true
-            axios.get('/sanctum/csrf-cookie')
-            .then((response) => {
-                console.log(response)
-                axios.post('/api/register', this.formData)
-                .then((response) => {
-                    console.log(response)
-                    this.submit()
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-                .finally(() => {
-                    this.loading = false
-                })
-
-            })
-            .catch((err) => {
-                console.log(err)
-                console.log("GET: Sanctum CSRF failed")
-            })
+            try {
+                const response = await this.register(this.formData)
+                this.$router.replace({ name: 'home' })
+            } catch(err) {
+                this.formData.name = '',
+                this.formData.email = '',
+                this.formData.password = '',
+                this.formData.password_confirmation = ''
+            }
+            this.loading = false
         },
 
         validateForm() {
@@ -166,11 +156,11 @@ export default {
         },
     },
     computed: {
-        csrf() {
-            return document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content");
-        },
+        // csrf() {
+        //     return document
+        //         .querySelector('meta[name="csrf-token"]')
+        //         .getAttribute("content");
+        // },
     }
 }
 </script>

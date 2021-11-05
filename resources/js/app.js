@@ -100,8 +100,15 @@ const store = new Vuex.Store({
             return dispatch('me')
         },
 
-        me ({ commit }) {
+        async register({ dispatch }, credentials) {
+            await axios.get('/sanctum/csrf-cookie');
+            const res = await axios.post('/api/register', credentials);
+            localStorage.setItem('sanctum_token', res.data.token);
 
+            return dispatch('me');
+        },
+
+        me ({ commit }) {
 
             let token = localStorage.getItem('sanctum_token');
             console.log(token);

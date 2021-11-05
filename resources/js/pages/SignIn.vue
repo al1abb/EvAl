@@ -10,7 +10,7 @@
                 ref="form"
             >
                 <!-- csrf -->
-                <input type="hidden" name="_token" :value="csrf" />
+                <!-- <input type="hidden" name="_token" :value="csrf" /> -->
 
                 <v-text-field
                     v-model="formData.email"
@@ -144,11 +144,11 @@ export default {
         // }
     },
     computed: {
-        csrf() {
-            return document
-                .querySelector('meta[name="csrf-token"]')
-                .getAttribute("content");
-        },
+        // csrf() {
+        //     return document
+        //         .querySelector('meta[name="csrf-token"]')
+        //         .getAttribute("content");
+        // },
     }
 }
 </script>
