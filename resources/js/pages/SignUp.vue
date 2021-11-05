@@ -142,7 +142,11 @@ export default {
             axios.get('/sanctum/csrf-cookie')
             .then((response) => {
                 console.log(response)
-                axios.post('/api/register', this.formData)
+                axios.post('/api/register', this.formData, {
+                    headers: {
+                        'X-XSRF-TOKEN': response.config.headers["X-XSRF-TOKEN"]
+                    }
+                })
                 .then((response) => {
                     console.log(response)
                     this.submit()
