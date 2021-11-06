@@ -3,7 +3,7 @@
         :to="to"
         class="no-uppercase reset_word_spacing text-light p-2"
     >
-       <v-icon>{{ icon }}</v-icon> {{ text }}
+       <v-icon :color="icon=='mdi-bookmark' ? '#4caf50' : '#FFFFFF'">{{ icon }}</v-icon> {{ text }}
     </router-link>
 </template>
 

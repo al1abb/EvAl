@@ -1,15 +1,15 @@
 <template>
     <div
         class="d-flex justify-content-around flex-wrap py-3"
-        style="background-color: #264454;"
+        style="background-color: #19488A;"
     >
-        <div>
+        <div class="d-flex justify-content-center align-items-center">
             <p class="brandName">
                 <router-link to="/" style="">EvAl</router-link>
             </p>
         </div>
 
-        <div class="d-flex justify-content-center">
+        <div class="d-flex justify-content-center align-items-center">
             <NavbarLink 
                 to="/" 
                 text="Ana səhifə"
@@ -26,7 +26,7 @@
             />
         </div>
 
-        <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-end align-items-center">
             <!-- <v-btn
                     class="no-uppercase reset_word_spacing"
                     color="white"
@@ -45,16 +45,15 @@
             />
         </div>
 
-        <div>
+        <div class="d-flex justify-content-center align-items-center">
+            <span class="mr-1 text-light">Yeni elan paylaş</span>
             <v-btn
                 color="green"
                 class="no-uppercase reset_word_spacing text-light"
-                rounded
                 depressed
+                fab
             >
-                Yeni elan
-
-                <v-icon right>
+                <v-icon>
                     mdi-plus
                 </v-icon>
             </v-btn>
