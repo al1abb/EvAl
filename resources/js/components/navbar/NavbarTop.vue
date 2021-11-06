@@ -1,7 +1,7 @@
 <template>
     <div
         class="d-flex justify-content-end align-items-center p-2"
-        style="background-color: #FFFFFF;"
+        style="background-color: #FFFFFF; border-top-right-radius: 20px; border-top-left-radius: 20px;"
     >
         <v-scroll-x-reverse-transition
             hide-on-leave

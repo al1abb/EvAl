@@ -156,7 +156,7 @@ export default {
         "id",
         "image",
         "user", 
-        "agency", 
+        "agency",
         "type", 
         "city", 
         "area", 
@@ -243,20 +243,6 @@ export default {
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: white;
 }
-
-/* .mdi-crown::before {
-    -webkit-text-stroke-width: 0px;
-    -webkit-text-stroke-color: white;
-}
-
-.mdi-text-box-check::before {
-    -webkit-text-stroke-width: 0px;
-    -webkit-text-stroke-color: white;
-} */
-
-/* .mdi-domain::before {
-    background-color: white;
-} */
 
 .postPrice {
     /* border-radius: 7px !important; */
