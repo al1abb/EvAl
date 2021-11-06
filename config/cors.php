@@ -20,6 +20,7 @@ return [
         '/login',
         '/register',
         '/logout',
+        '/user',
         '/sanctum/csrf-cookie'
     ],
 
