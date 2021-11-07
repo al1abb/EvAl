@@ -87,6 +87,9 @@ Route::get('user/{id}/flags', [UserController::class, 'showUserFlags']);
 Route::get('post/{id}/flags', [PostController::class, 'showPostFlags']);
 
 
+// Search
+Route::post('/search', [PostController::class, 'searchPost']);
+
 // Auth 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
