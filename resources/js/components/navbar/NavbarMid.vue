@@ -16,7 +16,7 @@
             />
 
             <NavbarLink 
-                to="/all" 
+                to="/butun-elanlar" 
                 text="Bütün elanlar"
             />
 
@@ -65,7 +65,9 @@
 <script>
 import NavbarLink from "./NavbarLink.vue";
 export default {
-    components: { NavbarLink }
+    components: { NavbarLink },
+    methods: {
+    }
 };
 </script>
 

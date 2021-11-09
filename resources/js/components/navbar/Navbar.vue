@@ -20,12 +20,12 @@ export default {
     },
     computed: {
         showSearch() {
-            console.log(this.$route.name)
             if(this.$route.name == 'signin' || this.$route.name == 'signup') {
-                console.log('do not show navbar bottom')
+                // do not show navbar bottom
                 return false
             }
             else {
+                // show
                 return true
             }
         }
