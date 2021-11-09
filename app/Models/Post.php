@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class Post extends Model
 {
@@ -22,5 +23,23 @@ class Post extends Model
 
     public function flags() {
         return $this->hasMany(Flag::class);
+    }
+
+    public function scopeVipPosts($query) {
+        return $query->where('is_vip', true);
+    }
+
+    public function scopeVoucherPosts($query) {
+        return $query->where('has_voucher', true);
+    }
+
+    public function scopeSearch($query, $tradeType, $estateType, $roomCount, $city, $priceMin, $priceMax) {
+        return $query
+            ->whereIn('trade_type', $tradeType, 'and')
+            ->where('estate_type', $estateType, 'and')
+            ->whereIn('room_count', $roomCount, 'and')
+            ->whereIn('city', $city, 'and')
+            ->where('price', '>=', $priceMin, 'and')
+            ->where('price', '<=', $priceMax);
     }
 }
