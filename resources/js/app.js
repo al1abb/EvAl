@@ -20,6 +20,9 @@ const store = new Vuex.Store({
         authenticated: false,
         user: {},
         loading: false,
+        searchLoading: false,
+        searchQueryStore: {},
+        searchData: {},
     },
 
     getters: {
@@ -31,6 +34,15 @@ const store = new Vuex.Store({
         },
         loading(state) {
             return state.loading;
+        },
+        searchLoading(state) {
+            return state.searchLoading;
+        },
+        searchQueryStore(state) {
+            return state.searchQueryStore;
+        },
+        searchData(state) {
+            return state.searchData;
         }
     },
 
@@ -43,6 +55,15 @@ const store = new Vuex.Store({
         },
         setLoading(state, payload) {
             state.loading = payload;
+        },
+        setSearchLoading(state, payload) {
+            state.searchLoading = payload;
+        },
+        setSearchQueryStore(state, payload) {
+            state.searchQueryStore = payload;
+        },
+        setSearchData(state, payload) {
+            state.searchData = payload;
         },
         initialiseStore(state) {
             state.loading = true;
@@ -106,6 +127,31 @@ const store = new Vuex.Store({
             localStorage.setItem('sanctum_token', res.data.token);
 
             return dispatch('me');
+        },
+
+        async search({ commit }, credentials) {
+            // axios.post('/api/search', credentials)
+            // .then((response) => {
+            //     console.log("Search Result (from Action):");
+            //     console.log(response.data);
+            //     commit('setSearchData', response.data);
+            // })
+            // .catch((err) => {
+            //     console.log(err);
+            //     //commit('setSearchData', {});
+            // })
+            commit('setSearchLoading', true);
+
+            const res = await axios.post('/api/search', credentials);
+
+            // console.log("Search Result (from Action):");
+            // console.log(res);
+            commit('setSearchData', res);
+
+            commit('setSearchLoading', false);
+
+            return res;
+            
         },
 
         me ({ commit }) {
