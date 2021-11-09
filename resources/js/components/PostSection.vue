@@ -21,7 +21,7 @@
                         >
                             <Post 
                                 :id="listing.id"
-                                :image="'https://picsum.photos/id/' + listing.id+2 + '/1920/1080'"
+                                :image="'https://picsum.photos/id/' + Math.ceil(listing.id/100) + '/1920/1080'"
                                 :user="listing.user"
                                 :agency="listing.agency"
                                 :type="listing.estate_type"
@@ -60,8 +60,13 @@
 import Post from '../components/Post.vue';
 
 export default {
+    components: { Post },
     props: ["title", "responseData", "loading"],
-    components: { Post }
+    data() {
+        return {
+            
+        }
+    },
 }
 </script>
 
