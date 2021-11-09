@@ -2,62 +2,91 @@
 	<div>
 
         <div class="text-center mb-3">
-            Current page is {{ currentPage }}
+            Current page is {{ currentPageDefault }} {{ searchLoading }} Loading
         </div>
 
-        <PostSection 
-            title="All Posts"
-            :responseData="allData"
-            :loading="loading"
-        />
+        
+        <div class="container-sm mb-2">
+            <div class="" style="width: auto;">
 
-        <hr style="border: none; margin-top: 5rem; margin-bottom: 5rem;">
+                <div style="height: 1.5rem; display: flex; flex-direction: column; justify-content: center;">
+                    <v-skeleton-loader
+                        v-if="searchLoading"
+                        type="heading"
+                        max-width="25rem" 
+                        class="mt-auto"
+                    >
+                    </v-skeleton-loader>
 
-        <PostSection 
-            title="VIP Posts"
-            :responseData="vipData"
-            :loading="loading"
-        />
+                    <p style="font-size: 1.1rem;" v-if="!searchLoading">Ən son elanlar</p>
+                   
+                </div>
 
-        <v-pagination
-            v-model="currentPage"
-            :length="lastPage"
-            :disabled="loading"
-            class="my-5"
-        >
-        </v-pagination>
+            </div>
+        </div>
+
+        <div v-if="allData">
+            <PostSection
+                title="VİP Elanlar"
+                :responseData="vipData"
+                :loading="searchLoading"
+            />
+
+            <hr style="border: none; margin-top: 5rem; margin-bottom: 5rem;">
+
+
+            <PostSection
+                title="Bütün Elanlar"
+                :responseData="allData"
+                :loading="searchLoading"
+            />
+        </div>
+        <div v-else>
+            No Result
+        </div>
+
+        <div class="my-10">
+            <v-pagination
+                v-if="allData"
+                v-model="currentPageDefault"
+                :length="lastPage"
+                total-visible="15"
+                :disabled="searchLoading"
+            >
+            </v-pagination>
+        </div>
 
     </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import axios from 'axios';
 
-import Post from '../components/Post.vue';
 import PostSection from '../components/PostSection.vue';
 
 export default {
-	components: { Post, PostSection },
+	components: { PostSection },
 	data() {
         return {
             allData: [],
             vipData: [],
-            currentPage: 1,
+            currentPageDefault: 1,
             loading: true,
             isFirstPage: true,
             isLastPage: false,
-            lastPage: 0
+            lastPage: 0,
         }
     },
     methods: {
         handleListings() {
             //this.toggleListings()
-            this.loading = true
-            axios.get('/api/posts?page=' + this.currentPage)
+            this.$store.commit('setSearchLoading', true)
+            axios.get('/api/posts?page=' + this.currentPageDefault)
                 .then((response) => {
                     console.log(response.data) // chaining 'data' to this fixes bug
                     this.allData = response.data.data
-                    this.currentPage = response.data.current_page
+                    this.currentPageDefault = response.data.current_page
                     this.isFirstPage = response.data.prev_page_url ? false : true
                     this.isLastPage = response.data.next_page_url ? false : true
                     this.lastPage = response.data.last_page
@@ -68,12 +97,12 @@ export default {
                     console.log(err)
                 })
                 .finally(() => {
-                    this.loading = false
+                    this.$store.commit('setSearchLoading', false)
                 })
         },
 
         handleVipPosts() {
-            this.loading = true;
+            this.$store.commit('setSearchLoading', true)
             axios.get('/api/posts/vip')
                 .then((response) => {
                     console.log(response.data)
@@ -83,27 +112,33 @@ export default {
                     console.log(err);
                 })
                 .finally(() => {
-                    this.loading = false
+                    this.$store.commit('setSearchLoading', false)
                 })
         },
 
         prevPage() {
-            this.currentPage--
+            this.currentPageDefault--
             this.handleListings()
         },
         nextPage() {
-            this.currentPage++
+            this.currentPageDefault++
             this.handleListings()
         }
+    },
+    computed: {
+        ...mapState([
+            "searchLoading",
+            "searchData",
+        ]),
     },
     mounted() {
-        this.handleListings()
         this.handleVipPosts()
+        this.handleListings()
     },
     watch: {
-        currentPage: function() {
+        currentPageDefault: function() {
             this.handleListings()
-        }
+        },
     }
 }
 </script>
