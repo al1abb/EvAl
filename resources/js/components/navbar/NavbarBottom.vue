@@ -119,7 +119,7 @@
                 <v-btn
                     class="no-uppercase"
                     depressed
-                    :color="loading ? 'orange' : 'primary'" 
+                    color="primary" 
                     large
                     min-width="10rem"
                     min-height="3rem"
@@ -155,17 +155,17 @@ export default {
             loading: false,
 
             tradeTypes: ['Hamısı', 'Alış', 'Kirayə'],
-            estateTypes: ['Hamısı', 'Mənzil', 'Ev-Villa', 'Ofis', 'Qaraj', 'Torpaq'],
+            estateTypes: ['Hamısı', 'Yeni Mənzil', 'Mənzil', 'Ev-Villa', 'Ofis', 'Qaraj', 'Torpaq'],
             roomCounts: ['Hamısı', '1', '2', '3', '4', '5'],
             cities: ['Hamısı', 'Bakı', 'Sumqayıt', 'Gəncə'],
 
             searchQuery: {
                 tradeType: 'Alış',
                 estateType: 'Mənzil',
-                roomCount: '',
-                city: '',
-                priceMin: '',
-                priceMax: ''
+                roomCount: 'Hamısı',
+                city: 'Hamısı',
+                priceMin: '0',
+                priceMax: '1000000'
             },
 
             searchResponse: {},
@@ -173,6 +173,7 @@ export default {
     },
     computed: {
         ...mapState([
+            "searchLoading",
             "searchQueryStore",
             "searchData"
         ])
@@ -184,50 +185,70 @@ export default {
 
         async submitSearch() {
             this.loading = true
+            this.$store.commit('setSearchLoading', true)
+            this.pushToSearch()
             const res = await this.search(this.searchQuery)
+            
             this.$store.commit('setSearchQueryStore', this.searchQuery)
 
             console.log("Search Result (from NavbarBottom form submit):")
             console.log(res)
             this.$store.commit('setSearchData', res)
-            
-            this.pushToSearch(res)
 
             this.loading = false
+            this.$store.commit('setSearchLoading', false)
         },
 
-        pushToSearch(response) {
+        pushToSearch() {
             this.$router.push({ 
                 name: 'search',
-                params: response.data,
-                // query: {
-                //     'tradeType': this.searchQuery.tradeType,
-                //     'estateType': this.searchQuery.estateType,
-                //     'roomCount': this.searchQuery.roomCount,
-                //     'city': this.searchQuery.city,
-                //     'priceMin': this.searchQuery.priceMin,
-                //     'priceMax': this.searchQuery.priceMax
-                // }
+                // params: response.data,
+                query: {
+                    'tradeType': this.searchQuery.tradeType,
+                    'estateType': this.searchQuery.estateType,
+                    'roomCount': this.searchQuery.roomCount,
+                    'city': this.searchQuery.city,
+                    'priceMin': this.searchQuery.priceMin,
+                    'priceMax': this.searchQuery.priceMax
+                }
             }).catch(err => {})
+        },
+
+        checkQuery() {
+            this.$store.commit('setSearchLoading', true)
+            if(this.$route.name == 'search') {
+                // if(!this.searchQuery.tradeType) {
+                //     this.searchQuery.tradeType = this.$route.query.tradeType
+                // }
+                // if(!this.searchQuery.estateType) {
+                //     this.searchQuery.estateType = this.$route.query.estateType
+                // }
+                // if(!this.searchQuery.roomCount) {
+                //     this.searchQuery.roomCount = this.$route.query.roomCount
+                // }
+                // if(!this.searchQuery.city) {
+                //     this.searchQuery.city = this.$route.query.city
+                // }
+                // if(!this.searchQuery.priceMin) {
+                //     this.searchQuery.priceMin = this.$route.query.priceMin
+                // }
+                // if(!this.searchQuery.priceMax) {
+                //     this.searchQuery.priceMax = this.$route.query.priceMax
+                // }
+                this.searchQuery.tradeType = this.$route.query.tradeType
+                this.searchQuery.estateType = this.$route.query.estateType
+                this.searchQuery.roomCount = this.$route.query.roomCount
+                this.searchQuery.city = this.$route.query.city
+                this.searchQuery.priceMin = this.$route.query.priceMin
+                this.searchQuery.priceMax = this.$route.query.priceMax
+                this.submitSearch()
+            }
+            this.$store.commit('setSearchLoading', false)
         }
-
-        // checkQuery() {
-        //     if(this.$route.query.tradeType && this.$route.query.estateType && this.$route.query.roomCount && this.$route.query.city && this.$route.query.priceMin && this.$route.query.priceMax) {
-        //         console.log('yes')
-        //         this.searchQuery = this.$route.query
-        //         this.$store.commit('setSearchQueryStore', this.searchQuery)
-        //         this.submitSearch()
-        //     }
-        //     console.log("searchQueryStore")
-        //     console.log(this.searchQueryStore)
-
-        //     console.log("Query")
-        //     console.log(this.$route.query)
-        // }
     },
-    // mounted() {
-    //     this.checkQuery()
-    // }
+    mounted() {
+        this.checkQuery()
+    }
 }
 </script>
 

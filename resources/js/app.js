@@ -130,28 +130,12 @@ const store = new Vuex.Store({
         },
 
         async search({ commit }, credentials) {
-            // axios.post('/api/search', credentials)
-            // .then((response) => {
-            //     console.log("Search Result (from Action):");
-            //     console.log(response.data);
-            //     commit('setSearchData', response.data);
-            // })
-            // .catch((err) => {
-            //     console.log(err);
-            //     //commit('setSearchData', {});
-            // })
             commit('setSearchLoading', true);
-
             const res = await axios.post('/api/search', credentials);
-
-            // console.log("Search Result (from Action):");
-            // console.log(res);
             commit('setSearchData', res);
-
             commit('setSearchLoading', false);
 
             return res;
-            
         },
 
         me ({ commit }) {
