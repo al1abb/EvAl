@@ -125,7 +125,30 @@ class PostController extends Controller
         //     $fields['tradeType'] = 'rent';
         // }
         
-        $estateType = $fields['estateType'] == 'Mənzil' ? 'apartment' : ($fields['estateType'] == 'Ev-Villa' ? 'house_villa' : ($fields['estateType'] == 'Ofis' ? 'office' : ($fields['estateType'] == 'Qaraj' ? 'garage' : ($fields['estateType'] == 'Torpaq' ? 'land' : 'err'))));
+        // $estateType = $fields['estateType'] == 'Mənzil' ? 'apartment' : ($fields['estateType'] == 'Ev-Villa' ? 'house_villa' : ($fields['estateType'] == 'Ofis' ? 'office' : ($fields['estateType'] == 'Qaraj' ? 'garage' : ($fields['estateType'] == 'Torpaq' ? 'land' : 'err'))));
+
+        if($fields['estateType'] == 'Hamısı') {
+            $estateType = ['apartment', 'new_apartment', 'house_villa', 'office', 'garage', 'land'];
+        } else {
+            if($fields['estateType'] == 'Mənzil') {
+                $estateType = ['apartment'];
+            }
+            if($fields['estateType'] == 'Yeni Mənzil') {
+                $estateType = ['new_apartment'];
+            }
+            if($fields['estateType'] == 'Ev-Villa') {
+                $estateType = ['house_villa'];
+            }
+            if($fields['estateType'] == 'Ofis') {
+                $estateType = ['office'];
+            }
+            if($fields['estateType'] == 'Qaraj') {
+                $estateType = ['garage'];
+            }
+            if($fields['estateType'] == 'Torpaq') {
+                $estateType = ['land'];
+            }
+        }
 
         if($fields['roomCount'] == 'Hamısı') {
             $roomCount = ['1', '2', '3', '4', '5'];
@@ -157,8 +180,7 @@ class PostController extends Controller
         //     ['price', '<=', $priceMax]
         // ]);
 
-
-        $posts = Post::search($tradeType, $estateType, $roomCount, $city, $priceMin, $priceMax)->latest();
+        $posts = Post::search($tradeType, $estateType, $roomCount, $city, $priceMin, $priceMax)->inRandomOrder();
 
         $vipPosts = Post::search($tradeType, $estateType, $roomCount, $city, $priceMin, $priceMax)->vipPosts()->inRandomOrder();
         

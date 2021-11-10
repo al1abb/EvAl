@@ -36,7 +36,7 @@ class Post extends Model
     public function scopeSearch($query, $tradeType, $estateType, $roomCount, $city, $priceMin, $priceMax) {
         return $query
             ->whereIn('trade_type', $tradeType, 'and')
-            ->where('estate_type', $estateType, 'and')
+            ->whereIn('estate_type', $estateType, 'and')
             ->whereIn('room_count', $roomCount, 'and')
             ->whereIn('city', $city, 'and')
             ->where('price', '>=', $priceMin, 'and')
