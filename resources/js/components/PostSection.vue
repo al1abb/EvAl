@@ -10,7 +10,7 @@
             </div>
 
             <div style="width: 60%;">
-                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+                <div class="postList">
 
                     <div class="d-flex justify-content-center" v-for="(listing, i) in responseData" :key="i">
                         <v-skeleton-loader
@@ -71,6 +71,13 @@ export default {
 </script>
 
 <style>
+.postList {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14.5rem, max-content));
+    grid-gap: 16px;
+    justify-content: center;
+    gap: 1rem;
+}
 .section-header {
     font-size: 1.0rem;
     font-weight: 600;
