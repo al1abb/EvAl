@@ -17,7 +17,12 @@
                     >
                     </v-skeleton-loader>
 
-                    <p style="font-size: 1.1rem;" v-if="!searchLoading && searchResponse.allPosts"><b>{{ vipPostCount }}</b> VİP, <b>{{ voucherPostCount }}</b> Kupçalı olmaqla toplam <b>{{ totalPostCount }}</b> elan tapıldı.</p>
+                    <p style="font-size: 1.1rem;" v-if="!searchLoading && searchResponse.allPosts">
+                        <b>{{ vipPostCount }}</b> VİP, 
+                        <b>{{ voucherPostCount }}</b> Kupçalı olmaqla toplam 
+                        <b>{{ totalPostCount }}</b> elan tapıldı. 
+                        <small style="color: gray;">({{ responseTime }} s)</small>
+                    </p>
 
                     <p style="font-size: 1.1rem;" v-if="!searchLoading && searchResponse.allPostsCount==0">No Results Found</p>
                    
@@ -56,7 +61,7 @@ export default {
     components: { PostSection },
     data() {
         return {
-            searchResponse: {}
+            searchResponse: {},
         }
     },
     methods: {
@@ -73,7 +78,6 @@ export default {
             this.searchResponse = this.searchData.data
             console.log("this is searchResponse")
             console.log(this.searchResponse)
-            this.$store.commit('setSearchLoading', false)
         },
     },
     computed: {
@@ -96,6 +100,11 @@ export default {
             if(this.searchResponse.allPosts) {
                 return this.searchResponse.voucherPostsCount;
             }
+        },
+        responseTime() {
+            if(this.searchResponse.allPosts) {
+                return Math.round((this.searchResponse.time + Number.EPSILON) * 100) / 100;
+            }
         }
     },
     mounted() {
@@ -112,7 +121,7 @@ export default {
         },
         searchData() {
             this.searchResponse = this.searchData.data
-        }
+        },
     } 
 }
 </script>
