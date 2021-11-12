@@ -41,6 +41,7 @@
                 :loading="searchLoading"
             />
         </div>
+
         <div v-else>
             No Result
         </div>
@@ -50,8 +51,8 @@
                 v-if="allData"
                 v-model="currentPageDefault"
                 :length="lastPage"
-                total-visible="15"
-                :disabled="searchLoading"
+                total-visible="10"
+                :disabled="searchLoading" 
             >
             </v-pagination>
         </div>
@@ -71,7 +72,7 @@ export default {
         return {
             allData: [],
             vipData: [],
-            currentPageDefault: 1,
+            currentPageDefault: this.$route.query.page,
             loading: true,
             isFirstPage: true,
             isLastPage: false,
@@ -84,14 +85,21 @@ export default {
             this.$store.commit('setSearchLoading', true)
             axios.get('/api/posts?page=' + this.currentPageDefault)
                 .then((response) => {
+                    this.$router.push({ 
+                        name: 'home',
+                        // params: response.data,
+                        query: {
+                            'page': this.currentPageDefault,
+                        }
+                    })
+                    
                     console.log(response.data) // chaining 'data' to this fixes bug
                     this.allData = response.data.data
                     this.currentPageDefault = response.data.current_page
                     this.isFirstPage = response.data.prev_page_url ? false : true
                     this.isLastPage = response.data.next_page_url ? false : true
                     this.lastPage = response.data.last_page
-                    // console.log(this.lastPage)
-                    // console.log(this.responseData[0].estate_district)
+
                 })
                 .catch((err) => {
                     console.log(err)
