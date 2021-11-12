@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -26,7 +27,7 @@ class Post extends Model
     }
 
     public function scopeVipPosts($query) {
-        return $query->where('is_vip', true);
+        return $query->where('is_vip', true)->whereDate('created_at', '>=', Carbon::today()->subDays(15));
     }
 
     public function scopeVoucherPosts($query) {
