@@ -24,14 +24,14 @@
                         <small style="color: gray;">({{ responseTime }} s)</small>
                     </p>
 
-                    <p style="font-size: 1.1rem;" v-if="!searchLoading && searchResponse.allPostsCount==0">No Results Found</p>
+                    <p style="font-size: 1.1rem;" v-if="!searchLoading"><span v-if="searchResponse.allPostsCount==0">No Results Found</span></p>
                    
                 </div>
 
             </div>
         </div>
 
-        <div v-if="searchResponse.allPostsCount">
+        <div v-if="!searchLoading">
             <PostSection
                 title="VİP Elanlar"
                 :responseData="searchResponse.vipPosts.data"

@@ -2,11 +2,22 @@
     <section>
         <div class="d-flex flex-column justify-content-center align-items-center">
 
-            <div v-show="!loading" 
+            <div
                 class="d-flex justify-content-center align-items-center mb-4" 
-                style="background-color: white; height: 5rem; width: 70%; text-align: center; border-radius: 5px;"
+                style="background-color: white; height: 5rem; width: 60%; text-align: center; border-radius: 5px;"
             >
-                <span class="section-header">{{ title }}</span>
+                <span v-if="!loading" class="section-header">{{ title }}</span>
+
+                <v-skeleton-loader
+                    v-if="loading"
+                    height="100%"
+                    width="100%"
+                    type="heading"
+                    class="section-header-loader"
+                >
+
+                </v-skeleton-loader>
+                
             </div>
 
             <div style="width: 60%;">
@@ -81,5 +92,10 @@ export default {
 .section-header {
     font-size: 1.0rem;
     font-weight: 600;
+}
+.section-header-loader .v-skeleton-loader__heading {
+    width: 100%;
+    height: 100%;
+    border-radius: unset;
 }
 </style>
