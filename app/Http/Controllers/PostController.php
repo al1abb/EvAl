@@ -12,7 +12,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::inRandomOrder()->paginate(20);
+        $posts = Post::latest()->paginate(20);
 
         $posts->map(function($post) {
             $post['user'] = [$post->user];
@@ -27,7 +27,21 @@ class PostController extends Controller
      * Display a listing of vip resource.
      */
     public function vipPosts() {
-        $posts = Post::vipPosts()->latest()->paginate(20);
+        $posts = Post::vipPosts()->latest()->paginate(8);
+
+        $posts->map(function($post) {
+            $post['user'] = [$post->user];
+            $post['agency'] = [$post->agency];
+            return $post;
+        });
+
+        return response()->json($posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
+    }
+
+    // ? Possible refactor of the code
+    // TODO: add api route for this method
+    public function vipPostsByPeriod() {
+        $posts = Post::vipPostsByPeriod(15)->inRandomOrder()->paginate(8);
 
         $posts->map(function($post) {
             $post['user'] = [$post->user];
@@ -98,6 +112,7 @@ class PostController extends Controller
     public function searchPost(Request $request) {
 
         $start = microtime(true);
+        
         $fields = $request->validate([
             'tradeType' => 'required|string',
             'estateType' => 'string',
@@ -117,15 +132,6 @@ class PostController extends Controller
                 $tradeType = ['rent'];
             }
         }
-
-        // if($fields['tradeType'] == 'Alış') {
-        //     $fields['tradeType'] = 'sell';
-        // }
-        // else {
-        //     $fields['tradeType'] = 'rent';
-        // }
-        
-        // $estateType = $fields['estateType'] == 'Mənzil' ? 'apartment' : ($fields['estateType'] == 'Ev-Villa' ? 'house_villa' : ($fields['estateType'] == 'Ofis' ? 'office' : ($fields['estateType'] == 'Qaraj' ? 'garage' : ($fields['estateType'] == 'Torpaq' ? 'land' : 'err'))));
 
         if($fields['estateType'] == 'Hamısı') {
             $estateType = ['apartment', 'new_apartment', 'house_villa', 'office', 'garage', 'land'];
