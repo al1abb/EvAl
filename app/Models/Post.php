@@ -27,7 +27,11 @@ class Post extends Model
     }
 
     public function scopeVipPosts($query) {
-        return $query->where('is_vip', true)->whereDate('created_at', '>=', Carbon::today()->subDays(15));
+        return $query->where('is_vip', true);
+    }
+
+    public function scopeVipPostsByPeriod($query, $period) {
+        return $query->whereDate('created_at', '>=', Carbon::today()->subDays($period ? $period : 15));
     }
 
     public function scopeVoucherPosts($query) {
