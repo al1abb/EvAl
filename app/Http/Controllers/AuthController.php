@@ -9,20 +9,27 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    /**
+     * Register User
+     */
     public function register(Request $request) {
         $fields = $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|unique:users,email|email',
-            'password' => 'required|string|confirmed'
+            'password' => 'required|string|confirmed',
+            'role' => 'string'
         ]);
 
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
-            'password' => bcrypt($fields['password'])
+            'password' => bcrypt($fields['password']),
+            'role' => $fields['role']
         ]);
 
         $token = $user->createToken('myapptoken')->plainTextToken;
+
+        $user->attachRole($request->role);
 
         $user->last_seen = now();
         $user->save();
@@ -35,6 +42,9 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
+    /**
+     * Login existing user
+     */
     public function login(Request $request) {
         $fields = $request->validate([
             'email' => 'required|string|email',
@@ -71,6 +81,9 @@ class AuthController extends Controller
         return response($response, 201);
     }
 
+    /**
+     * Logout
+     */
     public function logout(Request $request) {
         auth()->user()->last_seen = now();
         auth()->user()->tokens()->delete();
@@ -80,6 +93,9 @@ class AuthController extends Controller
         ];
     }
 
+    /**
+     * Refresh sanctum token
+     */
     public function refresh(Request $request) {
         $user = $request->user();
         $user->tokens()->delete();

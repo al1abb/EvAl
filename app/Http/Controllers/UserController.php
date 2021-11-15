@@ -26,6 +26,7 @@ class UserController extends Controller
         return response()->json($users, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
 
+    // ! Unused method. Delete later
     public function store(Request $request) {
         
     }
@@ -77,8 +78,18 @@ class UserController extends Controller
         return response()->json($asked_user_flags, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
 
+    // ? Possible refactor in validation
     public function update($id) {
+        $user = User::findOrFail($id);
+        $fields = request()->validate([
+            'name' => 'string',
+            'email' => 'string|unique:users,email|email',
+            'password' => 'string|confirmed'
+        ]);
 
+        $user->update($fields);
+
+        return response()->json([], 204, [/*headers here*/], JSON_PRETTY_PRINT);
     }
 
     /**

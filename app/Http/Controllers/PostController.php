@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Flag;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -67,7 +68,39 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $fields = $request->validate([
+            'estate_type' => 'string',
+
+            'city' => 'string',
+            'area' => 'integer',
+            'room_count' => 'integer',
+            'address' => 'string',
+            'district' => 'string',
+
+            'apartment_floor' => 'integer',
+            'total_floors' => 'integer',
+
+            'description' => 'string',
+            'price' => 'integer',
+
+            'contact_email' => 'email|unique:posts,contact_email',
+            'contact_phone_number' => 'string',
+
+            'trade_type' => 'string',
+            'realtor_type' => 'string',
+
+            'is_vip' => 'boolean',
+            'has_voucher' => 'boolean'
+        ]);
+
+        $fields['user_id'] = auth()->user() ?? null;
+        $fields['agency_id'] = auth()->user()->agency ?? null;
+        $fields['views_today'] = 0;
+        $fields['views_total'] = 0;
+
+        $newPost = Post::create($fields);
+
+        return response()->json($newPost, 200, [], JSON_PRETTY_PRINT);
     }
 
     /**
@@ -91,9 +124,41 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Post $post)
+    public function update($id)
     {
-        //
+        $flag = Flag::findOrFail($id);
+
+        $fields = request()->validate([
+            'estate_type' => 'string',
+
+            'city' => 'string',
+            'area' => 'integer',
+            'room_count' => 'integer',
+            'address' => 'string',
+            'district' => 'string',
+
+            'apartment_floor' => 'integer',
+            'total_floors' => 'integer',
+
+            'description' => 'string',
+            'price' => 'integer',
+
+            'contact_email' => 'email|unique:posts,contact_email',
+            'contact_phone_number' => 'string',
+
+            'trade_type' => 'string',
+            'realtor_type' => 'string',
+
+            'is_vip' => 'boolean',
+            'has_voucher' => 'boolean'
+        ]);
+
+        $fields['user_id'] = auth()->user() ?? null;
+        $fields['agency_id'] = auth()->user()->agency ?? null;
+
+        $flag->update($fields);
+
+        return response()->json([], 204, [/*headers here*/], JSON_PRETTY_PRINT);
     }
 
     /**
@@ -197,7 +262,7 @@ class PostController extends Controller
         $searchResult['voucherPostsCount'] = $voucherPosts->count();
 
         $searchResult['allPosts'] = $posts->simplePaginate(20);
-        $searchResult['vipPosts'] = $vipPosts->simplePaginate(20);
+        $searchResult['vipPosts'] = $vipPosts->simplePaginate(8);
         $searchResult['voucherPosts'] = $voucherPosts->simplePaginate(20);
 
         $time = microtime(true) - $start;

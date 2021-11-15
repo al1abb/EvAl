@@ -17,7 +17,7 @@ class CreatePostsTable extends Migration
             $table->id();
 
             // foreign keys [ another example: $table->foreign('user_id')->references('id')->on('users'); ]
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('agency_id')->nullable()->constrained()->onDelete('cascade');
 
             $table->enum('estate_type', ['new_apartment', 'apartment', 'house_villa', 'office', 'garage', 'land']);
@@ -28,8 +28,8 @@ class CreatePostsTable extends Migration
             $table->text('address');
             $table->text('district');
 
-            $table->string('apartment_floor');
-            $table->string('total_floors');
+            $table->integer('apartment_floor');
+            $table->integer('total_floors');
 
             $table->longText('description');
             $table->integer('price');

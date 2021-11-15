@@ -32,7 +32,13 @@ class FlagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attributes = $request->validate([
+            'flag_reason' => 'string'
+        ]);
+
+        $newFlag = Flag::create($attributes);
+
+        return response()->json($newFlag, 200, [], JSON_PRETTY_PRINT);
     }
 
     /**
@@ -57,9 +63,16 @@ class FlagController extends Controller
      * @param  \App\Models\Flag  $flag
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Flag $flag)
+    public function update($id)
     {
-        //
+        $flag = Flag::findOrFail($id);
+        $attributes = request()->validate([
+            'flag_reason' => 'string'
+        ]);
+
+        $flag->update($attributes);
+        
+        return response()->json([], 204, [/*headers here*/], JSON_PRETTY_PRINT);
     }
 
     /**
