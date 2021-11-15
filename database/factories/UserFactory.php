@@ -30,6 +30,7 @@ class UserFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(),
             'email_is_verified' => $this->faker->boolean(),
             'phone_number' => $this->faker->phoneNumber(),
+            'role' => $this->faker->randomElement(['administrator', 'moderator', 'user']),
             'last_seen' => $this->faker->dateTime(),
             
             'remember_token' => Str::random(10),
