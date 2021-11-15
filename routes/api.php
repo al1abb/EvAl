@@ -29,7 +29,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  */
 
 // User API routes
-Route::get('/users', [UserController::class, 'index']);
+// Route::get('/users', [UserController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
 Route::get('/user/{id}', [UserController::class, 'show']);
 Route::put('/user/{id}', [UserController::class, 'update']);
@@ -68,7 +68,7 @@ Route::put('/flag/{id}', [FlagController::class, 'update']);
 Route::delete('/flag/{id}', [FlagController::class, 'destroy']);
 
 /**
- * Relationship routes
+ * Relationship routes (Hierarchical)
  */
 
 // User-Post route (Show posts of a user)
@@ -104,6 +104,27 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('/refresh', [AuthController::class, 'refresh']);
+});
+
+/**
+ * User Group Functions
+ */
+Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
+
+});
+
+/**
+ * Moderator Group Functions
+ */
+Route::group(['middleware' => ['auth:sanctum', 'role:moderator']], function () {
+
+});
+
+/**
+ * Administrator Group Functions
+ */
+Route::group(['middleware' => ['auth:sanctum', 'role:administrator']], function () {
+    Route::get('/users', [UserController::class, 'index']);
 });
 
 /**
