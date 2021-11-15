@@ -82,6 +82,8 @@ const store = new Vuex.Store({
                         state.loading = false;
                     })
                     .catch((err) => {
+                        // ? This line of code below might be where to catch refresh token call
+
                         localStorage.removeItem('sanctum_token')
                         state.user = null
                         state.authenticated = false;

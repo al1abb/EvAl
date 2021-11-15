@@ -72,7 +72,7 @@ export default {
         return {
             allData: [],
             vipData: [],
-            currentPageDefault: this.$route.query.page,
+            currentPageDefault: 1,
             loading: true,
             isFirstPage: true,
             isLastPage: false,
@@ -85,13 +85,15 @@ export default {
             this.$store.commit('setSearchLoading', true)
             axios.get('/api/posts?page=' + this.currentPageDefault)
                 .then((response) => {
-                    this.$router.push({ 
-                        name: 'home',
-                        // params: response.data,
-                        query: {
-                            'page': this.currentPageDefault,
-                        }
-                    })
+
+                    // if(this.currentPageDefault != 1) {
+                    //     this.$router.push({ 
+                    //         name: 'home',
+                    //         query: {
+                    //             'page': this.currentPageDefault,
+                    //         }
+                    //     })
+                    // }
                     
                     console.log(response.data) // chaining 'data' to this fixes bug
                     this.allData = response.data.data
@@ -131,7 +133,10 @@ export default {
         nextPage() {
             this.currentPageDefault++
             this.handleListings()
-        }
+        },
+        // scrollToTop() {
+        //     window.scrollTo(0,0);
+        // }
     },
     computed: {
         ...mapState([

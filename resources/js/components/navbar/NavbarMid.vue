@@ -49,9 +49,11 @@
             <span class="mr-1 text-light">Yeni elan paylaş</span>
             <v-btn
                 color="green"
-                class="no-uppercase reset_word_spacing text-light"
-                depressed
+                class="no-uppercase reset_word_spacing"
+                style="color: white !important;"
+                :ripple="false"
                 fab
+                to="/yeni-elan"
             >
                 <v-icon>
                     mdi-plus

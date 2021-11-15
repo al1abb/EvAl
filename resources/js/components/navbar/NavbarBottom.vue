@@ -217,24 +217,6 @@ export default {
         checkQuery() {
             this.$store.commit('setSearchLoading', true)
             if(this.$route.name == 'search') {
-                // if(!this.searchQuery.tradeType) {
-                //     this.searchQuery.tradeType = this.$route.query.tradeType
-                // }
-                // if(!this.searchQuery.estateType) {
-                //     this.searchQuery.estateType = this.$route.query.estateType
-                // }
-                // if(!this.searchQuery.roomCount) {
-                //     this.searchQuery.roomCount = this.$route.query.roomCount
-                // }
-                // if(!this.searchQuery.city) {
-                //     this.searchQuery.city = this.$route.query.city
-                // }
-                // if(!this.searchQuery.priceMin) {
-                //     this.searchQuery.priceMin = this.$route.query.priceMin
-                // }
-                // if(!this.searchQuery.priceMax) {
-                //     this.searchQuery.priceMax = this.$route.query.priceMax
-                // }
                 this.searchQuery.tradeType = this.$route.query.tradeType
                 this.searchQuery.estateType = this.$route.query.estateType
                 this.searchQuery.roomCount = this.$route.query.roomCount
