@@ -12,7 +12,7 @@ class Post extends Model
     use HasFactory;
 
     // add table columns inside the fillable array
-    protected $fillable = [];
+    protected $guarded = [];
 
     public function user() {
         return $this->belongsTo(User::class);
