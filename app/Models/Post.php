@@ -39,7 +39,7 @@ class Post extends Model
     }
 
     public function scopeAgencyPosts($query) {
-        return $query->where('agency_id', '!=', '')->with(['user', 'agency']);
+        return $query->where('agency_id', '<>', '')->with(['user', 'agency']);
     }
 
     public function scopeSearch($query, $tradeType, $estateType, $roomCount, $city, $priceMin, $priceMax) {
