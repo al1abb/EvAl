@@ -11,7 +11,7 @@ class Post extends Model
 {
     use HasFactory;
 
-    // add table columns inside the fillable array
+    // add table columns inside the fillable array or just put empty guarded instead
     protected $guarded = [];
 
     public function user() {
@@ -27,7 +27,7 @@ class Post extends Model
     }
 
     public function scopeVipPosts($query) {
-        return $query->where('is_vip', true);
+        return $query->where('is_vip', true)->with(['user', 'agency']);
     }
 
     public function scopeVipPostsByPeriod($query, $period) {
@@ -35,7 +35,11 @@ class Post extends Model
     }
 
     public function scopeVoucherPosts($query) {
-        return $query->where('has_voucher', true);
+        return $query->where('has_voucher', true)->with(['user', 'agency']);
+    }
+
+    public function scopeAgencyPosts($query) {
+        return $query->where('agency_id', '!=', '')->with(['user', 'agency']);
     }
 
     public function scopeSearch($query, $tradeType, $estateType, $roomCount, $city, $priceMin, $priceMax) {
