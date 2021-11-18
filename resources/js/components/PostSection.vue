@@ -58,6 +58,12 @@
                         </v-skeleton-loader>
                     </div>
 
+                    <div v-if="!responseData.length && !loading">
+                        <div class="p-3 text-center" style="background-color: #E5E5E5; border-radius: 10px;">
+                            <p style="font-size: 1.2rem; color: #595959;">{{ title }} tapılmadı</p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
