@@ -29,16 +29,23 @@
             <PostSection
                 title="VİP Elanlar"
                 :responseData="vipData"
-                :loading="searchLoading"
+                :loading="loadingVip"
             />
 
             <hr style="border: none; margin-top: 5rem; margin-bottom: 5rem;">
 
-
             <PostSection
                 title="Bütün Elanlar"
                 :responseData="allData"
-                :loading="searchLoading"
+                :loading="loadingAll"
+            />
+
+            <hr style="border: none; margin-top: 5rem; margin-bottom: 5rem;">
+
+            <PostSection
+                title="Agentlik elanları"
+                :responseData="agencyPosts"
+                :loading="loadingAgency"
             />
         </div>
 
@@ -72,58 +79,47 @@ export default {
         return {
             allData: [],
             vipData: [],
+            agencyPosts: [],
             currentPageDefault: 1,
-            loading: true,
+            loadingVip: true,
+            loadingAll: true,
+            loadingAgency: true,
             isFirstPage: true,
             isLastPage: false,
             lastPage: 0,
         }
     },
     methods: {
-        handleListings() {
-            //this.toggleListings()
-            this.$store.commit('setSearchLoading', true)
-            axios.get('/api/posts?page=' + this.currentPageDefault)
-                .then((response) => {
+        async handleAllListings() {
+            // this.$store.commit('setSearchLoading', true)
+            // this.handleVipPosts()
+            // this.handleListings()
+            // this.handleAgencyPosts()
 
-                    // if(this.currentPageDefault != 1) {
-                    //     this.$router.push({ 
-                    //         name: 'home',
-                    //         query: {
-                    //             'page': this.currentPageDefault,
-                    //         }
-                    //     })
-                    // }
-                    
-                    console.log(response.data) // chaining 'data' to this fixes bug
-                    this.allData = response.data.data
-                    this.currentPageDefault = response.data.current_page
-                    this.isFirstPage = response.data.prev_page_url ? false : true
-                    this.isLastPage = response.data.next_page_url ? false : true
-                    this.lastPage = response.data.last_page
+            // this.$store.commit('setSearchLoading', true)
+            this.loadingVip=true
+            const vip = await axios.get('/api/posts/vip?page=' + this.currentPageDefault)
+            console.log(vip.data)
+            this.vipData = vip.data.data
+            this.loadingVip=false
 
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-                .finally(() => {
-                    this.$store.commit('setSearchLoading', false)
-                })
-        },
+            this.loadingAll=true
+            const all = await axios.get('/api/posts?page=' + this.currentPageDefault)
+            console.log(all.data) // chaining 'data' to this fixes bug
+            this.allData = all.data.data
+            this.currentPageDefault = all.data.current_page
+            this.isFirstPage = all.data.prev_page_url ? false : true
+            this.isLastPage = all.data.next_page_url ? false : true
+            this.lastPage = all.data.last_page
+            this.loadingAll=false
 
-        handleVipPosts() {
-            this.$store.commit('setSearchLoading', true)
-            axios.get('/api/posts/vip')
-                .then((response) => {
-                    console.log(response.data)
-                    this.vipData = response.data.data
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
-                .finally(() => {
-                    this.$store.commit('setSearchLoading', false)
-                })
+            this.loadingAgency=true
+            const agency = await axios.get('/api/posts/agentlikler?page=' + this.currentPageDefault)
+            console.log(agency.data)
+            this.agencyPosts = agency.data.data
+            this.loadingAgency=false
+
+            // this.$store.commit('setSearchLoading', false)
         },
 
         prevPage() {
@@ -134,9 +130,9 @@ export default {
             this.currentPageDefault++
             this.handleListings()
         },
-        // scrollToTop() {
-        //     window.scrollTo(0,0);
-        // }
+        scrollToTop() {
+            window.scrollTo(0,0);
+        }
     },
     computed: {
         ...mapState([
@@ -145,12 +141,12 @@ export default {
         ]),
     },
     mounted() {
-        this.handleVipPosts()
-        this.handleListings()
+        this.handleAllListings()
     },
     watch: {
         currentPageDefault: function() {
-            this.handleListings()
+            this.handleAllListings()
+            this.scrollToTop()
         },
     }
 }
