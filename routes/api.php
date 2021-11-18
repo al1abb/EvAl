@@ -38,13 +38,16 @@ Route::delete('/user/{id}', [UserController::class, 'destroy']);
 // Posts API routes
 // CRUD
 Route::get('/posts', [PostController::class, 'index']);
-Route::post('/posts', [PostController::class, 'store']);
+// Route::post('/posts', [PostController::class, 'store']);
 Route::get('/post/{id}', [PostController::class, 'show']);
 Route::put('/post/{id}', [PostController::class, 'update']);
 Route::delete('/post/{id}', [PostController::class, 'destroy']);
 
 // Get vip posts
 Route::get('/posts/vip', [PostController::class, 'vipPosts']);
+
+// Get posts from agencies
+Route::get('posts/agentlikler', [PostController::class, 'latestAgencyPosts']);
 
 // Agencies API routes
 Route::get('/agencies', [AgencyController::class, 'index']);
@@ -110,7 +113,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
  * User Group Functions
  */
 Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
-
+    Route::post('/posts', [PostController::class, 'store']);
 });
 
 /**
