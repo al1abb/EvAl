@@ -25,7 +25,15 @@ class PostFactory extends Factory
     {
         $rand_user = User::all()->random();
 
+        $estate_type = $this->faker->randomElement(['new_apartment', 'apartment', 'house_villa', 'office', 'garage', 'land']);
         $trade_type = $this->faker->randomElement(['sell', 'rent']);
+
+        if($estate_type == 'land') {
+            $area_unit = 'land';
+        }
+        else {
+            $area_unit = 'room';
+        }
 
         $numSell = $this->faker->numberBetween($min = 50000, $max = 1000000, 'linearLow');
         $numSell = $numSell - ($numSell % 100);
@@ -33,19 +41,31 @@ class PostFactory extends Factory
         $numRent = $this->faker->numberBetween($min = 100, $max = 1500, 'linearLow');
         $numRent = $numRent - ($numRent % 10);
 
+        $apartmentFloor = $this->faker->numberBetween($min = 1, $max = 20);
+        $totalFloors = $this->faker->numberBetween($min = 5, $max = 20);
+
+        $temp = 0;
+
+        if($totalFloors < $apartmentFloor) {
+            $temp = $totalFloors;
+            $totalFloors = $apartmentFloor;
+            $apartmentFloor = $temp;
+        }
+
         return [
             'user_id' => $rand_user,
             'agency_id' => $rand_user->agency,
 
-            'estate_type' => $this->faker->randomElement(['new_apartment', 'apartment', 'house_villa', 'office', 'garage', 'land']),
+            'estate_type' => $estate_type,
             'city' => $this->faker->randomElement(['Bakı', 'Sumqayıt', 'Gəncə']),
             'area' => $this->faker->numberBetween($min = 10, $max = 500),
+            'area_unit' => $area_unit,
             'room_count' => $this->faker->numberBetween($min = 1, $max = 5),
             'address' => $this->faker->address(),
             'district' => $this->faker->city(),
 
-            'apartment_floor' => $this->faker->numberBetween($min = 1, $max = 20),
-            'total_floors' => $this->faker->numberBetween($min = 5, $max = 20),
+            'apartment_floor' => $apartmentFloor,
+            'total_floors' => $totalFloors,
 
             'description' => $this->faker->text(),
             'price' => $trade_type == 'sell' ? $numSell : $numRent,
@@ -56,7 +76,7 @@ class PostFactory extends Factory
             'trade_type' => $trade_type,
             'realtor_type' => $this->faker->randomElement(['self', 'agent']),
 
-            'is_vip' => $this->faker->boolean(30),
+            'is_vip' => $this->faker->boolean(25),
             'has_voucher' => $this->faker->boolean(50),
 
             'views_total' => $this->faker->numberBetween($min = 10, $max = 100),

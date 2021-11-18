@@ -24,6 +24,7 @@ class CreatePostsTable extends Migration
 
             $table->string('city');
             $table->integer('area');
+            $table->enum('area_unit', ['room', 'land']);
             $table->integer('room_count');
             $table->text('address');
             $table->text('district');
