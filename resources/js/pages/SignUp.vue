@@ -98,7 +98,8 @@ export default {
                 name: '',
                 email: '',
                 password: '',
-                password_confirmation: ''
+                password_confirmation: '',
+                role: 'administrator'
             },
             formValid: true,
             loading: false,
@@ -127,15 +128,6 @@ export default {
         ...mapActions([
             "register"
         ]),
-
-        // async submit() {
-        //     await this.signIn({
-        //         email: this.formData.email,
-        //         password: this.formData.password
-        //     })
-
-        //     this.$router.replace({ name: 'home' })
-        // },
 
         async submitRegister() {
             this.loading = true
