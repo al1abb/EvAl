@@ -14,13 +14,7 @@ class AgencyController extends Controller
      */
     public function index()
     {
-        $agencies = Agency::paginate(20);
-
-        $agencies->map(function($agency) {
-            $agency['users'] = $agency->users;
-            $agency['posts'] = $agency->posts;
-            return $agency;
-        });
+        $agencies = Agency::with(['users', 'posts'])->paginate(20);
         
         return response()->json($agencies, 200, [], JSON_PRETTY_PRINT);
     }
@@ -48,10 +42,7 @@ class AgencyController extends Controller
      */
     public function show($id)
     {
-        $asked_agency = Agency::findOrFail($id);
-
-        $asked_agency['users'] = $asked_agency->users;
-        $asked_agency['posts'] = $asked_agency->posts;
+        $asked_agency = Agency::with(['users', 'posts'])->findOrFail($id);
 
         return response()->json($asked_agency, 200, [/* headers */], JSON_PRETTY_PRINT);
     }

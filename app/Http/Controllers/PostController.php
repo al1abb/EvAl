@@ -13,13 +13,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest()->paginate(20);
-
-        $posts->map(function($post) {
-            $post['user'] = [$post->user];
-            $post['agency'] = [$post->agency];
-            return $post;
-        });
+        $posts = Post::with(['user', 'agency'])->latest()->paginate(20);
 
         return response()->json($posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
@@ -30,12 +24,6 @@ class PostController extends Controller
     public function vipPosts() {
         $posts = Post::vipPosts()->latest()->paginate(8);
 
-        $posts->map(function($post) {
-            $post['user'] = [$post->user];
-            $post['agency'] = [$post->agency];
-            return $post;
-        });
-
         return response()->json($posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
 
@@ -44,11 +32,11 @@ class PostController extends Controller
     public function vipPostsByPeriod() {
         $posts = Post::vipPostsByPeriod(15)->inRandomOrder()->paginate(8);
 
-        $posts->map(function($post) {
-            $post['user'] = [$post->user];
-            $post['agency'] = [$post->agency];
-            return $post;
-        });
+        return response()->json($posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
+    }
+
+    public function latestAgencyPosts() {
+        $posts = Post::agencyPosts()->latest()->paginate(20);
 
         return response()->json($posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
@@ -73,6 +61,7 @@ class PostController extends Controller
 
             'city' => 'string',
             'area' => 'integer',
+            'area_unit' => 'string',
             'room_count' => 'integer',
             'address' => 'string',
             'district' => 'string',
@@ -93,7 +82,7 @@ class PostController extends Controller
             'has_voucher' => 'boolean'
         ]);
 
-        $fields['user_id'] = auth()->user() ?? null;
+        $fields['user_id'] = auth()->id();
         $fields['agency_id'] = auth()->user()->agency ?? null;
         $fields['views_today'] = 0;
         $fields['views_total'] = 0;
@@ -110,9 +99,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $asked_post = Post::findOrFail($id);
-        $asked_post['user'] = $asked_post->user;
-        $asked_post['agency'] = $asked_post->agency;
+        $asked_post = Post::with(['user', 'agency'])->findOrFail($id);
 
         return response()->json($asked_post, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
@@ -126,7 +113,7 @@ class PostController extends Controller
      */
     public function update($id)
     {
-        $flag = Flag::findOrFail($id);
+        $post = Post::findOrFail($id);
 
         $fields = request()->validate([
             'estate_type' => 'string',
@@ -153,10 +140,10 @@ class PostController extends Controller
             'has_voucher' => 'boolean'
         ]);
 
-        $fields['user_id'] = auth()->user() ?? null;
-        $fields['agency_id'] = auth()->user()->agency ?? null;
+        $fields['user_id'] = auth()->user->id ?? null;
+        $fields['agency_id'] = auth()->user->agency ?? null;
 
-        $flag->update($fields);
+        $post->update($fields);
 
         return response()->json([], 204, [/*headers here*/], JSON_PRETTY_PRINT);
     }
@@ -169,7 +156,14 @@ class PostController extends Controller
     public function destroy($id)
     {
         $post = Post::findOrFail($id);
-        $post->delete();
+        
+        // check if post is currently logged in user's post
+        if(auth()->user() == $post->user()) {
+            $post->delete();
+        }
+        else {
+            return response()->json('You do not have privileges', 403, [/*headers here*/], JSON_PRETTY_PRINT);
+        }
 
         return response()->json([], 204, [/*headers here*/], JSON_PRETTY_PRINT);
     }
@@ -237,19 +231,6 @@ class PostController extends Controller
 
         $priceMin = $fields['priceMin'];
         $priceMax = $fields['priceMax'];
-
-        // if(empty($request->roomCount)) {
-        //     $roomCount = 1
-        // }
-        
-        // $posts = Post::where([
-        //     ['trade_type', $tradeType],
-        //     ['estate_type', $estateType],
-        //     ['room_count', $roomCount],
-        //     ['city', $city],
-        //     ['price', '>=', $priceMin],
-        //     ['price', '<=', $priceMax]
-        // ]);
 
         $posts = Post::search($tradeType, $estateType, $roomCount, $city, $priceMin, $priceMax)->inRandomOrder();
 

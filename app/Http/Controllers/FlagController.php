@@ -13,13 +13,7 @@ class FlagController extends Controller
      */
     public function index()
     {
-        $flags = Flag::paginate(20);
-
-        $flags->map(function($flag) {
-            $flag['post'] = [$flag->post];
-            $flag['user'] = [$flag->user];
-            return $flag;
-        });
+        $flags = Flag::with(['post', 'user'])->paginate(20);
         
         return response()->json($flags, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
@@ -48,10 +42,7 @@ class FlagController extends Controller
      */
     public function show($id)
     {
-        $asked_flag = Flag::findOrFail($id);
-
-        $asked_flag['post'] = $asked_flag->post;
-        $asked_flag['user'] = $asked_flag->user;
+        $asked_flag = Flag::with(['post', 'user'])->findOrFail($id);
 
         return response()->json($asked_flag, 200, [/* headers */], JSON_PRETTY_PRINT);
     }

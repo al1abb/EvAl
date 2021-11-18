@@ -11,17 +11,7 @@ class UserController extends Controller
      * Display a listing of the resource.
      */
     public function index() {
-        $users = User::paginate(20);
-
-        $users->map(function($user) {
-
-            $user['admin'] = $user->admin;
-            $user['agency'] = $user->agency;
-            $user['posts'] = $user->posts;
-            $user['flags'] = $user->flags;
-            
-            return $user;
-        });
+        $users = User::with(['agency', 'posts', 'flags'])->paginate(20);
         
         return response()->json($users, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
@@ -37,12 +27,7 @@ class UserController extends Controller
      * @param  \ID $id
      */
     public function show($id) {
-        $asked_user = User::findOrFail($id);
-
-        $asked_user['admin'] = $asked_user->admin;
-        $asked_user['agency'] = $asked_user->agency;
-        $asked_user['posts'] = $asked_user->posts;
-        $asked_user['flags'] = $asked_user->flags;
+        $asked_user = User::with(['agency', 'posts', 'flags'])->findOrFail($id);
         
         return response()->json($asked_user, 200, [/* headers */], JSON_PRETTY_PRINT);
     }
@@ -54,7 +39,7 @@ class UserController extends Controller
      */
     public function showUserPosts($id) {
         $asked_user = User::findOrFail($id);
-        $asked_user_posts = $asked_user->posts; 
+        $asked_user_posts = $asked_user->posts;
 
         return response()->json($asked_user_posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
