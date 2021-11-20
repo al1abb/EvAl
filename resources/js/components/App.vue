@@ -5,35 +5,24 @@
     >
         <Navbar />
 
-        <!-- <v-container>
-
-            <v-row class="text-center">
-                <v-col>
-                    <p><router-link to="/">Home</router-link></p>
-                </v-col>
-
-                <v-col>
-                    <p><router-link to="/test">Test</router-link></p>
-                </v-col>
-            </v-row>
-
-        </v-container> -->
-
         <router-view v-slot="{ Component }">
             <component :is="Component" />
         </router-view>
+
+        <Footer />
 
     </v-app>
 
 </template>
 
 <script>
-import Navbar from './navbar/Navbar.vue';
-
 import { mapState } from "vuex";
 
+import Navbar from './navbar/Navbar.vue';
+import Footer from './Footer.vue';
+
 export default {
-    components: { Navbar },
+    components: { Navbar, Footer },
     computed: {
         ...mapState(["authenticated, user"]),
     },
