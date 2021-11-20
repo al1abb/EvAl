@@ -31,7 +31,7 @@
             </div>
         </div>
 
-        <div v-if="!searchLoading">
+        <div class="mb-10" v-if="!searchLoading">
             <PostSection
                 title="VİP Elanlar"
                 :responseData="searchResponse.vipPosts.data"
