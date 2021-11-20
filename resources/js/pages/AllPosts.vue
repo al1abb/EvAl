@@ -7,9 +7,11 @@
         <div class="mb-10">
             <PostSection
                 v-scroll="handleScroll"
-                title="VIP Posts"
+                title="VİP Elanlar"
                 :responseData="vip"
                 :loading="loadingVip"
+                :isVip="true"
+                :isAgency="false"
             />
         </div>
 

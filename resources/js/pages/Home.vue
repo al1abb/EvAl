@@ -30,6 +30,8 @@
                 title="VİP Elanlar"
                 :responseData="vipData"
                 :loading="loadingVip"
+                :isVip="true"
+                :isAgency="false"
             />
 
             <hr style="border: none; margin-top: 5rem; margin-bottom: 5rem;">
@@ -38,6 +40,8 @@
                 title="Bütün Elanlar"
                 :responseData="allData"
                 :loading="loadingAll"
+                :isVip="false"
+                :isAgency="false"
             />
 
             <hr style="border: none; margin-top: 5rem; margin-bottom: 5rem;">
@@ -46,6 +50,8 @@
                 title="Agentlik elanları"
                 :responseData="agencyPosts"
                 :loading="loadingAgency"
+                :isVip="false"
+                :isAgency="true"
             />
         </div>
 
@@ -98,7 +104,7 @@ export default {
 
             // this.$store.commit('setSearchLoading', true)
             this.loadingVip=true
-            const vip = await axios.get('/api/posts/vip?page=' + this.currentPageDefault)
+            const vip = await axios.get('/api/posts/vip/son-ay?page=' + this.currentPageDefault)
             console.log(vip.data)
             this.vipData = vip.data.data
             this.loadingVip=false

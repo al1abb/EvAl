@@ -6,7 +6,15 @@
                 class="d-flex justify-content-center align-items-center mb-4" 
                 style="background-color: white; height: 5rem; width: 60%; text-align: center; border-radius: 5px;"
             >
-                <span v-if="!loading" class="section-header">{{ title }}</span>
+                <span v-if="!loading" class="section-header">
+                    <v-icon
+                        :color="isVip ? 'red' : (isAgency) ? '#0053c0' : ''"
+                        size="25"
+                    >
+                        {{ isVip ? 'mdi-crown' : (isAgency ? 'mdi-domain' : '') }}
+                    </v-icon>
+                    <span style="vertical-align: sub;">{{ title }}</span>
+                </span>
 
                 <v-skeleton-loader
                     v-if="loading"
@@ -78,7 +86,7 @@ import Post from '../components/Post.vue';
 
 export default {
     components: { Post },
-    props: ["title", "responseData", "loading"],
+    props: ["title", "responseData", "loading", "isVip", "isAgency"],
     data() {
         return {
             

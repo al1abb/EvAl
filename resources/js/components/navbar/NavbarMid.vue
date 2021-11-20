@@ -73,4 +73,10 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.mdi-bookmark::before {
+    /* -webkit-text-fill-color: #00000050; */
+    -webkit-text-stroke-width: 0px;
+    -webkit-text-stroke-color: white;
+}
+</style>
