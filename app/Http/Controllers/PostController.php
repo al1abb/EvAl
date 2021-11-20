@@ -22,15 +22,17 @@ class PostController extends Controller
      * Display a listing of vip resource.
      */
     public function vipPosts() {
-        $posts = Post::vipPosts()->latest()->paginate(8);
+        $posts = Post::vipPosts()->latest()->paginate(20);
 
         return response()->json($posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
 
-    // ? Possible refactor of the code
-    // TODO: add api route for this method
+    /**
+     * Display a listing of VIP Posts between today and X months ago
+     */
+    // ? Add selectable period in month as a parameter
     public function vipPostsByPeriod() {
-        $posts = Post::vipPostsByPeriod(15)->inRandomOrder()->paginate(8);
+        $posts = Post::vipPostsByPeriod(2)->inRandomOrder()->paginate(8);
 
         return response()->json($posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }

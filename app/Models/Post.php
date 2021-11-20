@@ -31,7 +31,7 @@ class Post extends Model
     }
 
     public function scopeVipPostsByPeriod($query, $period) {
-        return $query->whereDate('created_at', '>=', Carbon::today()->subDays($period ? $period : 15));
+        return $query->whereDate('created_at', '>=', Carbon::today()->subMonths($period ? $period : 12));
     }
 
     public function scopeVoucherPosts($query) {
