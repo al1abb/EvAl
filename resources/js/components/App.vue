@@ -1,5 +1,4 @@
 <template>
-
     <v-app
         class="appMain"
     >
@@ -12,7 +11,6 @@
         <Footer />
 
     </v-app>
-
 </template>
 
 <script>
