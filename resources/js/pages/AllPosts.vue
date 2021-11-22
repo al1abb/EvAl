@@ -129,7 +129,7 @@ export default {
                 let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight === document.documentElement.offsetHeight
 
                 if (bottomOfWindow) {
-                    if(this.current != this.vipLastPage) {
+                    if(this.currentPage != this.vipLastPage) {
                         this.nextLoading = true
                         // this.scrollToBottom()
                     }
