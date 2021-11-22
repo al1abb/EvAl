@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "epic-spinners": "^1.1.0",
+        "vue-awesome-swiper": "^4.1.1",
         "vue-router": "^3.5.2",
         "vue-typer": "^1.2.0",
         "vuetify": "^2.5.6",

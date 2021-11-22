@@ -13,6 +13,9 @@ import Vuex from "vuex";
 import router from "./routes";
 import vuetify from './vuetify';
 
+// import VueAwesomeSwiper from 'vue-awesome-swiper';
+// import 'swiper/css/swiper.css';
+
 import axios from "axios";
 
 const store = new Vuex.Store({
