@@ -6,6 +6,7 @@ import NewPost from './pages/NewPost.vue';
 import SignIn from './pages/SignIn.vue';
 import SignUp from './pages/SignUp.vue';
 import PostPage from './pages/PostPage.vue';
+import SavedPosts from './pages/SavedPosts.vue';
 
 const routes = [
     {
@@ -22,6 +23,11 @@ const routes = [
         path: '/qeydiyyat',
         name: 'signup',
         component: SignUp
+    },
+    {
+        path: '/isarelenmisler',
+        name: 'savedPosts',
+        component: SavedPosts
     },
     {
         path: '/butun-elanlar',
@@ -50,11 +56,11 @@ const router = new VueRouter({
     mode: 'history',
     routes: routes,
     scrollBehavior (to, from, savedPosition) {
-        console.log(to)
-        console.log(from)
-        console.log(savedPosition)
+        // console.log(to)
+        // console.log(from)
+        // console.log(savedPosition)
         if (savedPosition) {
-            console.log(savedPosition)
+            // console.log(savedPosition)
             return { x: 0, y: 0, behavior: 'smooth' }
         } else {
             return { x: 0, y: 0, behavior: 'smooth' }
