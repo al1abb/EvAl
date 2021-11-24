@@ -16,26 +16,15 @@
             <p>roomCount: {{ post.room_count }}</p>
             <p>apartmentFloor: {{ post.apartment_floor }}</p>
             <p>tradeType: {{ post.trade_type }}</p>
-            <pre>user: {{ post.user }}</pre>
-            
             <pre>POST: {{ post }}</pre> -->
-            <!-- <v-card min-width="20rem" max-width="25rem">
-                <v-img
-                    :src="
-                        'https://picsum.photos/id/' +
-                        Math.floor(post.id / 7) +
-                        '/1920/1080'"
-                >
-                </v-img>
-            </v-card> -->
 
             
         </div>
 
         <PostPageSwiper :id="post.id" />
 
-        <div class="container-sm">
-            <p>{{ post.estate_type }}</p>
+        <div class="container-sm my-10">
+            <p class="postpage__price">{{ formattedPrice }} AZN</p>
         </div>
 
     </div>
@@ -73,12 +62,17 @@ export default {
                 });
         },
     },
+    computed: {
+        formattedPrice: function() {
+            return this.post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+        },
+    }
 };
 </script>
 
 <style>
-/* .responsiveImage {
-  max-width: 100%;
-  height: auto;
-} */
+.postpage__price {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
 </style>

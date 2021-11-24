@@ -26,6 +26,7 @@ const store = new Vuex.Store({
         searchLoading: false,
         searchQueryStore: {},
         searchData: {},
+        savedPosts: [],
     },
 
     getters: {
@@ -46,6 +47,9 @@ const store = new Vuex.Store({
         },
         searchData(state) {
             return state.searchData;
+        },
+        savedPosts(state) {
+            return state.savedPosts;
         }
     },
 
@@ -68,8 +72,19 @@ const store = new Vuex.Store({
         setSearchData(state, payload) {
             state.searchData = payload;
         },
+        setSavedPosts(state, payload) {
+            state.savedPosts = payload
+        },
         initialiseStore(state) {
             state.loading = true;
+
+            // Check saved posts from localstorage
+            let savedPostsInit = JSON.parse(localStorage.getItem('savedPostsLocalStorage'));
+            if(savedPostsInit) {
+                state.savedPosts = savedPostsInit;
+            }
+
+            // Check authentication status from localstorage
             if(localStorage.getItem('sanctum_token')) {
                 let token = localStorage.getItem('sanctum_token');
                 if(token) {
@@ -142,6 +157,30 @@ const store = new Vuex.Store({
             commit('setSearchLoading', false);
 
             return res;
+        },
+
+        async savePost({ commit }, postId) {
+            // if(this.state.savedPosts.includes(postId)) {
+            //     console.log("Post already saved");
+            // }
+            // else {
+                
+            // }
+            commit('setSavedPosts', [...this.state.savedPosts, postId]);
+            localStorage.setItem('savedPostsLocalStorage', JSON.stringify(this.state.savedPosts));
+            console.log(postId);
+        },
+
+        async unsavePost({ commit }, postId) {
+            // commit('setSavedPosts', state.savedPosts.filter((post) => {
+            //     post == postId
+            // }));
+
+            const unsaved = this.state.savedPosts.filter((post) => post != postId)
+
+            commit('setSavedPosts', unsaved);
+            localStorage.setItem('savedPostsLocalStorage', JSON.stringify(this.state.savedPosts));
+            console.log(postId);
         },
 
         me ({ commit }) {

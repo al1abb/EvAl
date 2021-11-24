@@ -4,9 +4,11 @@
     >
         <Navbar />
 
-        <router-view v-slot="{ Component }">
-            <component :is="Component" />
-        </router-view>
+        <section>
+            <router-view v-slot="{ Component }">
+                <component :is="Component" />
+            </router-view>
+        </section>
 
         <Footer />
 

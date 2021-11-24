@@ -129,14 +129,14 @@
             <transition name="bookmark" mode="in-out">
                 <div 
                     class="postLike"
-                    @click="liked=!liked"
+                    @click="handleSave"
                     @mouseover="elevation=2"
-                    :style="liked ? '-webkit-text-fill-color: #4caf50;' : '-webkit-text-fill-color: #00000050;'"
+                    :style="isPostSaved ? '-webkit-text-fill-color: #77A43D;' : '-webkit-text-fill-color: #00000050;'"
                 >
                     <v-icon
                         class="bookmark_icon"
                         color="#00000090"
-                        title="Yadda saxla"
+                        :title="isPostSaved ? 'Yaddaşdan sil' : 'Yadda saxla'"
                     >
                         mdi-bookmark
                     </v-icon>
@@ -150,6 +150,8 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import { mapActions } from 'vuex';
 
 export default {
     props: [
@@ -175,18 +177,32 @@ export default {
     data() {
         return {
             elevation: 0,
-            liked: false,
+            liked: false, 
+        }
+    },
+    methods: {
+        ...mapActions(["savePost", "unsavePost"]),
+
+        handleSave() {
+            if(this.isPostSaved == false) {
+                this.savePost(this.id)
+            }
+            else {
+                this.unsavePost(this.id)
+            }
         }
     },
     computed: {
-        // desc: function() {
-        //     if(this.description.length > 100) {
-        //         return this.description.slice(0, 100) + "...";
-        //     }
-        // },
+        ...mapState(["savedPosts"]),
+
+        isPostSaved() {
+            return this.savedPosts.includes(this.id)
+        },
+
         formattedPrice: function() {
             return this.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
         },
+
         cityAndTime: function() {
             return `${this.city}, ${this.createdAt.slice(8, 10)}-${this.createdAt.slice(5,7)}-${this.createdAt.slice(0, 4)}`
         }
@@ -197,6 +213,8 @@ export default {
 <style scoped>
 .cardParent {
     cursor: pointer;
+
+    /* color: #f2f566 */
 }
 
 .postMain {
