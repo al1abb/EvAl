@@ -1,5 +1,5 @@
 <template>
-    <div class="container-sm">
+    <div class="container-sm" style="max-width: 60rem;">
         <v-card class="responsiveImage">
             <Swiper class="swiper" :options="swiperOption">
                 <SwiperSlide v-for="(item, i) in 9" :key="i">
@@ -9,11 +9,14 @@
                             Math.floor(id / 7+i) +
                             '/1920/1080'"
                     >
+                        <template v-slot:placeholder>
+                            <div class="swiper-lazy-preloader swiper-lazy-preloader-black"></div>
+                        </template>
                     </v-img>
                 </SwiperSlide>
                 <div class="swiper-pagination" slot="pagination"></div>
-                <!-- <div class="swiper-button-prev text-white" slot="button-prev"></div>
-                <div class="swiper-button-next text-white" slot="button-next"></div> -->
+                <div class="swiper-button-prev text-white" slot="button-prev"></div>
+                <div class="swiper-button-next text-white" slot="button-next"></div>
             </Swiper>
         </v-card>
     </div>
@@ -28,9 +31,8 @@ export default {
     data() {
         return {
             swiperOption: {
-                spaceBetween: 50,
+                lazy: true,
                 centeredSlides: true,
-                loop: true,
                 autoplay: {
                     delay: 5000,
                     disableOnInteraction: false
@@ -59,7 +61,7 @@ export default {
                 },
                 navigation: {
                     nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev'
+                    prevEl: '.swiper-button-prev',
                 }
             },
         }
@@ -71,5 +73,9 @@ export default {
 .responsiveImage {
     max-width: 100%;
     height: auto;
+}
+
+.swiper-button-next::after {
+    
 }
 </style>
