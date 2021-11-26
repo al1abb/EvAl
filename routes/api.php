@@ -34,12 +34,14 @@ Route::post('/users', [UserController::class, 'store']);
 Route::get('/user/{id}', [UserController::class, 'show']);
 Route::put('/user/{id}', [UserController::class, 'update']);
 Route::delete('/user/{id}', [UserController::class, 'destroy']);
+Route::post('/user/{id}/upload-image', [UserController::class, 'uploadAvatar']);
 
 // Posts API routes
 // CRUD
 Route::get('/posts', [PostController::class, 'index']);
 // Route::post('/posts', [PostController::class, 'store']);
 Route::get('/post/{id}', [PostController::class, 'show']);
+Route::post('/posts/custom', [PostController::class, 'showSelected']);
 Route::put('/post/{id}', [PostController::class, 'update']);
 Route::delete('/post/{id}', [PostController::class, 'destroy']);
 

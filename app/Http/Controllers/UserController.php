@@ -21,6 +21,10 @@ class UserController extends Controller
         
     }
 
+    public function uploadAvatar(Request $request) {
+        
+    }
+
     /**
      * Display the specified resource
      * 
@@ -69,8 +73,14 @@ class UserController extends Controller
         $fields = request()->validate([
             'name' => 'string',
             'email' => 'string|unique:users,email|email',
+            'avatar' => 'file',
             'password' => 'string|confirmed'
         ]);
+
+        if(request('avatar'))  // if there is an avatar then store it
+        {
+            $fields['avatar'] = request('avatar')->store('avatars');
+        }
 
         $user->update($fields);
 

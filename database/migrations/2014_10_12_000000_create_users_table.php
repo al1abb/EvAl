@@ -17,6 +17,7 @@ class CreateUsersTable extends Migration
             $table->id();
             $table->foreignId('agency_id')->nullable()->constrained()->onDelete('cascade');
 
+            $table->string('avatar')->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
