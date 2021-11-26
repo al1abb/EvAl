@@ -107,6 +107,21 @@ class PostController extends Controller
     }
 
     /**
+     * Display list of specified resources
+     */
+    public function showSelected() {
+        $data = request()->all();
+        // echo($data);
+        // $data_array = json_decode($data, true);
+
+        // echo(gettype($data_array));
+
+        $asked_posts = Post::whereIn('id', $data)->latest()->get();
+
+        return response()->json($asked_posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
