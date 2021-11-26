@@ -52,4 +52,9 @@ class User extends Authenticatable
     public function flags() {
         return $this->hasMany(Flag::class);
     }
+
+    // public function getAvatarAttribute($value)
+    // {
+    //     return asset($value ? 'storage/' .$value : '');
+    // }
 }
