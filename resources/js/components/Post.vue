@@ -42,6 +42,7 @@
                     class="white--text align-end"
                     height="10.8rem"
                     :src="image"
+                    style="background-size: contain;"
                 >
                     <template v-slot:placeholder>
                         <v-skeleton-loader

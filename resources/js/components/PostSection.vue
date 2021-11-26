@@ -1,10 +1,10 @@
 <template>
-    <section>
+    <section class="container-sm" style="width: 100%;">
         <div class="d-flex flex-column justify-content-center align-items-center">
 
             <div
                 class="d-flex justify-content-center align-items-center mb-4" 
-                style="background-color: white; height: 5rem; width: 60%; text-align: center; border-radius: 5px;"
+                style="background-color: white; height: 5rem; width: 100%; text-align: center; border-radius: 5px;"
             >
                 <span v-if="!loading" class="section-header">
                     <v-icon
@@ -28,7 +28,7 @@
                 
             </div>
 
-            <div style="width: 60%;">
+            <div style="width: 100%;">
                 <div class="postList">
 
                     <div class="d-flex justify-content-center" v-for="(listing, i) in responseData" :key="i">
