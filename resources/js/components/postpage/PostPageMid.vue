@@ -15,7 +15,7 @@
                             
                         >
                             <v-img
-                                :src="`/storage/avatars/${user.avatar}`" 
+                                :src="'../storage/avatars/' + user.avatar"
                                 :alt="`${user.name}`"
                             >
 
