@@ -11,16 +11,19 @@
                     <router-link
                         :to="`/istifadeciler/@${user.name}`"
                     >
-                        <v-avatar
+                        <!-- <v-avatar
                             
                         >
-                            <v-img
-                                :src="`/storage/avatars/${user.avatar}`" 
-                                :alt="`${user.name}`"
-                            >
+                            
 
-                            </v-img>
-                        </v-avatar>
+                        </v-avatar> -->
+                        <img
+                            :src="'../../storage/avatars/' + user.avatar"
+                            :alt="`${user.name}`"
+                            width="50"
+                            height="50"
+                        >
+                        {{ '../storage/avatars/' + user.avatar }}
                         {{ user.name }}
                     </router-link>
                 </p>
