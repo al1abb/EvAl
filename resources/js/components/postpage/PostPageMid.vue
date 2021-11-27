@@ -11,18 +11,13 @@
                     <router-link
                         :to="`/istifadeciler/@${user.name}`"
                     >
-                        <!-- <v-avatar
-                            
-                        >
-                            
-                        </v-avatar> -->
                         <img
-                            :src="'/storage/avatars/' + user.avatar"
+                            :src="userProfileImage"
                             :alt="`${user.name}`"
                             width="50"
                             height="50"
                         >
-                        b {{ user.name }}
+                        {{ user.name }}
                     </router-link>
                 </p>
                 <p class="post_realtor">{{ realtor }}</p>
@@ -51,6 +46,9 @@ export default {
     computed: {
         realtor() {
             return this.realtorType=='self' ? "Mülk sahibi" : "Agent"
+        },
+        userProfileImage() {
+            return '../storage/' + this.user.avatar
         }
     }
 }
