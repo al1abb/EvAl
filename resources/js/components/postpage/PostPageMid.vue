@@ -22,7 +22,7 @@
                             width="50"
                             height="50"
                         >
-                        a {{ user.name }}
+                        b {{ user.name }}
                     </router-link>
                 </p>
                 <p class="post_realtor">{{ realtor }}</p>
