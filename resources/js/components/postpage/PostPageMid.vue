@@ -20,6 +20,8 @@
                         <img
                             :src="'../storage/avatars/' + user.avatar"
                             :alt="`${user.name}`"
+                            width="50"
+                            height="50"
                         >
                         {{ '../storage/avatars/' + user.avatar }}
                         {{ user.name }}
