@@ -25,7 +25,7 @@ class UserFactory extends Factory
     {
         return [
             'agency_id' => $this->faker->randomElement([Agency::all()->random(), null]),
-            'avatar' => $this->faker->image('public/storage/avatars', 1920, 1080, null, null, true),
+            'avatar' => $this->faker->image('public/storage/avatars', 1920, 1080, null, true, true),
             'name' => $this->faker->name(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'email' => $this->faker->unique()->safeEmail(),

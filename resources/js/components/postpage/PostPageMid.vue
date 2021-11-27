@@ -17,7 +17,7 @@
                             
                         </v-avatar> -->
                         <img
-                            :src="'../../storage/avatars/' + user.avatar" 
+                            :src="'/storage/avatars/' + user.avatar"
                             :alt="`${user.name}`"
                             width="50"
                             height="50"
