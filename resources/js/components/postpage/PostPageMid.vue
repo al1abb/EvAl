@@ -15,16 +15,14 @@
                             
                         >
                             
-
                         </v-avatar> -->
                         <img
-                            :src="'../../storage/avatars/' + user.avatar"
+                            :src="'../../storage/avatars/' + user.avatar" 
                             :alt="`${user.name}`"
                             width="50"
                             height="50"
                         >
-                        {{ '../storage/avatars/' + user.avatar }}
-                        {{ user.name }}
+                        a {{ user.name }}
                     </router-link>
                 </p>
                 <p class="post_realtor">{{ realtor }}</p>
