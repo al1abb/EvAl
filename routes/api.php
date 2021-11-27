@@ -35,6 +35,7 @@ Route::get('/user/{id}', [UserController::class, 'show']);
 Route::put('/user/{id}', [UserController::class, 'update']);
 Route::delete('/user/{id}', [UserController::class, 'destroy']);
 Route::post('/user/{id}/upload-image', [UserController::class, 'uploadAvatar']);
+Route::get('/user/{id}/avatar', [UserController::class, 'getAv']);
 
 // Posts API routes
 // CRUD
