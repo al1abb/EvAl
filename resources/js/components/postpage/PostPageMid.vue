@@ -14,12 +14,13 @@
                         <v-avatar
                             
                         >
-                            <img
+                            
+
+                        </v-avatar>
+                        <img
                                 :src="'../storage/avatars/' + user.avatar"
                                 :alt="`${user.name}`"
                             >
-                            
-                        </v-avatar>
                         {{ user.name }}
                     </router-link>
                 </p>
