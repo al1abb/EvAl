@@ -133,7 +133,7 @@ export default {
         },
         description() {
             const desc = this.post.description
-
+            
             return desc
         }
     }

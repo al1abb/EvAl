@@ -29,7 +29,7 @@ class UserController extends Controller
     public function getAv($id) {
         $user = User::find($id);
 
-        $avatar = secure_asset('storage/avatars/'.$user->avatar);
+        $avatar = secure_asset('storage/'.$user->avatar);
 
         return response()->json($avatar, 200, [/* headers */], JSON_PRETTY_PRINT);
     }
