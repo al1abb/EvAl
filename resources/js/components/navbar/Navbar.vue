@@ -15,17 +15,18 @@ export default {
     components: { NavbarTop, NavbarMid, NavbarBottom },
     data() {
         return {
-
+            searchNotVisibleRoutes: ["signin", "signup", "userProfile"]
         }
     },
     computed: {
         showSearch() {
-            if(this.$route.name == 'signin' || this.$route.name == 'signup') {
-                // do not show navbar bottom
+            // If blacklist array includes route name in array, 
+            // then do not show navbar bottom,
+            // otherwise show
+            if(this.searchNotVisibleRoutes.indexOf(this.$route.name) > -1) { 
                 return false
             }
             else {
-                // show
                 return true
             }
         }

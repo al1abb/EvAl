@@ -1,5 +1,5 @@
 <template>
-    <div class="container-sm d-flex flex-wrap justify-content-between py-4">
+    <div class="container-sm d-flex flex-wrap justify-content-between align-items-center py-4">
         <div style="max-width: 50rem;">
             <p>Data Ətraflı:</p>
             <p>{{ description }}</p>

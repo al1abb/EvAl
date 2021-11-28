@@ -31,6 +31,7 @@
             <v-list>
                 <v-list-item
                     link
+                    @click="goToProfile"
                 >
                     Profile
                 </v-list-item>
@@ -68,6 +69,17 @@ export default {
         ...mapActions([
             "signOut"
         ]),
+
+        goToProfile() {
+            this.loading = true
+
+            this.$router.push({
+                path: '/user/' + this.user.id,
+                params: this.user.id
+            })
+
+            this.loading = false
+        },
 
         logout() {
             this.loading = true
