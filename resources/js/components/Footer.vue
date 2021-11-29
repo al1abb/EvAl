@@ -1,5 +1,5 @@
 <template>
-    <div class="footerMain text-center mt-10">
+    <div class="container-sm footerMain text-center mt-10">
         <p class="text-white">
             This is a footer
         </p>

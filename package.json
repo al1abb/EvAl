@@ -25,6 +25,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "dayjs": "^1.10.7",
         "epic-spinners": "^1.1.0",
         "vue-awesome-swiper": "^4.1.1",
         "vue-router": "^3.5.2",
