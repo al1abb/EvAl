@@ -37,6 +37,8 @@ export default {
     Resets
 */
 
+@import "bootstrap/dist/css/bootstrap.min.css";
+
 .reset_word_spacing {
     letter-spacing: 0px !important;
 }
@@ -54,8 +56,6 @@ p {
     margin: 0px !important;
     padding: 0px !important;
 }
-
-
 
 .appMain {
     background-color: #f7f2f2 !important;    
