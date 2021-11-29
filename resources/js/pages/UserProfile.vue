@@ -1,7 +1,7 @@
 <template>
     <div class="container-sm">
         
-        <div v-if="!loading">
+        <div v-if="!userNotFound">
             <!-- this is user profile page {{ $route.params.id }}
             User: <pre>{{ localUser }}</pre>
             <p>{{ authorized }}</p> -->
@@ -15,7 +15,7 @@
                     <v-icon
                         :size="avatarSize"
                         color="#919191"
-                        v-if="localUser.avatar == null"
+                        v-if="localUser.avatar == null && !loading"
                     >
                         mdi-account-circle
                     </v-icon>
@@ -24,10 +24,15 @@
                         :src="`/storage/${localUser.avatar}`" 
                         :size="avatarSize"
                         color="#919191"
-                        v-if="localUser.avatar"
+                        v-if="localUser.avatar && !loading"
                     >
-
                     </v-img>
+
+                    <v-skeleton-loader
+                        v-if="loading"
+                        type="avatar"
+                    >
+                    </v-skeleton-loader>
 
                     <div v-if="online" :title="online ? 'Onlayn' : 'Offline'" class="d-flex justify-content-center align-items-center onlineCircleWrapper">
                         <div class="onlineCircle">
@@ -55,57 +60,76 @@
             </div>
 
             <!-- //TODO: TURN time into human readable time -->
-            <div class="my-2">
-                Last seen: {{ lastSeen }}
+            <div class="my-2" v-if="!loading && localUser.name">
+                Son görünmə: {{ lastSeen }}
             </div>
 
+        </div>
+
+        <div v-if="userNotFound && !loading">
+            <div class="p-3 text-center" style="background-color: #E5E5E5; color: #595959; border-radius: 10px;">
+                <p style="font-size: 1.2rem;">Belə bir istifadəçi tapılmadı</p>
+            </div>
         </div>
         
     </div>
 </template>
 
 <script>
+// import moment from 'moment';
+// import moment from 'moment/min/moment-with-locales'
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import 'dayjs/locale/az'
 import { mapState } from 'vuex'
 export default {
     data() {
         return {
             loading: true,
             localUser: {},
-            authorized: false,
+            // authorized: false,
 
-            avatarSize: '15rem',
+            avatarSize: '11rem',
             online: false,
+
+            userNotFound: false,
         }
     },
     methods: {
-        // getUser() {
-        //     this.localUser = this.user
-        // }
         async getUser(id) {
             this.loading = true
-            this.authorized = this.authenticated
 
             const res = await this.fetchUser(id)
+
+            // if response is empty then stop
+            if(res=='') {
+                return 0;
+            }
+
             this.localUser = res
-            this.checkOnlineStatus()
+            this.checkOnlineStatus(2)
             this.loading = false
         },
         
         async fetchUser(id) {
-            const res = await axios.get(`/api/user/${id}`)
+            const res = await axios.get(`/api/user/${id}`).catch((err) => {
+                console.log(err)
+                this.userNotFound = true
+                this.loading = false
+            })
 
             // * If shown user is not auth()->user then do not show phone number
             // if(this.authorized == false) {
             //     res.data.phone_number=null
             // }
 
-            return res.data
+            return res ? res.data : ''
         },
 
-        checkOnlineStatus() {
+        checkOnlineStatus(timeInMinutes) {
             const userLastSeen = Date.parse(this.localUser.last_seen)
             console.log(userLastSeen, Date.now())
-            if(userLastSeen > (Date.now() - 2*60*1000)) {
+            if(userLastSeen > (Date.now() - timeInMinutes*60*1000)) {
                 console.log("Online")
                 this.online = true
             }
@@ -118,13 +142,26 @@ export default {
     computed: {
         ...mapState(["authenticated", "user"]),
 
+        authorized() {
+            if(this.authenticated && this.localUser.id==this.user.id) {
+                return true;
+            }
+            else {
+                return false
+            }
+        },
+
         lastSeen() {
-            const lastSeenTime = this.localUser.last_seen
+            const lastSeenTime = dayjs(this.localUser.last_seen).locale('az').fromNow()
             return lastSeenTime
         }
     },
     mounted() {
         this.getUser(this.$route.params.id)
+        console.log(this.authorized)
+    },
+    created() {
+        dayjs.extend(relativeTime);
     }
 }
 </script>
