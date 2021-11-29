@@ -10,17 +10,18 @@
         {{-- <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
 
         {{-- Local --}}
-        {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
         {{-- Production --}}
-        <link href="css/app.css" rel="stylesheet">
+        {{-- <link href="css/app.css" rel="stylesheet"> --}}
 
         <!-- Fonts -->
         {{-- <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet"> --}}
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
         {{-- Icons --}}
         <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
 
@@ -48,8 +49,9 @@
     </body>
 
     {{-- Local --}}
-    {{-- <script src="{{ mix('/js/app.js') }}"></script> --}}
+    <script src="{{ mix('/js/app.js') }}"></script>
     
     {{-- Production --}}
-    <script src="/js/app.js"></script>
+    {{-- <script src="/js/app.js"></script> --}}
+    
 </html>
