@@ -74,7 +74,7 @@ class PostFactory extends Factory
             'contact_phone_number' => $this->faker->phoneNumber(),
 
             'trade_type' => $trade_type,
-            'realtor_type' => $this->faker->randomElement(['self', 'agent']),
+            'realtor_type' => $this->faker->randomElement(['self', 'self', 'self', 'self', 'agent']),
 
             'is_vip' => $this->faker->boolean(25),
             'has_voucher' => $this->faker->boolean(50),
