@@ -74,6 +74,15 @@
                         <p class="userProfile__name">{{ localUser.name }}</p>
                         <p class="userProfile__email text-muted">{{ localUser.email }}</p>
 
+                        <div class="my-3">
+                            <v-chip
+                                :color="localUser.role=='administrator' ? '#fc6d6d' : (localUser.role=='moderator' ? 'orange' : 'green')"
+                                outlined
+                            >
+                                <span style="font-size: 0.9rem;">{{ userRole }}</span>
+                            </v-chip>
+                        </div>
+                        
                         <div class="my-2" v-if="authorized">
                             <v-btn
                                 outlined
@@ -85,15 +94,6 @@
                                 </v-icon>
                                 Edit account
                             </v-btn>
-                        </div>
-
-                        <div class="my-3">
-                            <v-chip
-                                :color="localUser.role=='administrator' ? '#fc6d6d' : (localUser.role=='moderator' ? 'orange' : 'green')"
-                                outlined
-                            >
-                                <span style="font-size: 0.9rem;">{{ userRole }}</span>
-                            </v-chip>
                         </div>
 
                         <div v-if="localUser.agency!=null">
