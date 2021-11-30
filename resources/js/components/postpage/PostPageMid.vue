@@ -9,7 +9,7 @@
             <div>
                 <p class="username">
                     <router-link
-                        :to="`/istifadeciler/@${user.name}`"
+                        :to="`/user/${user.id}`"
                     >
                         <img
                             :src="userProfileImage"
