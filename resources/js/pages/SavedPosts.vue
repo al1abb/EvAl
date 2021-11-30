@@ -35,6 +35,7 @@
                             :tradeType="listing.trade_type"
                             :isVip="listing.is_vip"
                             :hasVoucher="listing.has_voucher"
+                            :realtorType="listing.realtor_type"
                             :createdAt="listing.created_at"
                             :loading="loading"
                         />
@@ -48,16 +49,16 @@
                 <p style="font-size: 1.2rem;">Heç bir elan yadda saxlanılmayıb</p>
             </div>
             <div class="text-center">
-                    <small>Elanı yadda saxlamaq üçün istənilən elanın
-                        sağ-üst hissəsində olan,
-                        <v-icon
-                            small
-                        >
-                            mdi-bookmark
-                        </v-icon>
-                        işarəsini klikləyin
-                    </small>
-                </div>
+                <small>Elanı yadda saxlamaq üçün istənilən elanın
+                    sağ-üst hissəsində olan,
+                    <v-icon
+                        small
+                    >
+                        mdi-bookmark
+                    </v-icon>
+                    işarəsini klikləyin
+                </small>
+            </div>
         </div>
 
         <div v-if="loading">

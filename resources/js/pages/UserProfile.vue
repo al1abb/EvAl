@@ -1,67 +1,132 @@
 <template>
     <div class="container-sm">
         
-        <div v-if="!userNotFound">
-            <!-- this is user profile page {{ $route.params.id }}
-            User: <pre>{{ localUser }}</pre>
-            <p>{{ authorized }}</p> -->
+        <div class="d-flex flex-column" v-if="!userNotFound">
 
-            <div class="avatarCont">
+            <div>
+                <div class="avatarCont" style="position: relative; background-color: transparent; width: min-content;">
 
-                <v-avatar
-                    :size="avatarSize"
-                    style="position: relative; background-color: transparent;"
-                >
-                    <v-icon
+                    <v-avatar
                         :size="avatarSize"
-                        color="#919191"
-                        v-if="localUser.avatar == null && !loading"
                     >
-                        mdi-account-circle
-                    </v-icon>
+                        <v-img
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7JvxfS8YsVlqnRbNFNx3b7t5UUsl4p_8V2A&usqp=CAU"
+                            :size="avatarSize"
+                            color="#919191"
+                            v-if="localUser.avatar == null && !loading"
+                        >
+                            <template v-slot:placeholder>
+                                <v-sheet>
+                                    <v-skeleton-loader
+                                        type="image"
+                                    >
 
-                    <v-img
-                        :src="`/storage/${localUser.avatar}`" 
-                        :size="avatarSize"
-                        color="#919191"
-                        v-if="localUser.avatar && !loading"
-                    >
-                    </v-img>
+                                    </v-skeleton-loader>
+                                </v-sheet>
+                            </template>
+                        </v-img>
 
-                    <v-skeleton-loader
-                        v-if="loading"
-                        type="avatar"
-                    >
-                    </v-skeleton-loader>
+                        <v-img
+                            :src="`/storage/${localUser.avatar}`" 
+                            :size="avatarSize"
+                            color="#919191"
+                            v-if="localUser.avatar || loading"
+                        >
+                            <template v-slot:placeholder>
+                                <v-sheet>
+                                    <v-skeleton-loader
+                                        type="image"
+                                    >
+
+                                    </v-skeleton-loader>
+                                </v-sheet>
+                            </template>
+                        </v-img>
+
+                        <!-- <v-skeleton-loader
+                            v-if="loading"
+                            type="avatar"
+                        >
+                        </v-skeleton-loader> -->
+
+                        
+                    </v-avatar>
 
                     <div v-if="online" :title="online ? 'Onlayn' : 'Offline'" class="d-flex justify-content-center align-items-center onlineCircleWrapper">
                         <div class="onlineCircle">
                         </div>
                     </div>
-                </v-avatar>
-                
-                
+                    
+                    
+                </div>
+
+                <div>
+                    <div class="mt-5">
+                        <v-skeleton-loader
+                            type="paragraph"
+                            max-width="25rem"
+                            v-if="loading"
+                        >
+                        </v-skeleton-loader>
+                    </div>
+
+                    <div v-if="!loading" class="mt-5">
+                        <p class="userProfile__name">{{ localUser.name }}</p>
+                        <p class="userProfile__email text-muted">{{ localUser.email }}</p>
+
+                        <div class="my-2" v-if="authorized">
+                            <v-btn
+                                outlined
+                                color="primary"
+                                class="no-uppercase text-center"
+                            >
+                                <v-icon>
+                                    mdi-pencil
+                                </v-icon>
+                                Edit account
+                            </v-btn>
+                        </div>
+
+                        <div class="my-3">
+                            <v-chip
+                                :color="localUser.role=='administrator' ? '#fc6d6d' : (localUser.role=='moderator' ? 'orange' : 'green')"
+                                outlined
+                            >
+                                <span style="font-size: 0.9rem;">{{ userRole }}</span>
+                            </v-chip>
+                        </div>
+
+                        <div v-if="localUser.agency">
+                            <p>İstifadəçi agentlik əməkdaşıdır</p>
+
+                            <p class="userProfile__agencyName">
+                                {{ localUser.agency.agency_name }}
+                            </p>
+                        </div>
+
+                        <!-- //TODO: TURN time into human readable time -->
+                        <div class="my-2" v-if="!loading && localUser.name">
+                            <p class="userProfile__lastSeen">
+                                Son görünmə: {{ lastSeen }}
+                            </p>
+                        </div>
+
+                        
+                        
+                    </div>
+
+                </div>
+
             </div>
 
-            <p class="userProfile__name">{{ localUser.name }}</p>
-            <p class="userProfile__email text-muted">{{ localUser.email }}</p>
-
-            <div class="my-2" v-if="authorized">
-                <v-btn
-                    outlined
-                    color="primary"
-                    class="no-uppercase text-center"
+            <div class="my-5">
+                <v-skeleton-loader
+                    type="image"
+                    v-if="loading"
                 >
-                    <v-icon>
-                        mdi-pencil
-                    </v-icon>
-                    Edit account
-                </v-btn>
-            </div>
-
-            <!-- //TODO: TURN time into human readable time -->
-            <div class="my-2" v-if="!loading && localUser.name">
-                Son görünmə: {{ lastSeen }}
+                </v-skeleton-loader>
+                
+                <UserProfileMain :userName="localUser.name" v-show="localUser && !loading"/>
             </div>
 
         </div>
@@ -82,7 +147,10 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import 'dayjs/locale/az'
 import { mapState } from 'vuex'
+
+import UserProfileMain from '../components/UserProfileMain.vue'
 export default {
+    components: { UserProfileMain },
     data() {
         return {
             loading: true,
@@ -105,10 +173,13 @@ export default {
             if(res=='') {
                 return 0;
             }
+            
 
             this.localUser = res
             this.checkOnlineStatus(2)
-            this.loading = false
+            if(res) {
+                this.loading = false
+            }
         },
         
         async fetchUser(id) {
@@ -154,6 +225,19 @@ export default {
         lastSeen() {
             const lastSeenTime = dayjs(this.localUser.last_seen).locale('az').fromNow()
             return lastSeenTime
+        },
+
+        userRole() {
+            const role = this.localUser.role
+            if(role=='administrator') {
+                return 'Administrator'
+            }
+            else if (role=='moderator') {
+                return 'Moderator'
+            }
+            else {
+                return 'İstifadəçi'
+            }
         }
     },
     mounted() {
@@ -174,8 +258,8 @@ export default {
     border-radius: 30px;
 
     position: absolute;
-    bottom: 13%;
-    right: 13%;
+    bottom: 3%;
+    right: 3%;
 
     background-color: #F2F2F2;
 }
@@ -199,7 +283,15 @@ export default {
 .userProfile__email {
     /* color: gray; */
 
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 300;
+}
+
+.userProfile__lastSeen {
+    font-size: 0.9rem;
+}
+
+.userProfile__agencyName {
+    font-size: 1.1rem;
 }
 </style>

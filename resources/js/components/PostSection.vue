@@ -59,6 +59,7 @@
 
                                 :isVip="listing.is_vip"
                                 :hasVoucher="listing.has_voucher"
+                                :realtorType="listing.realtor_type"
                                 
                                 :createdAt="listing.created_at"
                                 :loading="loading"
