@@ -96,7 +96,7 @@
                             </v-chip>
                         </div>
 
-                        <div v-if="localUser.agency">
+                        <div v-if="localUser.agency!=null">
                             <p>İstifadəçi agentlik əməkdaşıdır</p>
 
                             <p class="userProfile__agencyName">

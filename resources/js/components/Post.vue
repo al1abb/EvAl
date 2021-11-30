@@ -53,7 +53,7 @@
                         ></v-skeleton-loader>
                     </template>
 
-                    <div v-if="realtorType=='agent'" class="postAgency rounded" title="Agentlik" @mouseover="elevation=2">
+                    <div v-if="realtorType=='agent' && agency!=null" class="postAgency rounded" title="Agentlik" @mouseover="elevation=2">
                         <!-- <v-chip
                             small
                             label 
