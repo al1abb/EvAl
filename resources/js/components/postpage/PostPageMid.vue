@@ -21,6 +21,15 @@
                     </router-link>
                 </p>
                 <p class="post_realtor">{{ realtor }}</p>
+                <div v-if="realtor=='Agent'">
+                    <p>Şirkət: 
+                        <router-link
+                            :to="`/agency/${user.agency_id}`"
+                        >
+                            {{ userAgency.agency_name }}
+                        </router-link>
+                    </p>
+                </div>
             </div>
 
             <div class="mt-2">
@@ -41,6 +50,18 @@ export default {
     data() {
         return {
             numberVisible: false,
+            userAgency: {}
+        }
+    },
+    methods:{
+        getUserAgency() {
+            axios.get(`/api/user/${this.user.id}/agency`)
+            .then((response) => {
+                this.userAgency = response.data
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         }
     },
     computed: {
@@ -50,6 +71,9 @@ export default {
         userProfileImage() {
             return '../storage/' + this.user.avatar
         }
+    },
+    mounted() {
+        this.getUserAgency()
     }
 }
 </script>

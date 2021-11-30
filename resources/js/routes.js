@@ -7,6 +7,7 @@ import SignIn from './pages/SignIn.vue';
 import SignUp from './pages/SignUp.vue';
 import PostPage from './pages/PostPage.vue';
 import UserProfile from './pages/UserProfile.vue';
+import AgencyProfile from './pages/AgencyProfile.vue';
 import SavedPosts from './pages/SavedPosts.vue';
 
 const routes = [
@@ -55,6 +56,12 @@ const routes = [
         path: '/user/:id',
         name: 'userProfile',
         component: UserProfile,
+        props: true,
+    },
+    {
+        path: '/agency/:id',
+        name: 'agencyProfile',
+        component: AgencyProfile,
         props: true,
     }
 ];
