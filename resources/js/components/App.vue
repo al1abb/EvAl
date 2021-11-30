@@ -37,7 +37,8 @@ export default {
     Resets
 */
 
-@import "bootstrap/dist/css/bootstrap.min.css";
+/* @import "bootstrap/dist/css/bootstrap.min.css"; */
+@import "/public/css/app.css"; 
 
 .reset_word_spacing {
     letter-spacing: 0px !important;
