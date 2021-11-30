@@ -53,7 +53,7 @@
                         ></v-skeleton-loader>
                     </template>
 
-                    <div class="postAgency rounded" v-if="agency" title="Agentlik" @mouseover="elevation=2">
+                    <div v-if="realtorType=='agent'" class="postAgency rounded" title="Agentlik" @mouseover="elevation=2">
                         <!-- <v-chip
                             small
                             label 
@@ -158,21 +158,22 @@ export default {
     props: [
         "id",
         "image",
-        "user", 
+        "user",
         "agency",
-        "type", 
-        "city", 
-        "area", 
-        "roomCount", 
-        "address", 
-        "district", 
-        "apartmentFloor", 
-        "totalFloors", 
+        "type",
+        "city",
+        "area",
+        "roomCount",
+        "address",
+        "district",
+        "apartmentFloor",
+        "totalFloors",
         "price",
         "tradeType",
-        "isVip", 
-        "hasVoucher", 
-        "createdAt", 
+        "isVip",
+        "hasVoucher",
+        "realtorType",
+        "createdAt",
         "loading"
     ],
     data() {
@@ -207,6 +208,9 @@ export default {
         cityAndTime: function() {
             return `${this.city}, ${this.createdAt.slice(8, 10)}-${this.createdAt.slice(5,7)}-${this.createdAt.slice(0, 4)}`
         }
+    },
+    mounted() {
+        console.log(this.agency)
     }
 }
 </script>
