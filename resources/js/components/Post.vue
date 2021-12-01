@@ -210,7 +210,7 @@ export default {
         }
     },
     mounted() {
-        console.log(this.agency)
+        // console.log(this.agency)
     }
 }
 </script>

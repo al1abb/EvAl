@@ -3,7 +3,7 @@
         style="background-color: #E5E5E5;"
     >
         <v-form
-            class="d-flex justify-content-around flex-wrap"
+            class="d-flex justify-content-around align-items-center flex-wrap"
             style="gap: 10px;"
             @submit.prevent="submitSearch"
         >
@@ -114,6 +114,33 @@
 
                 </v-menu>
             </div>
+
+            <v-menu
+                v-model="menu"
+                :nudge-width="200"
+                :close-on-content-click="false"
+                offset-y
+                menu-props="bottom, offsetY"
+                left
+            >
+                <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                        icon
+                        v-bind="attrs"
+                        v-on="on"
+                    >
+                        <v-icon>
+                            mdi-filter-menu
+                        </v-icon>
+                    </v-btn>
+                </template>
+
+                <v-sheet
+                    width="30vw"
+                >
+                    aaa
+                </v-sheet>
+            </v-menu>
 
             <div>
                 <v-btn
