@@ -71,7 +71,17 @@
                     </div>
 
                     <div v-if="!loading" class="mt-5">
-                        <p class="userProfile__name">{{ localUser.name }}</p>
+                        <p class="userProfile__name d-flex align-items-center">
+                            {{ localUser.name }}
+                            <v-icon
+                                v-if="localUser.email_is_verified"
+                                color="#1C99FC"
+                                class="ml-2"
+                                title="Verified account"
+                            >
+                                mdi-check-decagram
+                            </v-icon>
+                        </p>
                         <p class="userProfile__email text-muted">{{ localUser.email }}</p>
 
                         <div class="my-3">
@@ -82,7 +92,7 @@
                                 <span style="font-size: 0.9rem;">{{ userRole }}</span>
                             </v-chip>
                         </div>
-                        
+
                         <div class="my-2" v-if="authorized">
                             <v-btn
                                 outlined
@@ -100,7 +110,11 @@
                             <p>İstifadəçi agentlik əməkdaşıdır</p>
 
                             <p class="userProfile__agencyName">
-                                {{ localUser.agency.agency_name }}
+                                <router-link
+                                    :to="`/agency/${localUser.agency_id}`"
+                                >
+                                    {{ localUser.agency.agency_name }}
+                                </router-link>
                             </p>
                         </div>
 
