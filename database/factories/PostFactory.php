@@ -83,7 +83,7 @@ class PostFactory extends Factory
             'views_today' => $this->faker->numberBetween($min = 0, $max = 10),
             
             'updated_at' => $this->faker->date(),
-            'created_at' => $this->faker->date(),
+            'created_at' => $this->faker->dateTimeBetween($startDate='-5 years', $endDate='now'),
         ];
     }
 }
