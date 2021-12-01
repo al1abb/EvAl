@@ -167,6 +167,7 @@ const store = new Vuex.Store({
                 
             // }
             commit('setSavedPosts', [...this.state.savedPosts, postId]);
+            // console.log(this.state.savedPosts);
             localStorage.setItem('savedPostsLocalStorage', JSON.stringify(this.state.savedPosts));
             console.log(postId);
         },

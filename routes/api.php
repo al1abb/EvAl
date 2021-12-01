@@ -50,7 +50,7 @@ Route::delete('/post/{id}', [PostController::class, 'destroy']);
 Route::get('/posts/vip', [PostController::class, 'vipPosts']);
 
 // Get vip posts by date
-Route::get('/posts/vip/son-ay', [PostController::class, 'vipPostsByPeriod']);
+Route::get('/posts/vip/tarix', [PostController::class, 'vipPostsByPeriod']);
 
 // Get posts from agencies
 Route::get('posts/agentlikler', [PostController::class, 'latestAgencyPosts']);

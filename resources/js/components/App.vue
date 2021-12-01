@@ -59,7 +59,7 @@ p {
 }
 
 .appMain {
-    background-color: #f7f2f2 !important;    
+    background-color: #f7f2f2 !important;
 }
 
 .brandName {
