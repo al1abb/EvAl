@@ -1,31 +1,34 @@
 <template>
 	<div>
 
-        <div class="text-center mb-3">
+        <!-- <div class="text-center mb-3">
             Current page is {{ currentPageDefault }} {{ searchLoading }} Loading
-        </div>
+        </div> -->
 
         
-        <div class="container-sm mb-2">
+        <div class="container-sm mb-2" v-if="searchLoading">
             <div class="" style="width: auto;">
 
                 <div style="height: 1.5rem; display: flex; flex-direction: column; justify-content: center;">
                     <v-skeleton-loader
-                        v-if="searchLoading"
                         type="heading"
                         max-width="25rem" 
                         class="mt-auto"
                     >
                     </v-skeleton-loader>
-
-                    <p style="font-size: 1.1rem;" v-if="!searchLoading">Ən son elanlar</p>
                    
                 </div>
 
             </div>
         </div>
+        
 
         <div v-if="allData">
+
+            <div class="container-sm">
+                <p style="font-size: 1.1rem;" v-if="!searchLoading">Ən son elanlar</p>
+            </div>
+
             <PostSection
                 title="VİP Elanlar"
                 :responseData="vipData"
@@ -85,6 +88,7 @@ export default {
         return {
             allData: [],
             vipData: [],
+            vipDataMonthLimit: 1,
             agencyPosts: [],
             currentPageDefault: 1,
             loadingVip: true,
@@ -104,7 +108,7 @@ export default {
 
             // this.$store.commit('setSearchLoading', true)
             this.loadingVip=true
-            const vip = await axios.get('/api/posts/vip/son-ay?page=' + this.currentPageDefault)
+            const vip = await axios.get(`/api/posts/vip/tarix?ay=${this.vipDataMonthLimit}&page=` + this.currentPageDefault)
             console.log(vip.data)
             this.vipData = vip.data.data
             this.loadingVip=false
