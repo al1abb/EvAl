@@ -32,7 +32,11 @@ class PostController extends Controller
      */
     // ? Add selectable period in month as a parameter
     public function vipPostsByPeriod() {
-        $posts = Post::vipPostsByPeriod(2)->inRandomOrder()->paginate(8);
+        if (request()->has('ay')) {
+            $req = request()->input('ay');
+        }
+
+        $posts = Post::vipPostsByPeriod($req)->inRandomOrder()->paginate(8);
 
         return response()->json($posts, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
