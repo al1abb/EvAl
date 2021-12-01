@@ -11,13 +11,24 @@
                     <router-link
                         :to="`/user/${user.id}`"
                     >
-                        <img
-                            :src="userProfileImage"
-                            :alt="`${user.name}`"
-                            width="50"
-                            height="50"
-                        >
-                        {{ user.name }}
+                        <div class="d-flex align-items-center">
+                            <img
+                                :src="userProfileImage"
+                                :alt="`${user.name}`"
+                                width="50"
+                                height="50"
+                            >
+                            <p class="ml-1">{{ user.name }}</p>
+                            <v-icon
+                                v-if="user.email_is_verified"
+                                color="#1C99FC"
+                                class="ml-1"
+                                small
+                                title="Verified account"
+                            >
+                                mdi-check-decagram
+                            </v-icon>
+                        </div>
                     </router-link>
                 </p>
                 <p class="post_realtor">{{ realtor }}</p>
