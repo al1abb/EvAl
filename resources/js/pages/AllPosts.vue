@@ -5,12 +5,22 @@
         </div>
 
         <div class="mb-10">
+			<div class="container-sm">
+                <p style="font-size: 1.1rem;" v-if="!loadingAll">Ən son elanlar</p>
+				<v-skeleton-loader
+					max-width="9rem"
+					type="text"
+					v-if="loadingAll"
+				>
+				</v-skeleton-loader>
+            </div>
+
             <PostSection
                 v-scroll="handleScroll"
-                title="VİP Elanlar"
-                :responseData="vip"
-                :loading="loadingVip"
-                :isVip="true"
+                title="Bütün Elanlar"
+                :responseData="all"
+                :loading="loadingAll"
+                :isVip="false"
                 :isAgency="false"
             />
         </div>
@@ -23,7 +33,7 @@
                 :dots-num="3"
                 color="#ff1d5e"
             /> -->
-            <div v-show="nextLoading && !isVipLastPage" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+            <div v-show="nextLoading && !isLastPage" class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
         </div>
 
         <!-- <hr style="border: none; margin-top: 5rem; margin-bottom: 5rem;">
@@ -75,6 +85,7 @@ export default {
             loadingAll: true,
             loadingAgency: true,
             nextLoading: false,
+
             isFirstPage: true,
             isLastPage: false,
             lastPage: 0,
@@ -108,17 +119,17 @@ export default {
             this.loadingAgency=false
         },
 
-        async loadNextVipPosts() {
-            if(this.currentPage != this.vipLastPage) {
+        async loadNextAllPosts() {
+            if(this.currentPage != this.lastPage) {
                 this.currentPage+=1
-                const vip = await axios.get('api/posts/vip?page=' + this.currentPage)
-                console.log(vip.data)
-                this.vipData.push(...vip.data.data)
+                const all = await axios.get('api/posts/?page=' + this.currentPage)
+                console.log(all.data)
+                this.allData.push(...all.data.data)
                 
-                this.vipLastPage = vip.data.last_page
+                this.lastPage = all.data.last_page
             }
             else {
-                this.isVipLastPage = true
+                this.isLastPage = true
             }
 
             this.nextLoading = false
@@ -135,7 +146,7 @@ export default {
                     }
 
                     setTimeout(async() => {
-                        await this.loadNextVipPosts()
+                        await this.loadNextAllPosts()
                     }, 500)
                 }
             }
@@ -157,6 +168,9 @@ export default {
         }
     },
     computed: {
+		all() {
+			return this.allData
+		},
         vip() {
             return this.vipData
         }
