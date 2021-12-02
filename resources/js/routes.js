@@ -1,6 +1,7 @@
 import VueRouter from 'vue-router';
 import Home from './pages/Home.vue';
 import AllPosts from './pages/AllPosts.vue';
+import VipPosts from './pages/VipPosts.vue';
 import Search from './pages/Search.vue';
 import NewPost from './pages/NewPost.vue';
 import SignIn from './pages/SignIn.vue';
@@ -35,6 +36,11 @@ const routes = [
         path: '/butun-elanlar',
         name: 'allPosts',
         component: AllPosts
+    },
+    {
+        path: '/vip-elanlar',
+        name: 'vipPosts',
+        component: VipPosts
     },
     {
         path: '/axtar',

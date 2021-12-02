@@ -21,8 +21,8 @@
             />
 
             <NavbarLink 
-                to="/kiraye-evler" 
-                text="Kiraye"
+                to="/vip-elanlar" 
+                text="VİP elanlar"
             />
         </div>
 
