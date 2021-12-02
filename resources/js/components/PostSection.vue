@@ -41,7 +41,7 @@
                                 :id="listing.id"
                                 :image="'https://picsum.photos/id/' + Math.floor(listing.id/7) + '/1920/1080'"
                                 :user="listing.user"
-                                :agency="listing.agency"
+                                :agency="listing.agency_id"
                                 :type="listing.estate_type"
                                 :city="listing.city"
                                 :area="listing.area"
