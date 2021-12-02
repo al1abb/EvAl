@@ -25,10 +25,6 @@
 
         <div v-if="allData">
 
-            <div class="container-sm">
-                <p style="font-size: 1.1rem;" v-if="!searchLoading">Ən son elanlar</p>
-            </div>
-
             <PostSection
                 title="VİP Elanlar"
                 :responseData="vipData"

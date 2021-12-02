@@ -35,6 +35,8 @@
                 :roomCount="post.room_count"
                 :area="post.area"
                 :district="post.district"
+                :apartmentFloor="post.apartment_floor"
+                :totalFloors="post.total_floors"
             />
             
             <PostPageMid 
