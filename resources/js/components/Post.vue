@@ -211,6 +211,8 @@ export default {
     },
     mounted() {
         // console.log(this.agency)
+        // console.log(this.realtorType)
+        // console.log(this.agency)
     }
 }
 </script>
@@ -218,7 +220,6 @@ export default {
 <style scoped>
 .cardParent {
     cursor: pointer;
-
     /* color: #f2f566 */
 }
 

@@ -50,7 +50,7 @@
 
                 <!-- Short Description (price, area, room count) -->
                 <div>
-                    {{ estate }} {{ tradeOperation }}: {{ roomCount }} otaqlı, {{ area }} m², {{ district }} Rayonu
+                    {{ estate }} {{ tradeOperation }}: {{ roomCount }} otaqlı, {{ area }} m², {{ apartmentFloor }}/{{ totalFloors }} mərtəbə, {{ district }} Rayonu
                 </div>
             </div>
             
@@ -60,7 +60,7 @@
 <script>
 import { mapActions, mapState } from 'vuex';
 export default {
-    props: ["id", "price", "estate", "tradeOperation", "roomCount", "area", "district"],
+    props: ["id", "price", "estate", "tradeOperation", "roomCount", "area", "district", "apartmentFloor", "totalFloors"],
     methods: {
         ...mapActions(["savePost", "unsavePost"]),
 
