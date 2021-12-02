@@ -199,7 +199,13 @@ class PostController extends Controller
             'roomCount' => '',
             'city' => 'string',
             'priceMin' => 'integer',
-            'priceMax' => 'integer'
+            'priceMax' => 'integer',
+            'areaMin' => 'nullable|integer',
+            'areaMax' => 'nullable|integer',
+            'floorMin' => 'nullable|integer',
+            'floorMax' => 'nullable|integer',
+            'vipCheckbox' => 'nullable|boolean',
+            'agencyCheckbox' => 'nullable|boolean',
         ]);
 
         if($fields['tradeType'] == 'Hamısı') {
@@ -253,11 +259,59 @@ class PostController extends Controller
         $priceMin = $fields['priceMin'];
         $priceMax = $fields['priceMax'];
 
-        $posts = Post::search($tradeType, $estateType, $roomCount, $city, $priceMin, $priceMax)->inRandomOrder();
+        $areaMin = $fields['areaMin'];
+        $areaMax = $fields['areaMax'];
 
-        $vipPosts = Post::search($tradeType, $estateType, $roomCount, $city, $priceMin, $priceMax)->vipPosts()->inRandomOrder();
+        $floorMin = $fields['floorMin'];
+        $floorMax = $fields['floorMax'];
+
+        $vipCheckbox = $fields['vipCheckbox'];
+        $agencyCheckbox = $fields['agencyCheckbox'];
+
+        // ALL POSTS
+        $posts = Post::search($tradeType,
+            $estateType,
+            $roomCount,
+            $city,
+            $priceMin,
+            $priceMax,
+            $areaMin,
+            $areaMax,
+            $floorMin,
+            $floorMax,
+            $vipCheckbox,
+            $agencyCheckbox
+        )->inRandomOrder();
+
+        // VIP POSTS
+        $vipPosts = Post::search($tradeType,
+            $estateType,
+            $roomCount,
+            $city,
+            $priceMin,
+            $priceMax,
+            $areaMin,
+            $areaMax,
+            $floorMin,
+            $floorMax,
+            $vipCheckbox,
+            $agencyCheckbox
+        )->vipPosts()->inRandomOrder();
         
-        $voucherPosts = Post::search($tradeType, $estateType, $roomCount, $city, $priceMin, $priceMax)->voucherPosts()->inRandomOrder();
+        // VOUCHER POSTS
+        $voucherPosts = Post::search($tradeType,
+            $estateType,
+            $roomCount,
+            $city,
+            $priceMin,
+            $priceMax,
+            $areaMin,
+            $areaMax,
+            $floorMin,
+            $floorMax,
+            $vipCheckbox,
+            $agencyCheckbox
+        )->voucherPosts()->inRandomOrder();
 
         $searchResult['allPostsCount'] = $posts->count();
         $searchResult['vipPostsCount'] = $vipPosts->count();
