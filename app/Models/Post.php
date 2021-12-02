@@ -31,7 +31,7 @@ class Post extends Model
     }
 
     public function scopeVipPostsByPeriod($query, $period) {
-        return $query->whereDate('created_at', '>=', Carbon::today()->subMonths($period ? $period : 12))->with(['user', 'agency']);
+        return $query->where('is_vip', true)->whereDate('created_at', '>=', Carbon::today()->subMonths($period ? $period : 12))->with(['user', 'agency']);
     }
 
     public function scopeVoucherPosts($query) {
@@ -42,13 +42,52 @@ class Post extends Model
         return $query->whereNotNull('agency_id')->where('realtor_type', '=', 'agent')->with(['user', 'agency']);
     }
 
-    public function scopeSearch($query, $tradeType, $estateType, $roomCount, $city, $priceMin, $priceMax) {
-        return $query
-            ->whereIn('trade_type', $tradeType, 'and')
-            ->whereIn('estate_type', $estateType, 'and')
-            ->whereIn('room_count', $roomCount, 'and')
-            ->whereIn('city', $city, 'and')
-            ->where('price', '>=', $priceMin, 'and')
-            ->where('price', '<=', $priceMax);
+    public function scopeSearch($query, $tradeType, $estateType, $roomCount, $city, $priceMin, $priceMax, $areaMin, $areaMax, $floorMin, $floorMax, $vipChecked, $agencyChecked) {
+        if($tradeType) {
+            $query->whereIn('trade_type', $tradeType, 'and');
+        }
+        if($estateType) {
+            $query->whereIn('estate_type', $estateType, 'and');
+        }
+        if($roomCount) {
+            $query->whereIn('room_count', $roomCount, 'and');
+        }
+        if($city) {
+            $query->whereIn('city', $city, 'and');
+        }
+        if($priceMin) {
+            $query->where('price', '>=', $priceMin);
+        }
+        if($priceMax) {
+            $query->where('price', '<=', $priceMax);
+        }
+        if($areaMin) {
+            $query->where('area', '>=', $areaMin);
+        }
+        if($areaMax) {
+            $query->where('area', '<=', $areaMax);
+        }
+        if($floorMin) {
+            $query->where('apartment_floor', '>=', $floorMin);
+        }
+        if($floorMax) {
+            $query->where('apartment_floor', '<=', $floorMax);
+        }
+        if($vipChecked) {
+            $query->where('is_vip', $vipChecked);
+        }
+        if($agencyChecked) {
+            $query->whereNotNull('agency_id')->where('realtor_type', 'agent');
+        }
+        return $query;
+            
+            
+            
+            
+            // ->whereBetween('price', [$priceMin, $priceMax], 'and')
+            // ->whereBetween('area', [$areaMin, $areaMax], 'and')
+            // ->whereBetween('apartment_floor', [$floorMin, $floorMax], 'and')
+            // ->where('is_vip', $vipChecked)
+            // ->where('agency_id', );
     }
 }
