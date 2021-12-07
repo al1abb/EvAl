@@ -60,7 +60,7 @@ class PostFactory extends Factory
             'city' => $this->faker->randomElement(['Bakı', 'Sumqayıt', 'Gəncə']),
             'area' => $this->faker->numberBetween($min = 10, $max = 500),
             'area_unit' => $area_unit,
-            'room_count' => $this->faker->numberBetween($min = 1, $max = 5),
+            'room_count' => $this->faker->numberBetween($min = 1, $max = 20),
             'address' => $this->faker->address(),
             'district' => $this->faker->city(),
 

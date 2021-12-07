@@ -50,7 +50,15 @@ class Post extends Model
             $query->whereIn('estate_type', $estateType, 'and');
         }
         if($roomCount) {
-            $query->whereIn('room_count', $roomCount, 'and');
+            if($roomCount=='5+') {
+                $query->where('room_count', '>=', 5, 'and');
+            }
+            else if($roomCount=='Hamısı') {
+                $query->where('room_count', '>=', 0, 'and');
+            }
+            else {
+                $query->whereIn('room_count', $roomCount, 'and');
+            }
         }
         if($city) {
             $query->whereIn('city', $city, 'and');

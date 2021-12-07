@@ -242,8 +242,11 @@ class PostController extends Controller
             }
         }
 
-        if($fields['roomCount'] == 'Hamısı') {
-            $roomCount = ['1', '2', '3', '4', '5'];
+        if($fields['roomCount'] == '5+') {
+            $roomCount = '5+';
+        }
+        else if($fields['roomCount'] == 'Hamısı') {
+            $roomCount = 'Hamısı';
         }
         else {
             $roomCount = [$fields['roomCount']];

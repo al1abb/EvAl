@@ -41,9 +41,9 @@
             
             <div class="selectItem">
                 <v-select
+                    placeholder="Otaq sayı"
                     :items="roomCounts"
                     v-model="searchQuery.roomCount"
-                    label="Otaq sayı"
                     solo
                     flat
                     hide-details
@@ -233,7 +233,7 @@ export default {
 
             tradeTypes: ['Hamısı', 'Alış', 'Kirayə'],
             estateTypes: ['Hamısı', 'Yeni Mənzil', 'Mənzil', 'Ev-Villa', 'Ofis', 'Qaraj', 'Torpaq'],
-            roomCounts: ['Hamısı', '1', '2', '3', '4', '5'],
+            roomCounts: ['Hamısı', '1', '2', '3', '4', '5+'],
             cities: ['Hamısı', 'Bakı', 'Sumqayıt', 'Gəncə'],
 
             searchQuery: {
