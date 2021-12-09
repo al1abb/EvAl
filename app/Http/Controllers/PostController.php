@@ -63,6 +63,10 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $fields = $request->validate([
+            'realtor_name' => 'string',
+            'contact_email' => 'email|unique:posts,contact_email',
+            'contact_phone_number' => 'string',
+
             'estate_type' => 'string',
 
             'city' => 'string',
@@ -78,17 +82,11 @@ class PostController extends Controller
             'description' => 'string',
             'price' => 'integer',
 
-            'contact_email' => 'email|unique:posts,contact_email',
-            'contact_phone_number' => 'string',
-
             'trade_type' => 'string',
             'realtor_type' => 'string',
-
-            'is_vip' => 'boolean',
-            'has_voucher' => 'boolean'
         ]);
 
-        $fields['user_id'] = auth()->id();
+        $fields['user_id'] = auth()->user()->id;
         $fields['agency_id'] = auth()->user()->agency ?? null;
         $fields['views_today'] = 0;
         $fields['views_total'] = 0;

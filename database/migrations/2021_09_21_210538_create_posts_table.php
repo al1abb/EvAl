@@ -37,12 +37,13 @@ class CreatePostsTable extends Migration
 
             $table->string('contact_email');
             $table->string('contact_phone_number');
+            $table->string('realtor_name')->nullable()->default(null);
 
             $table->enum('trade_type', ['sell', 'rent']);
             $table->enum('realtor_type', ['self', 'agent']);
 
-            $table->boolean('is_vip');
-            $table->boolean('has_voucher');
+            $table->boolean('is_vip')->default(false);
+            $table->boolean('has_voucher')->default(false);
 
             $table->integer('views_today');
             $table->integer('views_total');

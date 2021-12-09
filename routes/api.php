@@ -113,13 +113,15 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::get('/refresh', [AuthController::class, 'refresh']);
+
+    Route::post('/posts', [PostController::class, 'store']);
 });
 
 /**
  * User Group Functions
  */
 Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
-    Route::post('/posts', [PostController::class, 'store']);
+    
 });
 
 /**
