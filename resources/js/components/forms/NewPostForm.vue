@@ -1,5 +1,10 @@
 <template>
     <div>
+        
+        <pre>
+            {{ formData }}
+        </pre>
+        
         <v-form
             @submit.prevent="addPost"
         >
@@ -15,7 +20,7 @@
                             </p>
                         </div>
                         <v-text-field
-                            v-model="contactUser"
+                            v-model="formData.realtor_name"
                             solo
                             flat
                             hide-details
@@ -27,11 +32,14 @@
                     </div>
 
                     <div class="realtorType">
-                        <v-radio-group v-model="radioGroup">
+                        <v-radio-group v-model="formData.realtor_type">
                             <v-radio
-                                v-for="(n, i) in radioBtn"
-                                :key="i"
-                                :label="n" 
+                                :label="'Özümə aid elan'"
+                                value="self"
+                            ></v-radio>
+                            <v-radio
+                                :label="'Vasitəçi (agent) kimi'"
+                                value="agent"
                             ></v-radio>
                         </v-radio-group>
                     </div>
@@ -44,13 +52,13 @@
                             </p>
                         </div>
                         <v-text-field
-                            v-model="contactPhone"
+                            v-model="formData.contact_phone_number"
                             solo
                             flat
                             hide-details
                             dense
                             class="formInput__textField"
-                            type="text"
+                            type="number"
                         >
                         </v-text-field>
                     </div>
@@ -63,7 +71,7 @@
                             </p>
                         </div>
                         <v-text-field
-                            v-model="contactEmail"
+                            v-model="formData.contact_email"
                             solo
                             flat
                             hide-details
@@ -86,16 +94,22 @@
                                 Əmlak növü
                             </p>
                         </div>
-                        <v-text-field
-                            v-model="estateType"
-                            solo
-                            flat
-                            hide-details
-                            dense
+
+                        <v-select
                             class="formInput__textField"
                             type="text"
+                            label="Əmlak növü"
+                            :items="estateTypes"
+                            v-model="formData.estate_type"
+                            solo
+                            dense
+                            flat
+                            hide-details
+                            menu-props="bottom, offsetY"
+                            clearable
                         >
-                        </v-text-field>
+                        </v-select>
+                        
                     </div>
 
                     <!--  Sell type -->
@@ -105,16 +119,23 @@
                                 Satış növü
                             </p>
                         </div>
-                        <v-text-field
-                            v-model="sellType"
-                            solo
-                            flat
-                            hide-details
-                            dense
+
+                        <v-select
                             class="formInput__textField"
                             type="text"
+                            label="Ticarət növü"
+                            :items="tradeTypes"
+                            v-model="formData.trade_type" 
+                            solo
+                            dense
+                            flat
+                            hide-details
+                            menu-props="bottom, offsetY"
+                            clearable
+                            open-on-clear
                         >
-                        </v-text-field>
+
+                        </v-select>
                     </div>
 
                     <!-- CİTY -->
@@ -124,18 +145,23 @@
                                 Şəhər
                             </p>
                         </div>
-                        <v-text-field
-                            v-model="city"
+
+                        <v-select
+                            class="formInput__textField"
+                            type="text"
+                            :items="cities"
+                            v-model="formData.city"
+                            label="Şəhər"
                             solo
                             flat
                             hide-details
-                            dense
-                            class="formInput__textField"
-                            type="email"
+                            menu-props="bottom, offsetY"
+                            clearable
                         >
-                        </v-text-field>
+                        </v-select>
                     </div>
 
+                    <!-- ROOM COUNT -->
                     <div class="d-flex align-items-center py-1">
                         <div class="formInput__titleDiv">
                             <p class="formInput__title">
@@ -143,13 +169,14 @@
                             </p>
                         </div>
                         <v-text-field
-                            v-model="roomCount"
+                            label="Otaq sayı"
+                            v-model="formData.room_count"
                             solo
                             flat
                             hide-details
                             dense
                             class="formInput__textField"
-                            type="email"
+                            type="number"
                         >
                         </v-text-field>
                     </div>
@@ -161,13 +188,13 @@
                             </p>
                         </div>
                         <v-text-field
-                            v-model="area"
+                            v-model="formData.area"
                             solo
                             flat
                             hide-details
                             dense
                             class="formInput__textField"
-                            type="email"
+                            type="number"
                         >
                         </v-text-field>
                     </div>
@@ -179,13 +206,13 @@
                             </p>
                         </div>
                         <v-text-field
-                            v-model="apartmentFloor"
+                            v-model="formData.apartment_floor"
                             solo
                             flat
                             hide-details
                             dense
                             class="formInput__textField"
-                            type="email"
+                            type="number"
                         >
                         </v-text-field>
                     </div>
@@ -197,13 +224,13 @@
                             </p>
                         </div>
                         <v-text-field
-                            v-model="totalFloors"
+                            v-model="formData.total_floors"
                             solo
                             flat
                             hide-details
                             dense
                             class="formInput__textField"
-                            type="email"
+                            type="number"
                         >
                         </v-text-field>
                     </div>
@@ -215,14 +242,14 @@
                             </p>
                         </div>
                         <v-textarea
-                            v-model="description"
+                            v-model="formData.description"
                             solo
                             flat
                             hide-details
                             no-resize  
                             dense
                             class="formInput__textField"
-                            type="email"
+                            type="text"
                         >
                         </v-textarea>
                     </div>
@@ -234,13 +261,13 @@
                             </p>
                         </div>
                         <v-text-field
-                            v-model="price"
+                            v-model="formData.price"
                             solo
                             flat
                             hide-details
                             dense
                             class="formInput__textField"
-                            type="email"
+                            type="number"
                         >
                         </v-text-field>
                     </div>
@@ -252,13 +279,13 @@
                             </p>
                         </div>
                         <v-text-field
-                            v-model="address"
+                            v-model="formData.address"
                             solo
                             flat
                             hide-details
                             dense
                             class="formInput__textField"
-                            type="email"
+                            type="text"
                         >
                         </v-text-field>
                     </div>
@@ -270,13 +297,13 @@
                             </p>
                         </div>
                         <v-text-field
-                            v-model="district"
+                            v-model="formData.district"
                             solo
                             flat
                             hide-details
                             dense
                             class="formInput__textField"
-                            type="email"
+                            type="text"
                         >
                         </v-text-field>
                     </div>
@@ -288,6 +315,7 @@
                 class="no-uppercase my-5"
                 style="color: #F1F1F1;"
                 type="submit"
+                :loading="loading"
             >
                 Yüklə
             </v-btn>
@@ -301,17 +329,104 @@
 export default {
     data() {
         return {
-            radioBtn: [
-                "Özümə aid elan",
-                "Vasitəçi (agent) kimi"
-            ]
+            loading: false,
+            formData: {
+                realtor_name: '',
+                contact_email: '',
+                contact_phone_number: '',
+
+                estate_type: '',
+
+                city: '',
+                area: '',
+                area_unit: 'room',
+                room_count: '',
+                address: '',
+                district: '',
+
+                apartment_floor: '',
+                total_floors: '',
+                description: '',
+                price: '',
+
+                trade_type: '',
+                realtor_type: '',
+            },
+
+            // selects
+            estateTypes: ['Yeni Mənzil', 'Mənzil', 'Ev-Villa', 'Ofis', 'Qaraj', 'Torpaq'],
+
+            tradeTypes: ['Satış', 'Kirayə'],
+
+            cities: ['Bakı', 'Sumqayıt', 'Gəncə'],
+
+            addResponseData: {}
         }
     },
     methods: {
         addPost() {
-            console.log("ADD POST HERE")
+            this.loading = true
+
+            let tradeType = ''
+
+            if(this.formData.trade_type == 'Satış') {
+                tradeType = 'sell'
+            }
+            else {
+                tradeType = 'rent'
+            }
+
+            let estateType = ''
+
+            if(this.formData.estate_type == 'Yeni Mənzil') {
+                estateType = 'new_apartment'
+            }
+            else if(this.formData.estate_type == 'Mənzil') {
+                estateType = 'apartment'
+            }
+            else if(this.formData.estate_type == 'Ev-Villa') {
+                estateType = 'house_villa'
+            }
+            else if(this.formData.estate_type == 'Ofis') {
+                estateType = 'office'
+            }
+            else if (this.formData.estate_type == 'Qaraj') {
+                estateType = 'garage'
+            }
+            else if (this.formData.estate_type == 'Torpaq') {
+                estateType = 'land'
+            }
+            else {
+                estateType = 'undef'
+            }
+
+            this.formData.trade_type = tradeType
+            this.formData.estate_type = estateType
+
+            let token = localStorage.getItem('sanctum_token');
+            axios.post('/api/posts', this.formData, {
+                headers: {
+                    'Authorization': 'Bearer '+token
+                }
+            })
+            .then((response) => {
+                console.log(response)
+                this.addResponseData = response.data
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
+                this.loading = false
+
+                this.redirectToPostPage(this.addResponseData.id)
+            })
+        },
+
+        redirectToPostPage(id) {
+            this.$router.push(`/post/${id}`)
         }
-    }
+    },
 }
 </script>
 
@@ -320,7 +435,7 @@ export default {
     background-color: #E5E5E5;
     border-radius: 5px;
 
-    padding: 10px 50px;
+    padding: 10px 30px;
 }
 
 .formInput__titleDiv {
@@ -335,6 +450,7 @@ export default {
 
 .formInput__textField {
     max-width: 15rem;
+    min-width: 10rem;
 }
 
 .realtorType > .v-input--radio-group {
