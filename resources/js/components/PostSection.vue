@@ -39,7 +39,7 @@
                         >
                             <Post 
                                 :id="listing.id"
-                                :image="'https://picsum.photos/id/' + Math.floor(listing.id/7) + '/1920/1080'"
+                                :image="listing.id >= 500 ? `http://127.0.0.1:8000/storage/post-images/${listing.id}` : 'https://picsum.photos/id/' + Math.floor(listing.id/7) + '/1920/1080'"
                                 :user="listing.user"
                                 :agency="listing.agency_id"
                                 :type="listing.estate_type"
@@ -89,7 +89,7 @@ export default {
     props: ["title", "responseData", "loading", "isVip", "isAgency"],
     data() {
         return {
-            
+            env: process.env.MIX_APP_ENV
         }
     },
 }

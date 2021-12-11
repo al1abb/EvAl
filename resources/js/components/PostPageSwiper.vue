@@ -2,10 +2,10 @@
     <div class="container-sm" style="max-width: 60rem;">
         <v-card class="responsiveImage">
             <Swiper class="swiper" :options="swiperOption">
-                <SwiperSlide v-for="(item, i) in 9" :key="i">
+                <SwiperSlide v-for="(item, i) in postImageResponse.length" :key="i">
                     <v-img
                         :src="
-                            'https://picsum.photos/id/' +
+                            postImageResponse.length ? postImageResponse[i].title : 'https://picsum.photos/id/' +
                             Math.floor(id / 7+i) +
                             '/1920/1080'"
                     >
@@ -30,6 +30,9 @@ export default {
     components: { Swiper, SwiperSlide },
     data() {
         return {
+            imageSrc: '',
+            postImageResponse: {},
+
             swiperOption: {
                 lazy: true,
                 centeredSlides: true,
@@ -65,6 +68,21 @@ export default {
                 }
             },
         }
+    },
+    methods: {
+        getPostImages(id) {
+            axios.get(`/api/post/${id}/images`)
+            .then((response) => {
+                console.log(response)
+                this.postImageResponse = response.data
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
+    },
+    mounted() {
+        this.getPostImages(this.$route.params.id)
     }
 }
 </script>

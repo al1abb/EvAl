@@ -22,26 +22,6 @@
 import NewPostForm from '../components/forms/NewPostForm.vue'
 export default {
     components: { NewPostForm },
-    // data() {
-    //     return {
-    //         response
-    //     }
-    // },
-    // mounted() {
-    //     let token = localStorage.getItem('sanctum_token');
-    //     axios.get('/api/users', {
-    //         headers: {
-    //             'Authorization': 'Bearer '+token
-    //         }
-    //     })
-    //     .then((response) => {
-    //         console.log(response)
-    //         this.response = response.data
-    //     })
-    //     .catch((err) => {
-    //         console.log(err)
-    //     })
-    // }
 }
 </script>
 

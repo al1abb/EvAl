@@ -192,7 +192,7 @@ export default {
             else {
                 this.unsavePost(this.id)
             }
-        }
+        },
     },
     computed: {
         ...mapState(["savedPosts"]),

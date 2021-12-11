@@ -8,7 +8,7 @@
                 <div class="d-flex justify-content-center" v-for="(post, i) in userPosts" :key="i">
                     <Post
                         :id="post.id"
-                        :image="'https://picsum.photos/id/' + Math.floor(post.id/7) + '/1920/1080'"
+                        :image="post.id >= 500 ? `http://127.0.0.1:8000/storage/post-images/${post.id}` : 'https://picsum.photos/id/' + Math.floor(post.id/7) + '/1920/1080'"
                         :user="post.user"
                         :agency="post.agency_id"
                         :type="post.estate_type"

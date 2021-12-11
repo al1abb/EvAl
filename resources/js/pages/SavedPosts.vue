@@ -17,9 +17,7 @@
                         <Post
                             :id="listing.id"
                             :image="
-                                'https://picsum.photos/id/' +
-                                Math.floor(listing.id / 7) +
-                                '/1920/1080'
+                                listing.id >= 500 ? `http://127.0.0.1:8000/storage/post-images/${listing.id}` : 'https://picsum.photos/id/' + Math.floor(listing.id/7) + '/1920/1080'
                             "
                             :user="listing.user"
                             :agency="listing.agency_id"
