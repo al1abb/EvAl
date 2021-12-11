@@ -26,6 +26,10 @@ class Post extends Model
         return $this->hasMany(Flag::class);
     }
 
+    public function image() {
+        return $this->hasMany(PostImage::class);
+    }
+
     public function scopeVipPosts($query) {
         return $query->where('is_vip', true)->with(['user', 'agency']);
     }
