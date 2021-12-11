@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Flag;
 use App\Models\Post;
+use App\Models\PostImage;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -87,11 +88,71 @@ class PostController extends Controller
         ]);
 
         $fields['user_id'] = auth()->user()->id;
-        $fields['agency_id'] = auth()->user()->agency ?? null;
+        $fields['agency_id'] = auth()->user()->agency->id ?? null;
         $fields['views_today'] = 0;
         $fields['views_total'] = 0;
 
+        if($fields['trade_type'] == 'Satış') {
+            $fields['trade_type'] = 'sell';
+        }
+        else {
+            $fields['trade_type'] = 'rent';
+        }
+
+        if($fields['estate_type'] == 'Yeni Mənzil') {
+            $fields['estate_type'] = 'new_apartment';
+        }
+        else if($fields['estate_type'] == 'Mənzil') {
+            $fields['estate_type'] = 'apartment';
+        }
+        else if($fields['estate_type'] == 'Ev-Villa') {
+            $fields['estate_type'] = 'house_villa';
+        }
+        else if($fields['estate_type'] == 'Ofis') {
+            $fields['estate_type'] = 'office';
+        }
+        else if ($fields['estate_type'] == 'Qaraj') {
+            $fields['estate_type'] = 'garage';
+        }
+        else if ($fields['estate_type'] == 'Torpaq') {
+            $fields['estate_type'] = 'land';
+        }
+        else {
+            $fields['estate_type'] = 'undef';
+        }
+
         $newPost = Post::create($fields);
+
+        try {
+            if($request->hasFile('images')) {
+                $file = $request->file('images');
+                $file_name = time(). '.' . $file->getClientOriginalName();
+                // $file->move(public_path('post-images'), $file_name);
+
+                // Save image under post-images folder in storage
+                $file->storeAs('public/post-images', $newPost->id);
+
+                $url = 'http://127.0.0.1:8000';
+
+                $post_images = PostImage::create([
+                    "title" => $url.'/storage/post-images/'.$newPost->id,
+                    "post_id" => $newPost->id
+                ]);
+
+                $newPost->image = $post_images;
+                
+                // $newPost->image = $post_images;
+                
+                // return response()->json([
+                //     "message" => "File uploaded successfully"
+                // ], 200);
+            }
+        }
+        catch(\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ]);
+        }
 
         return response()->json($newPost, 200, [], JSON_PRETTY_PRINT);
     }
