@@ -7,11 +7,12 @@
         
         <v-form
             @submit.prevent="addPost"
+            enctype="multipart/form-data"
         >
             <div class="">
                 <!-- POST OWNER -->
-                <fieldset class="contactDiv">
-                    <legend>Əlaqə</legend>
+                <fieldset class="contactDiv elevation-1" style="border: 1px solid rgb(89, 89, 89);">
+                    <legend class="px-2" style="width: auto;">Əlaqə</legend>
 
                     <div class="d-flex align-items-center">
                         <div class="formInput__titleDiv">
@@ -36,10 +37,12 @@
                             <v-radio
                                 :label="'Özümə aid elan'"
                                 value="self"
+                                class="radioBtn"
                             ></v-radio>
                             <v-radio
                                 :label="'Vasitəçi (agent) kimi'"
                                 value="agent"
+                                class="radioBtn"
                             ></v-radio>
                         </v-radio-group>
                     </div>
@@ -85,8 +88,8 @@
             </div>
 
             <div class="mt-5">
-                <fieldset class="contactDiv elevation-3" style="border: 1px solid #E1E1E1;">
-                    <legend style="width: auto;">Elan</legend>
+                <fieldset class="contactDiv elevation-1" style="border: 1px solid rgb(89, 89, 89);">
+                    <legend class="px-2" style="width: auto;">Elan</legend>
 
                     <div class="d-flex align-items-center py-1">
                         <div class="formInput__titleDiv">
@@ -153,6 +156,7 @@
                             v-model="formData.city"
                             label="Şəhər"
                             solo
+                            dense
                             flat
                             hide-details
                             menu-props="bottom, offsetY"
@@ -307,6 +311,17 @@
                         >
                         </v-text-field>
                     </div>
+                    
+                    <div class="d-flex align-items-center py-1">
+
+                        <div class="formInput__titleDiv">
+                            <p class="formInput__title">
+                                Şəkillər
+                            </p>
+                        </div>
+
+                        <input @change="fileInputOnChange" type="file" name="images" accept="image/png, image/jpeg" multiple>
+                    </div>
                 </fieldset>
             </div>
 
@@ -315,10 +330,13 @@
                 class="no-uppercase my-5"
                 style="color: #F1F1F1;"
                 type="submit"
+                depressed 
                 :loading="loading"
             >
                 Yüklə
             </v-btn>
+
+            {{ image.name ? image.name : 'null' }}
 
         </v-form>
 
@@ -351,7 +369,11 @@ export default {
 
                 trade_type: '',
                 realtor_type: '',
+
+                // images: '',
             },
+
+            image: '',
 
             // selects
             estateTypes: ['Yeni Mənzil', 'Mənzil', 'Ev-Villa', 'Ofis', 'Qaraj', 'Torpaq'],
@@ -360,71 +382,67 @@ export default {
 
             cities: ['Bakı', 'Sumqayıt', 'Gəncə'],
 
-            addResponseData: {}
+            addResponseData: {},
+
+            successfulPost: false,
         }
     },
     methods: {
         addPost() {
             this.loading = true
 
-            let tradeType = ''
+            let formD = new FormData()
+            formD.append('realtor_name', this.formData.realtor_name)
+            formD.append('contact_email', this.formData.contact_email)
+            formD.append('contact_phone_number', this.formData.contact_phone_number)
+            formD.append('estate_type', this.formData.estate_type)
+            formD.append('city', this.formData.city)
+            formD.append('area', this.formData.area)
+            formD.append('area_unit', this.formData.area_unit)
+            formD.append('room_count', this.formData.room_count)
+            formD.append('address', this.formData.address)
+            formD.append('district', this.formData.district)
+            formD.append('apartment_floor', this.formData.apartment_floor)
+            formD.append('total_floors', this.formData.total_floors)
+            formD.append('description', this.formData.description)
+            formD.append('price', this.formData.price)
+            formD.append('trade_type', this.formData.trade_type)
+            formD.append('realtor_type', this.formData.realtor_type)
+            formD.append('images', this.image)
 
-            if(this.formData.trade_type == 'Satış') {
-                tradeType = 'sell'
-            }
-            else {
-                tradeType = 'rent'
-            }
-
-            let estateType = ''
-
-            if(this.formData.estate_type == 'Yeni Mənzil') {
-                estateType = 'new_apartment'
-            }
-            else if(this.formData.estate_type == 'Mənzil') {
-                estateType = 'apartment'
-            }
-            else if(this.formData.estate_type == 'Ev-Villa') {
-                estateType = 'house_villa'
-            }
-            else if(this.formData.estate_type == 'Ofis') {
-                estateType = 'office'
-            }
-            else if (this.formData.estate_type == 'Qaraj') {
-                estateType = 'garage'
-            }
-            else if (this.formData.estate_type == 'Torpaq') {
-                estateType = 'land'
-            }
-            else {
-                estateType = 'undef'
-            }
-
-            this.formData.trade_type = tradeType
-            this.formData.estate_type = estateType
+            // let formMerged = {...this.formData, ...formD}
 
             let token = localStorage.getItem('sanctum_token');
-            axios.post('/api/posts', this.formData, {
+
+            axios.post('/api/posts', formD, {
                 headers: {
-                    'Authorization': 'Bearer '+token
+                    'Authorization': 'Bearer '+token,
                 }
             })
             .then((response) => {
+                console.log("aaaa")
                 console.log(response)
                 this.addResponseData = response.data
+                this.successfulPost = true
+                this.redirectToPostPage(this.addResponseData.id)
             })
             .catch((err) => {
                 console.log(err);
+                this.successfulPost = false
             })
             .finally(() => {
                 this.loading = false
-
-                this.redirectToPostPage(this.addResponseData.id)
             })
         },
 
         redirectToPostPage(id) {
             this.$router.push(`/post/${id}`)
+        },
+
+        fileInputOnChange(e) {
+            this.image = e.target.files[0]
+            // this.formData.images = e.target.files[0]
+            console.log(e.target.files[0])
         }
     },
 }
@@ -455,5 +473,13 @@ export default {
 
 .realtorType > .v-input--radio-group {
     margin-top: 0px;
+}
+
+.radioBtn /deep/ label {
+    color: rgb(89, 89, 89);
+    font-weight: 500;
+    font-size: 0.9rem;
+
+    margin-bottom: 0px;
 }
 </style>
