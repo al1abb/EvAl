@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             // AdminSeeder::class,
             UserSeeder::class,
             PostSeeder::class,
+            PostImageSeeder::class,
             FlagSeeder::class,
             LaratrustSeeder::class,
         ]);
