@@ -5,6 +5,7 @@ use App\Http\Controllers\AgencyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FlagController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostImageController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -95,6 +96,8 @@ Route::get('user/{id}/flags', [UserController::class, 'showUserFlags']);
 // Post-Flag route (Show flags of a post)
 Route::get('post/{id}/flags', [PostController::class, 'showPostFlags']);
 
+// Post-PostImage route (Show images of a post)
+Route::get('post/{id}/images', [PostImageController::class, 'showPostOfImage']);
 
 // Search
 Route::post('/search', [PostController::class, 'searchPost']);
