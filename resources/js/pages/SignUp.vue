@@ -99,7 +99,7 @@ export default {
                 email: '',
                 password: '',
                 password_confirmation: '',
-                role: 'administrator'
+                role: 'user'
             },
             formValid: true,
             loading: false,

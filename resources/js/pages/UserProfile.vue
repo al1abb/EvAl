@@ -1,58 +1,84 @@
 <template>
     <div class="container-sm">
-        
+        {{ avatar.name }}
         <div class="d-flex flex-column" v-if="!userNotFound">
 
             <div>
                 <div class="avatarCont" style="position: relative; background-color: transparent; width: min-content;">
 
-                    <v-avatar
-                        :size="avatarSize"
+                    <v-hover
+                        v-slot="{ hover }"
                     >
-                        <v-img
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7JvxfS8YsVlqnRbNFNx3b7t5UUsl4p_8V2A&usqp=CAU"
+                        <v-avatar
                             :size="avatarSize"
-                            color="#919191"
-                            v-if="localUser.avatar == null && !loading"
+                            style="position: relative;"
                         >
-                            <template v-slot:placeholder>
-                                <v-sheet>
-                                    <v-skeleton-loader
-                                        type="image"
-                                    >
+                            <div 
+                                v-if="hover && !loading && authorized"
+                                class="d-flex justify-content-center align-items-center"
+                                style="position: absolute; z-index: 100; width: 100%; height: 100%; border-radius: 100%;"
+                                :style="hover ? 'cursor: pointer;' : ''"
+                                @click="$refs.file.click()"
+                            >
+                                <div class="text-light" style="font-size: 1rem;">
+                                    <p>
+                                        Update Avatar
+                                    </p>
 
-                                    </v-skeleton-loader>
-                                </v-sheet>
-                            </template>
-                        </v-img>
+                                    <form method="PUT" enctype="multipart/form-data" @submit.prevent="submitAvatarForm" ref="avatarForm">
+                                        <input @change="fileInputOnChange" type="file" name="avatar" accept="image/png, image/jpeg" ref="file" style="display: none">
+                                        <button type="submit" ref="submitAvatarBtn" style="display: none;"></button>
+                                    </form>
+                                </div>
+                            </div>
 
-                        <v-img
-                            :src="`/storage/${localUser.avatar}`" 
-                            :size="avatarSize"
-                            color="#919191"
-                            v-if="localUser.avatar || loading"
-                        >
-                            <template v-slot:placeholder>
-                                <v-sheet>
-                                    <v-skeleton-loader
-                                        type="image"
-                                    >
+                            <v-img
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7JvxfS8YsVlqnRbNFNx3b7t5UUsl4p_8V2A&usqp=CAU"
+                                :size="avatarSize"
+                                color="#919191"
+                                v-if="localUser.avatar == null && !loading"
+                                :style="authorized && hover ? 'filter: brightness(50%);' : ''"
+                            >
+                                <template v-slot:placeholder>
+                                    <v-sheet>
+                                        <v-skeleton-loader
+                                            type="image"
+                                        >
 
-                                    </v-skeleton-loader>
-                                </v-sheet>
-                            </template>
-                        </v-img>
+                                        </v-skeleton-loader>
+                                    </v-sheet>
+                                </template>
+                            </v-img>
 
-                        <!-- <v-skeleton-loader
-                            v-if="loading"
-                            type="avatar"
-                        >
-                        </v-skeleton-loader> -->
+                            <v-img
+                                :src="`/storage/${localUser.avatar}`" 
+                                :size="avatarSize"
+                                color="#919191"
+                                v-if="localUser.avatar || loading"
+                                :style="authorized && hover ? 'filter: brightness(50%);' : ''"
+                            >
+                                <template v-slot:placeholder>
+                                    <v-sheet>
+                                        <v-skeleton-loader
+                                            type="image"
+                                        >
 
-                        
-                    </v-avatar>
+                                        </v-skeleton-loader>
+                                    </v-sheet>
+                                </template>
+                            </v-img>
 
-                    <div v-if="online" :title="online ? 'Onlayn' : 'Offline'" class="d-flex justify-content-center align-items-center onlineCircleWrapper">
+                            <!-- <v-skeleton-loader
+                                v-if="loading"
+                                type="avatar"
+                            >
+                            </v-skeleton-loader> -->
+
+                            
+                        </v-avatar>
+                    </v-hover>
+
+                    <div v-if="online && !loading" :title="online ? 'Onlayn' : 'Offline'" class="d-flex justify-content-center align-items-center onlineCircleWrapper">
                         <div class="onlineCircle">
                         </div>
                     </div>
@@ -98,12 +124,81 @@
                                 outlined
                                 color="primary"
                                 class="no-uppercase text-center"
+                                @click="openEditProfile"
+                                v-if="editProfileBtnVisible"
                             >
                                 <v-icon>
                                     mdi-pencil
                                 </v-icon>
                                 Edit account
                             </v-btn>
+
+                            <div class="my-5" v-if="editProfileFormVisible" style="max-width: 20rem">
+                                <v-form @submit.prevent="submitEditForm">
+                                    <v-text-field
+                                        v-model="editForm.name"
+                                        label="Ad"
+                                        prepend-icon="mdi-account"
+                                        flat
+                                        solo
+                                        :loading="loading"
+                                    >
+                                    </v-text-field>
+
+                                    <v-text-field
+                                        v-model="editForm.email"
+                                        label="E-mail"
+                                        prepend-icon="mdi-email"
+                                        flat
+                                        solo
+                                        :loading="loading"
+                                    >
+                                    </v-text-field>
+
+                                    <v-text-field
+                                        v-model="editForm.phone_number"
+                                        label="Tel"
+                                        prepend-icon="mdi-phone"
+                                        flat
+                                        solo
+                                        :loading="loading"
+                                    >
+                                    </v-text-field>
+
+                                    <v-text-field
+                                        v-model="editForm.password"
+                                        :type="confirmPasswordVisible ? 'text' : 'password'"
+                                        label="Yeni şifrə"
+                                        prepend-icon="mdi-lock"
+                                        flat
+                                        solo
+                                        :loading="loading"
+                                    >
+                                        <template v-slot:append>
+                                            <v-icon @click="confirmPasswordVisible=!confirmPasswordVisible">{{ confirmPasswordVisible ? 'mdi-eye-off' : 'mdi-eye' }}</v-icon>
+                                        </template>
+                                    </v-text-field>
+
+                                    <v-btn
+                                        class="no-uppercase"
+                                        outlined
+                                        color="green"
+                                        type="submit"
+                                    >
+                                        Saxla
+                                    </v-btn>
+
+                                    <v-btn
+                                        class="no-uppercase text-light"
+                                        depressed
+                                        color="red lighten-1"
+                                        @click="closeEditForm"
+                                    >
+                                        Geri
+                                    </v-btn>
+                                </v-form>
+
+                            </div>
                         </div>
 
                         <div v-if="localUser.agency!=null">
@@ -175,6 +270,29 @@ export default {
             online: false,
 
             userNotFound: false,
+
+            editProfileBtnVisible: true,
+            editProfileFormVisible: false,
+
+            editForm: {
+                name: '',
+                email: '',
+                phone_number: '',
+                password: '',
+            },
+
+            avatar: '',
+
+            confirmPasswordVisible: false,
+
+            nameRules: [
+                v => !!v || 'Ad tələb olunur',
+                // v => (v && v.length <= 10) || 'Name must be less than 10 characters',
+            ],
+            emailRules: [
+                v => !!v || 'E-mail tələb olunur',
+                v => /.+@.+\..+/.test(v) || 'E-mail adresi etibarlı deyil',
+            ],
         }
     },
     methods: {
@@ -187,7 +305,6 @@ export default {
             if(res=='') {
                 return 0;
             }
-            
 
             this.localUser = res
             this.checkOnlineStatus(2)
@@ -222,6 +339,70 @@ export default {
                 console.log("not online")
                 this.online = false
             }
+        },
+
+        openEditProfile() {
+            this.editProfileBtnVisible = false
+            this.editProfileFormVisible = true
+        },
+
+        closeEditForm() {
+            this.editProfileFormVisible = false
+            this.editProfileBtnVisible = true
+        },
+
+        submitEditForm() {
+            this.loading = true
+
+            let token = localStorage.getItem('sanctum_token');
+
+            axios.put(`/api/user/${this.$route.params.id}`, this.editForm, {
+                headers: {
+                    'Authorization': 'Bearer '+ token
+                }
+            })
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+            .finally(() => {
+                this.loading = false
+            })
+        },
+
+        fileInputOnChange(e) {
+            this.avatar = e.target.files[0]
+            // this.formData.images = e.target.files[0]
+            console.log(e.target.files[0])
+
+            const form = this.$refs.submitAvatarBtn
+            form.click()
+        },
+
+        submitAvatarForm() {
+            this.loading = true
+
+            let avatarFormData = new FormData()
+            avatarFormData.append('avatar', this.avatar)
+
+            let token = localStorage.getItem('sanctum_token')
+
+            axios.put(`/api/user/${this.$route.params.id}/avatar`, avatarFormData, {
+                headers: {
+                    'Authorization': 'Bearer '+token,
+                }
+            })
+            .then((response) => {
+                console.log(response)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+            .finally(() => {
+                this.loading = false
+            })
         }
     },
     computed: {
@@ -257,6 +438,20 @@ export default {
     mounted() {
         this.getUser(this.$route.params.id)
         console.log(this.authorized)
+
+        axios.get(`/api/user/${this.$route.params.id}`)
+        .then((response) => {
+            console.log(response)
+            this.editForm.name = response.data.name
+            this.editForm.email = response.data.email
+            this.editForm.phone_number = response.data.phone_number
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+        .finally(() => {
+            
+        })
     },
     created() {
         dayjs.extend(relativeTime);
