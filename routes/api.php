@@ -33,10 +33,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::get('/users', [UserController::class, 'index']);
 Route::post('/users', [UserController::class, 'store']);
 Route::get('/user/{id}', [UserController::class, 'show']);
-Route::put('/user/{id}', [UserController::class, 'update']);
+// Route::put('/user/{id}', [UserController::class, 'update']);
 Route::delete('/user/{id}', [UserController::class, 'destroy']);
 Route::post('/user/{id}/upload-image', [UserController::class, 'uploadAvatar']);
 Route::get('/user/{id}/avatar', [UserController::class, 'getAv']);
+// Route::put('/user/{id}/avatar', [UserController::class, 'updateAvatar']);
 
 // Posts API routes
 // CRUD
@@ -118,6 +119,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/refresh', [AuthController::class, 'refresh']);
 
     Route::post('/posts', [PostController::class, 'store']);
+
+    Route::put('/user/{id}', [UserController::class, 'update']);
+
+    Route::put('/user/{id}/avatar', [UserController::class, 'updateAvatar']);
 });
 
 /**
