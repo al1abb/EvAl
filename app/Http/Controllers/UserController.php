@@ -81,10 +81,13 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $fields = request()->validate([
             'name' => 'string',
-            'email' => 'string|unique:users,email|email',
+            'email' => 'string|unique:users,email,'.$id.'|email',
             'avatar' => 'file',
-            'password' => 'string|confirmed'
+            'phone_number' => 'string',
+            'password' => 'string'
         ]);
+
+        $fields['password'] = bcrypt($fields['password']);
 
         if(request('avatar'))  // if there is an avatar then store it
         {
@@ -94,6 +97,27 @@ class UserController extends Controller
         $user->update($fields);
 
         return response()->json([], 204, [/*headers here*/], JSON_PRETTY_PRINT);
+    }
+
+    public function updateAvatar(Request $request) {
+        $user = User::find(auth()->user()->id);
+        dd($request->all());
+
+        if($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            $file_name = time(). '.' . $file->getClientOriginalName();
+
+            // Save image under post-images folder in storage
+            $file->storeAs('public/user-av', $user->id);
+
+            $fields['avatar'] = request('avatar');
+            $user->update($fields);
+        }
+
+        return response()->json([
+            'message' => 'Successfully saved image',
+            'user' => $user
+        ], 200, [], JSON_PRETTY_PRINT);
     }
 
     /**
