@@ -1,19 +1,38 @@
 <template>
     <div class="container-sm" style="max-width: 60rem;">
         <v-card class="responsiveImage">
-            <Swiper class="swiper" :options="swiperOption">
+            <Swiper class="swiper" v-if="id>500" :options="swiperOption">
                 <SwiperSlide v-for="(item, i) in postImageResponse.length" :key="i">
                     <v-img
-                        :src="
-                            postImageResponse.length ? postImageResponse[i].title : 'https://picsum.photos/id/' +
-                            Math.floor(id / 7+i) +
-                            '/1920/1080'"
+                        :src="postImageResponse[i].title"
+                        :aspect-ratio="16/9"
+                        contain
                     >
                         <template v-slot:placeholder>
                             <div class="swiper-lazy-preloader swiper-lazy-preloader-black"></div>
                         </template>
                     </v-img>
                 </SwiperSlide>
+                <div class="swiper-pagination" slot="pagination"></div>
+                <div class="swiper-button-prev text-white" slot="button-prev"></div>
+                <div class="swiper-button-next text-white" slot="button-next"></div>
+            </Swiper>
+
+            <Swiper class="swiper" v-if="id<=500" :options="swiperOption">
+                <SwiperSlide v-for="(item, i) in 9" :key="i">
+                    <v-img
+                        :src="'https://picsum.photos/id/' +
+                        Math.floor(id / 7+i) +
+                        '/1920/1080'"
+                        :aspect-ratio="16/9"
+                        contain
+                    >
+                        <template v-slot:placeholder>
+                            <div class="swiper-lazy-preloader swiper-lazy-preloader-black"></div>
+                        </template>
+                    </v-img>
+                </SwiperSlide>
+
                 <div class="swiper-pagination" slot="pagination"></div>
                 <div class="swiper-button-prev text-white" slot="button-prev"></div>
                 <div class="swiper-button-next text-white" slot="button-next"></div>
@@ -96,4 +115,10 @@ export default {
 .swiper-button-next::after {
     
 }
+</style>
+
+<style scoped>
+/* .v-image__image {
+    background-size: 100% 100%;
+} */
 </style>

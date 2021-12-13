@@ -12,12 +12,34 @@
                         :to="`/user/${user.id}`"
                     >
                         <div class="d-flex align-items-center">
-                            <img
-                                :src="userProfileImage"
-                                :alt="`${user.name}`"
-                                width="50"
-                                height="50"
+
+                            <v-avatar
+                                size="3rem"
                             >
+                                <v-img
+                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7JvxfS8YsVlqnRbNFNx3b7t5UUsl4p_8V2A&usqp=CAU"
+                                    :size="10"
+                                    color="#919191"
+                                    v-if="user.avatar == null"
+                                >
+                                    <template v-slot:placeholder>
+                                        <v-sheet>
+                                            <v-skeleton-loader
+                                                type="image"
+                                            >
+
+                                            </v-skeleton-loader>
+                                        </v-sheet>
+                                    </template>
+                                </v-img>
+                                <img
+                                    v-if="user.avatar != null"
+                                    :src="userProfileImage"
+                                    :alt="`${user.name}`"
+                                    width="50"
+                                    height="50"
+                                >
+                            </v-avatar>
                             <p class="ml-1">{{ user.name }}</p>
                             <v-icon
                                 v-if="user.email_is_verified"
