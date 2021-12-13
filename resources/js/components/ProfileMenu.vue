@@ -17,12 +17,25 @@
                     v-bind="{attrs}"
                     v-on="on"
                 >
-                    <v-icon
-                        color="gray"
-                        size="50"
+                    <v-img
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7JvxfS8YsVlqnRbNFNx3b7t5UUsl4p_8V2A&usqp=CAU"
+                        color="#919191"
+                        v-if="user.avatar == null && !loading"
                     >
-                        mdi-account-circle
-                    </v-icon>
+                        <template v-slot:placeholder>
+                            <v-sheet>
+                                <v-skeleton-loader
+                                    type="image"
+                                >
+                                </v-skeleton-loader>
+                            </v-sheet>
+                        </template>
+                    </v-img>
+                    <v-img
+                        :src="`/storage/${user.avatar}`" 
+                        v-if="user.avatar != null && !loading"
+                    >
+                    </v-img>
 
                 </v-avatar>
 
