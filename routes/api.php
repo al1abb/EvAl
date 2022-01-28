@@ -123,6 +123,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/user/{id}', [UserController::class, 'update']);
 
     Route::put('/user/{id}/avatar', [UserController::class, 'updateAvatar']);
+
+    Route::get('/users', [UserController::class, 'index']);
 });
 
 /**
@@ -143,7 +145,7 @@ Route::group(['middleware' => ['auth:sanctum', 'role:moderator']], function () {
  * Administrator Group Functions
  */
 Route::group(['middleware' => ['auth:sanctum', 'role:administrator']], function () {
-    Route::get('/users', [UserController::class, 'index']);
+    
 });
 
 /**

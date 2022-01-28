@@ -122,7 +122,11 @@ export default {
         async loadNextAllPosts() {
             if(this.currentPage != this.lastPage) {
                 this.currentPage+=1
-                const all = await axios.get('api/posts/?page=' + this.currentPage)
+                const all = await axios.get('api/posts/?page=' + this.currentPage, {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
                 console.log(all.data)
                 this.allData.push(...all.data.data)
                 
