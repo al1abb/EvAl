@@ -383,28 +383,7 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 
-let serverMessage = {};
-// let csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-let token = localStorage.getItem("sanctum_token");
 
-setOptions({
-    server: {
-        process: {
-            url: '/api/upload',
-            onerror: (response) => {
-                serverMessage = JSON.parse(response);
-            },
-            headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + token,
-                'X-CSRF-TOKEN': csrf_token
-            }
-        },
-        labelFileProcessingError: () => {
-            return serverMessage.error;
-        }
-    }
-})
 
 // setOptions({
 //     server: {
@@ -560,6 +539,30 @@ export default {
     },
     computed: {
         ...mapState(["user"])
+    },
+    mounted() {
+        let serverMessage = {};
+        // let csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        let token = localStorage.getItem("sanctum_token");
+
+        setOptions({
+            server: {
+                process: {
+                    url: '/api/upload',
+                    onerror: (response) => {
+                        serverMessage = JSON.parse(response);
+                    },
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ' + token,
+                        'X-CSRF-TOKEN': this.csrf
+                    }
+                },
+                labelFileProcessingError: () => {
+                    return serverMessage.error;
+                }
+            }
+        })
     }
 }
 </script>
