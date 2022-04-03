@@ -5,6 +5,30 @@
   */
 
 /*!
+ * FilePond 4.30.3
+ * Licensed under MIT, https://opensource.org/licenses/MIT/
+ * Please visit https://pqina.nl/filepond/ for details.
+ */
+
+/*!
+ * FilePondPluginFileValidateSize 2.2.5
+ * Licensed under MIT, https://opensource.org/licenses/MIT/
+ * Please visit https://pqina.nl/filepond/ for details.
+ */
+
+/*!
+ * FilePondPluginFileValidateType 1.2.6
+ * Licensed under MIT, https://opensource.org/licenses/MIT/
+ * Please visit https://pqina.nl/filepond/ for details.
+ */
+
+/*!
+ * FilePondPluginImagePreview 4.6.10
+ * Licensed under MIT, https://opensource.org/licenses/MIT/
+ * Please visit https://pqina.nl/filepond/ for details.
+ */
+
+/*!
  * Sizzle CSS Selector Engine v2.3.6
  * https://sizzlejs.com/
  *
@@ -40,6 +64,16 @@
  * Copyright (c) Surmon. All rights reserved.
  * Released under the MIT License.
  * Surmon <https://github.com/surmon-china>
+ */
+
+/*!
+ * vue-filepond v6.0.3
+ * A handy FilePond adapter component for Vue
+ * 
+ * Copyright (c) 2020 PQINA
+ * https://pqina.nl/filepond
+ * 
+ * Licensed under the MIT license.
  */
 
 /*!
