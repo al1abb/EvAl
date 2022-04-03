@@ -15,9 +15,9 @@ class CreateAgenciesTable extends Migration
     {
         Schema::create('agencies', function (Blueprint $table) {
             $table->id();
-            $table->text('agency_name')->unique();
+            $table->text('agency_name');
             $table->text('agency_description');
-            $table->text('agency_logo')->default('default-logo');
+            $table->text('agency_logo')->nullable();
             $table->timestamps();
         });
     }

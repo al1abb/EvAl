@@ -20,6 +20,8 @@ class CreatePostsTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('agency_id')->nullable()->constrained()->onDelete('cascade');
 
+            $table->integer('search_points')->default(0);
+
             $table->enum('estate_type', ['new_apartment', 'apartment', 'house_villa', 'office', 'garage', 'land']);
 
             $table->string('city');

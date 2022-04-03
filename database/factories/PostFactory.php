@@ -52,6 +52,17 @@ class PostFactory extends Factory
             $apartmentFloor = $temp;
         }
 
+        // $realtorType = $this->faker->randomElement('self');
+
+        if($rand_user->agency) {
+            // give 50% chance to create own post if user is in agency
+            $realtorType = $this->faker->randomElement('self', 'agent');
+        }
+        else {
+            // if user does not have agency just create own post
+            $realtorType = $this->faker->randomElement('self');
+        }
+
         return [
             'user_id' => $rand_user,
             'agency_id' => $rand_user->agency,
@@ -75,7 +86,7 @@ class PostFactory extends Factory
             'realtor_name' => null,
 
             'trade_type' => $trade_type,
-            'realtor_type' => $this->faker->randomElement(['self', 'self', 'self', 'self', 'agent']),
+            'realtor_type' => $realtorType,
 
             'is_vip' => $this->faker->boolean(25),
             'has_voucher' => $this->faker->boolean(50),
