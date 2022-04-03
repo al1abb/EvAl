@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Flag;
 use App\Models\Post;
 use App\Models\PostImage;
+use App\Models\TemporaryFile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -65,7 +67,7 @@ class PostController extends Controller
     {
         $fields = $request->validate([
             'realtor_name' => 'string',
-            'contact_email' => 'email|unique:posts,contact_email',
+            'contact_email' => 'email',
             'contact_phone_number' => 'string',
 
             'estate_type' => 'string',
@@ -87,8 +89,10 @@ class PostController extends Controller
             'realtor_type' => 'string',
         ]);
 
-        $fields['user_id'] = auth()->user()->id;
-        $fields['agency_id'] = auth()->user()->agency->id ?? null;
+        $auth_user = Auth::user();
+
+        $fields['user_id'] = $auth_user->id;
+        $fields['agency_id'] = $auth_user->agency->id ?? null;
         $fields['views_today'] = 0;
         $fields['views_total'] = 0;
 
@@ -123,39 +127,100 @@ class PostController extends Controller
 
         $newPost = Post::create($fields);
 
-        try {
-            if($request->hasFile('images')) {
-                $file = $request->file('images');
-                $file_name = time(). '.' . $file->getClientOriginalName();
-                // $file->move(public_path('post-images'), $file_name);
-
-                // Save image under post-images folder in storage
-                $file->storeAs('public/post-images', $newPost->id);
-
-                $url = 'http://127.0.0.1:8000';
-
-                $post_images = PostImage::create([
-                    "title" => $url.'/storage/post-images/'.$newPost->id,
-                    "post_id" => $newPost->id
-                ]);
-
-                $newPost->image = $post_images;
-                
-                // $newPost->image = $post_images;
-                
-                // return response()->json([
-                //     "message" => "File uploaded successfully"
-                // ], 200);
-            }
+        // * Povilas Korop method from youtube video
+        // ? Modify it with a foreach for each image
+        
+        $temporaryFile = TemporaryFile::where('folder', $request->image)->first();
+        
+        if($temporaryFile) {
+            $newPost->addMedia(storage_path('app/public/posts/tmp/' . $request->image . '/' . $temporaryFile->filename))
+                ->toMediaCollection('posts');
+            
+            rmdir(storage_path('app/public/posts/tmp/' . $request->image));
+            $temporaryFile->delete();
         }
-        catch(\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ]);
-        }
+
+
+
+        // if($request->hasFile('image')) {
+        //     $file = $request->file('image');
+        //     $filename = $file->getClientOriginalName();
+        //     $folder = uniqid() . '-' . now()->timestamp;
+        //     $file->storeAs('posts/tmp' . $folder, $filename);
+
+        //     return $folder;
+        // }
+
+        // * Own New image saving method
+        // try {
+        //     if($request->hasFile('image'))
+        //     {
+        //         $names = [];
+
+        //         foreach($request->file('image') as $image)
+        //         {
+        //             $i = 0;
+
+        //             $destinationPath = 'post_images/';
+        //             $filename = $image->getClientOriginalName();
+        //             $image->storeAs('public/post-images', $newPost->id . $i);
+        //             array_push($names, $filename);
+
+        //             $post_image = PostImage::create([
+        //                 "title" => '/storage/post-images/'.$filename,
+        //                 "post_id" => $newPost->id
+        //             ]);
+
+        //             $newPost->image = $post_image;
+
+        //             $i+=1;
+        //         }
+
+                
+        //     }
+        // }
+        // catch(\Exception $e) {
+        //     return response()->json([
+        //         'error' => $e->getMessage()
+        //     ]);
+        // }
+
+        // ! Old method
+        // try {
+        //     if($request->hasFile('images')) {
+        //         $file = $request->file('images');
+        //         $file_name = time(). '.' . $file->getClientOriginalName();
+        //         // $file->move(public_path('post-images'), $file_name);
+
+        //         // Save image under post-images folder in storage
+        //         $file->storeAs('public/post-images', $newPost->id);
+
+        //         $url = 'http://eval.test';
+
+        //         $post_images = PostImage::create([
+        //             "title" => $url.'/storage/post-images/'.$newPost->id,
+        //             "post_id" => $newPost->id
+        //         ]);
+
+        //         $newPost->image = $post_images;
+                
+        //         // $newPost->image = $post_images;
+                
+        //         // return response()->json([
+        //         //     "message" => "File uploaded successfully"
+        //         // ], 200);
+        //     }
+        // }
+        // catch(\Exception $e) {
+        //     return response()->json([
+        //         'message' => $e->getMessage()
+        //     ]);
+        // }
 
         return response()->json($newPost, 200, [], JSON_PRETTY_PRINT);
     }
+
+    
 
     /**
      * Display the specified resource.
@@ -165,6 +230,10 @@ class PostController extends Controller
     public function show($id)
     {
         $asked_post = Post::with(['user', 'agency'])->findOrFail($id);
+        
+        $asked_post->views_today += 1;
+        $asked_post->views_total += 1;
+        $asked_post->save();
 
         return response()->json($asked_post, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }

@@ -1,14 +1,18 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+// use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AgencyController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\FlagController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostImageController;
+use App\Http\Controllers\PostMediaController;
+use App\Http\Controllers\UploadController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\URL;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,6 +57,9 @@ Route::post('/posts/custom', [PostController::class, 'showSelected']);
 Route::put('/post/{id}', [PostController::class, 'update']);
 Route::delete('/post/{id}', [PostController::class, 'destroy']);
 
+// Post Media
+Route::get('/post/{id}/media', [PostMediaController::class, 'show']);
+
 // Get vip posts
 Route::get('/posts/vip', [PostController::class, 'vipPosts']);
 
@@ -70,11 +77,11 @@ Route::put('/agency/{id}', [AgencyController::class, 'update']);
 Route::delete('/agency/{id}', [AgencyController::class, 'destroy']);
 
 // Admins API routes
-Route::get('/admins', [AdminController::class, 'index']);
-Route::post('/admins', [AdminController::class, 'store']);
-Route::get('/admin/{id}', [AdminController::class, 'show']);
-Route::put('/admin/{id}', [AdminController::class, 'update']);
-Route::delete('/admin/{id}', [AdminController::class, 'destroy']);
+// Route::get('/admins', [AdminController::class, 'index']);
+// Route::post('/admins', [AdminController::class, 'store']);
+// Route::get('/admin/{id}', [AdminController::class, 'show']);
+// Route::put('/admin/{id}', [AdminController::class, 'update']);
+// Route::delete('/admin/{id}', [AdminController::class, 'destroy']);
 
 // Flag API routes
 Route::get('/flags', [FlagController::class, 'index']);
@@ -109,7 +116,7 @@ Route::get('post/{id}/images', [PostImageController::class, 'showPostOfImage']);
 Route::post('/search', [PostController::class, 'searchPost']);
 
 // Auth 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
 
 /**
@@ -123,7 +130,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('/refresh', [AuthController::class, 'refresh']);
 
-    Route::post('/posts', [PostController::class, 'store']);
+    // Route::post('/posts', [PostController::class, 'store']);
 
     Route::put('/user/{id}', [UserController::class, 'update']);
 
@@ -136,7 +143,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
  * User Group Functions
  */
 Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
-    
+    Route::post('/posts', [PostController::class, 'store']);
+    Route::post('/upload', [UploadController::class, 'store']);
 });
 
 /**
