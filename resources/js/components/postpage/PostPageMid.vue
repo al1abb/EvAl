@@ -1,8 +1,8 @@
 <template>
     <div class="container-sm d-flex flex-wrap justify-content-between align-items-center py-4">
         <div style="max-width: 50rem;">
-            <p>Data Ətraflı:</p>
-            <p>{{ description }}</p>
+            <h5 style="font-weight: 600;">Data Ətraflı:</h5>
+            <p style="word-break: break-word;">{{ description }}</p>
         </div>
 
         <div style="background-color: #E4E4E4;" class="userInfo p-2">
@@ -54,7 +54,7 @@
                     </router-link>
                 </p>
                 <p class="post_realtor">{{ realtor }}</p>
-                <div v-if="realtor=='Agent'">
+                <div v-if="realtor=='Agent' && userAgency.length">
                     <p>Şirkət: 
                         <router-link
                             :to="`/agency/${user.agency_id}`"
@@ -90,7 +90,7 @@ export default {
         getUserAgency() {
             axios.get(`/api/user/${this.user.id}/agency`)
             .then((response) => {
-                this.userAgency = response.data
+                this.userAgency = response.data;
             })
             .catch((err) => {
                 console.log(err)
