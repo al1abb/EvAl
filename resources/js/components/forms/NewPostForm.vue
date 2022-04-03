@@ -384,7 +384,7 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
 
 let serverMessage = {};
-let csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+// let csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 let token = localStorage.getItem("sanctum_token");
 
 setOptions({
