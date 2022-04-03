@@ -41,7 +41,7 @@
                 <v-img
                     class="white--text align-end"
                     height="10.8rem"
-                    :src="image"
+                    :src="imageUrl"
                     style="background-size: contain;"
                 >
                     <template v-slot:placeholder>
@@ -157,7 +157,7 @@ import { mapActions } from 'vuex';
 export default {
     props: [
         "id",
-        "image",
+
         "user",
         "agency",
         "type",
@@ -179,7 +179,9 @@ export default {
     data() {
         return {
             elevation: 0,
-            liked: false, 
+            liked: false,
+
+            postMedia: {}
         }
     },
     methods: {
@@ -193,6 +195,18 @@ export default {
                 this.unsavePost(this.id)
             }
         },
+
+        // get post media from PostMediaController
+        getPostMedia(postId) {
+            axios.get(`/api/post/${postId}/media`)
+                .then((res) => {
+                    this.postMedia = JSON.parse(JSON.stringify(res.data));
+                    console.log(this.postMedia)
+                })
+                .catch((err) => {
+                    console.log(err);
+                })
+        }
     },
     computed: {
         ...mapState(["savedPosts"]),
@@ -207,13 +221,18 @@ export default {
 
         cityAndTime: function() {
             return `${this.city}, ${this.createdAt.slice(8, 10)}-${this.createdAt.slice(5,7)}-${this.createdAt.slice(0, 4)}`
+        },
+
+        imageUrl() {
+            return this.postMedia.original_url;
         }
     },
     mounted() {
         // console.log(this.agency)
         // console.log(this.realtorType)
         // console.log(this.agency)
-    }
+        this.getPostMedia(this.id);
+    },
 }
 </script>
 

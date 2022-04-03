@@ -157,7 +157,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .signUpContainer {
     background-color: #dadada;
     border-radius: 8px;
@@ -167,9 +167,5 @@ export default {
 
 .signUp_mainLabel {
     font-size: 1.2rem;
-}
-
-fieldset {
-    background-color: white;
 }
 </style>

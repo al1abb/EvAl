@@ -24,7 +24,7 @@
         <div v-if="!loading">
 
             <div class="d-flex justify-content-center">
-                <PostPageSwiper :id="post.id" />
+                <PostPageSwiper :id="post.id"/>
             </div>
 
             <PostPageTop
@@ -47,7 +47,7 @@
             />
 
             <div class="container-sm py-4">
-                <p>Baxışlar: </p>
+                <p style="font-weight: 600;">Baxışlar: </p>
                 <div class="d-flex">
                     <p class="">Bugün: {{ post.views_today }}</p>
                     <p class="px-2">Ümumi: {{ post.views_total }}</p>

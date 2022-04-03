@@ -37,9 +37,10 @@
                             min-width="14.5rem"
                             max-width="14.5rem"
                         >
+                        <!-- :image="listing.id >= 500 ? `http://127.0.0.1:8000/storage/post-images/${listing.id}` : 'https://picsum.photos/id/' + Math.floor(listing.id/7) + '/1920/1080'" -->
                             <Post 
                                 :id="listing.id"
-                                :image="listing.id >= 500 ? `http://127.0.0.1:8000/storage/post-images/${listing.id}` : 'https://picsum.photos/id/' + Math.floor(listing.id/7) + '/1920/1080'"
+                                
                                 :user="listing.user"
                                 :agency="listing.agency_id"
                                 :type="listing.estate_type"
@@ -89,9 +90,9 @@ export default {
     props: ["title", "responseData", "loading", "isVip", "isAgency"],
     data() {
         return {
-            env: process.env.MIX_APP_ENV
+            env: process.env.MIX_APP_ENV,
         }
-    },
+    }
 }
 </script>
 

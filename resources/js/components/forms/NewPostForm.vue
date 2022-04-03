@@ -4,6 +4,10 @@
         <pre>
             {{ formData }}
         </pre>
+
+        <!-- <pre>
+            {{ image ? image : '' }}
+        </pre> -->
         
         <v-form
             @submit.prevent="addPost"
@@ -43,7 +47,9 @@
                                 :label="'Vasitəçi (agent) kimi'"
                                 value="agent"
                                 class="radioBtn"
+                                :disabled="!hasAgency"
                             ></v-radio>
+                            <small v-if="!hasAgency" style="color: red;">*Agent kimi elan paylaşmaq üçün hər hansısa şirkətə bağlı olmalısınız</small>
                         </v-radio-group>
                     </div>
 
@@ -312,7 +318,7 @@
                         </v-text-field>
                     </div>
                     
-                    <div class="d-flex align-items-center py-1">
+                    <div class="">
 
                         <div class="formInput__titleDiv">
                             <p class="formInput__title">
@@ -320,7 +326,26 @@
                             </p>
                         </div>
 
-                        <input @change="fileInputOnChange" type="file" name="images" accept="image/png, image/jpeg" multiple>
+                        <!-- <input @change="fileInputOnChange" type="file" name="images" accept="image/png, image/jpeg" multiple> -->
+
+                        <file-pond
+                            class="filepond"
+                            name="image"
+                            ref="pond"
+                            label-idle="Şəkli seçmək üçün klikləyin və ya şəkli bura atın..."
+                            @init="filepondInitialized"
+                            accepted-file-types="image/jpg, image/jpeg, image/png"
+                            :allowReorder="true"
+                            @processfile="handleProcessedFile"
+                            max-file-size="1MB"
+
+                            :storeAsFile="true"
+                            :allowImagePreview="true"
+                            :allowMultiple="true"
+
+                            @onUpdateFiles="handleFilePondUpdateFile"
+                            :instant-upload="true"
+                        />
                     </div>
                 </fieldset>
             </div>
@@ -336,7 +361,7 @@
                 Yüklə
             </v-btn>
 
-            {{ image.name ? image.name : 'null' }}
+            <!-- {{ image.name ? image.name : 'null' }} -->
 
         </v-form>
 
@@ -344,9 +369,68 @@
 </template>
 
 <script>
+import vueFilepond, { setOptions } from "vue-filepond";
+import { mapState } from 'vuex';
+
+// Plugins
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+
+// Styles
+import "filepond/dist/filepond.min.css";
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
+
+// Gets rid of warning in console
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
+import FilePondPluginFileValidateSize from "filepond-plugin-file-validate-size";
+
+let serverMessage = {};
+let csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+let token = localStorage.getItem("sanctum_token");
+
+setOptions({
+    server: {
+        process: {
+            url: '/api/upload',
+            onerror: (response) => {
+                serverMessage = JSON.parse(response);
+            },
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + token,
+                'X-CSRF-TOKEN': csrf_token
+            }
+        },
+        labelFileProcessingError: () => {
+            return serverMessage.error;
+        }
+    }
+})
+
+// setOptions({
+//     server: {
+//         process: {
+//             url: './upload',
+//             onerror: (response) => {
+//                 serverMessage = JSON.parse(response);
+//             },
+//             headers: {
+//                 'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf_token"]').content()
+//             }
+//         }
+//     },
+//     labelFileProcessingError: () => {
+//         return serverMessage.error;
+//     }
+// });
+
+const FilePond = vueFilepond(FilePondPluginImagePreview, FilePondPluginFileValidateType, FilePondPluginFileValidateSize);
+
 export default {
+    components: { FilePond },
     data() {
         return {
+            csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+
             loading: false,
             formData: {
                 realtor_name: '',
@@ -370,10 +454,9 @@ export default {
                 trade_type: '',
                 realtor_type: '',
 
-                // images: '',
+                image: [],
             },
 
-            image: '',
 
             // selects
             estateTypes: ['Yeni Mənzil', 'Mənzil', 'Ev-Villa', 'Ofis', 'Qaraj', 'Torpaq'],
@@ -385,9 +468,39 @@ export default {
             addResponseData: {},
 
             successfulPost: false,
+
+            hasAgency: false,
         }
     },
     methods: {
+        agencyCheck() {
+            this.hasAgency = false;
+            if(this.user.agency_id != null) {
+                this.hasAgency = true;
+            }
+            else {
+                this.hasAgency = false;
+            }
+        },
+        filepondInitialized() {
+            console.log("Filepond is ready");
+            console.log('OBJECT: ', this.$refs.pond);
+        },
+        handleProcessedFile(error, file) {
+            if(error) {
+                console.log(error);
+                return;
+            }
+
+            this.formData.image = file.serverId
+
+            // add the file to our images array. unshift pushes to beginning instead of end
+            // this.images.unshift(file.serverId);
+        },
+        // Set Images to Array
+        handleFilePondUpdateFile(files){
+            this.formData.image = files.map(files => files.file);
+        },
         addPost() {
             this.loading = true
 
@@ -408,13 +521,13 @@ export default {
             formD.append('price', this.formData.price)
             formD.append('trade_type', this.formData.trade_type)
             formD.append('realtor_type', this.formData.realtor_type)
-            formD.append('images', this.image)
+            formD.append('image', this.formData.image)
 
             // let formMerged = {...this.formData, ...formD}
 
             let token = localStorage.getItem('sanctum_token');
 
-            axios.post('/api/posts', formD, {
+            axios.post('/api/posts', this.formData, {
                 headers: {
                     'Authorization': 'Bearer '+token,
                 }
@@ -422,9 +535,9 @@ export default {
             .then((response) => {
                 console.log("aaaa")
                 console.log(response)
-                this.addResponseData = response.data
+                // this.addResponseData = response.data
                 this.successfulPost = true
-                this.redirectToPostPage(this.addResponseData.id)
+                this.redirectToPostPage(response.data.id)
             })
             .catch((err) => {
                 console.log(err);
@@ -439,12 +552,15 @@ export default {
             this.$router.push(`/post/${id}`)
         },
 
-        fileInputOnChange(e) {
-            this.image = e.target.files[0]
-            // this.formData.images = e.target.files[0]
-            console.log(e.target.files[0])
-        }
+        // fileInputOnChange(e) {
+        //     this.image = e.target.files[0]
+        //     // this.formData.images = e.target.files[0]
+        //     console.log(e.target.files[0])
+        // }
     },
+    computed: {
+        ...mapState(["user"])
+    }
 }
 </script>
 
