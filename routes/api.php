@@ -137,6 +137,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/user/{id}/avatar', [UserController::class, 'updateAvatar']);
 
     Route::get('/users', [UserController::class, 'index']);
+
+    // Posts
+    Route::patch('/post/{id}/increase-score', [PostController::class, 'increaseScore']);
+    Route::patch('/post/{id}/make-vip', [PostController::class, 'makeVip']);
 });
 
 /**
