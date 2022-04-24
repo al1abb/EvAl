@@ -13,6 +13,8 @@ import Vuex from "vuex";
 import router from "./routes";
 import vuetify from './vuetify';
 
+import * as VueGoogleMaps from 'vue2-google-maps';
+
 // import VueAwesomeSwiper from 'vue-awesome-swiper';
 // import 'swiper/css/swiper.css';
 
@@ -208,7 +210,18 @@ const store = new Vuex.Store({
     }
 })
 
-Vue.use(VueRouter).use(store);
+Vue.use(VueRouter).use(store).use(VueGoogleMaps, {
+    load: {
+        key: process.env.MIX_GOOGLE_MAPS_API,
+        region: 'AZ',
+        language: 'az'
+    },
+    installComponents: true
+});
+
+// Gmap cluster
+import GmapCluster from 'vue2-google-maps/dist/components/cluster' // replace src with dist if you have Babel issues
+Vue.component('GmapCluster', GmapCluster)
 
 /**
  * The following block of code may be used to automatically register your

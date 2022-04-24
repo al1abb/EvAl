@@ -1,11 +1,13 @@
 <template>
-    <div class="container-sm d-flex flex-wrap justify-content-between align-items-center py-4">
+    <div class="container-sm d-flex flex-wrap justify-content-between align-items-start py-4">
         <div style="max-width: 50rem;">
-            <h5 style="font-weight: 600;">Data Ətraflı:</h5>
-            <p style="word-break: break-word;">{{ description }}</p>
+            <div class="py-5">
+                <h5 style="font-weight: 600;">Data Ətraflı:</h5>
+                <p style="word-break: break-word;">{{ description }}</p>
+            </div>
         </div>
 
-        <div style="background-color: #E4E4E4;" class="userInfo p-2">
+        <div style="background-color: #E4E4E4;" class="userInfo p-2 mt-5">
             <div>
                 <p class="username">
                     <router-link
@@ -83,7 +85,7 @@ export default {
     data() {
         return {
             numberVisible: false,
-            userAgency: {}
+            userAgency: {},
         }
     },
     methods:{
@@ -103,7 +105,7 @@ export default {
         },
         userProfileImage() {
             return '../storage/' + this.user.avatar
-        }
+        },
     },
     mounted() {
         this.getUserAgency()

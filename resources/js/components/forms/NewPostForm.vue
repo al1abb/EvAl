@@ -317,6 +317,36 @@
                         >
                         </v-text-field>
                     </div>
+
+                    <div class="my-5">
+                        <div class="">
+                            <p class="formInput__title">
+                                Xəritədə ünvanı seçin:
+                            </p>
+                            
+                        </div>
+
+                        <small class="text-muted">Göstərdiyiniz ünvan doğru olduğuna əmin olun!</small>
+
+                        <div>
+                            <GmapMap
+                                :center="{
+                                    lat: 40.409264,
+                                    lng: 49.867092
+                                }"
+                                :zoom="12"
+                                map-type-id="terrain"
+                                style="width: 500px; height: 300px"
+                                @click="handleMapClick"
+                            >
+                                <GmapMarker
+                                    :position="marker.position"
+                                    :clickable="true"
+                                    :draggable="true"
+                                />
+                            </GmapMap>
+                        </div>
+                    </div>
                     
                     <div class="">
 
@@ -418,6 +448,9 @@ export default {
 
                 estate_type: '',
 
+                latitude: 0,
+                longitude: 0,
+
                 city: '',
                 area: '',
                 area_unit: 'room',
@@ -448,19 +481,18 @@ export default {
 
             successfulPost: false,
 
-            hasAgency: false,
+            // hasAgency: false,
+
+            // Map
+            marker: {
+                position: {
+                    lat: 0,
+                    lng: 0,
+                }
+            }
         }
     },
     methods: {
-        agencyCheck() {
-            this.hasAgency = false;
-            if(this.user.agency_id != null) {
-                this.hasAgency = true;
-            }
-            else {
-                this.hasAgency = false;
-            }
-        },
         filepondInitialized() {
             console.log("Filepond is ready");
             console.log('OBJECT: ', this.$refs.pond);
@@ -480,6 +512,17 @@ export default {
         handleFilePondUpdateFile(files){
             this.formData.image = files.map(files => files.file);
         },
+        // Map click
+        handleMapClick(event) {
+            const lat = event.latLng.lat();
+            const lng = event.latLng.lng();
+
+            this.marker.position.lat = lat;
+            this.marker.position.lng = lng;
+
+            this.formData.latitude = lat;
+            this.formData.longitude = lng;
+        },
         addPost() {
             this.loading = true
 
@@ -488,6 +531,8 @@ export default {
             formD.append('contact_email', this.formData.contact_email)
             formD.append('contact_phone_number', this.formData.contact_phone_number)
             formD.append('estate_type', this.formData.estate_type)
+            formD.append('latitude', this.formData.latitude)
+            formD.append('longitude', this.formData.longitude)
             formD.append('city', this.formData.city)
             formD.append('area', this.formData.area)
             formD.append('area_unit', this.formData.area_unit)
@@ -538,9 +583,36 @@ export default {
         // }
     },
     computed: {
-        ...mapState(["user"])
+        ...mapState(["user"]),
+
+        // agencyCheck() {
+        //     // this.hasAgency = false;
+
+        //     console.log("AG ID");
+        //     console.log(this.agencyId);
+
+        //     if(this.agencyId != null) {
+        //         this.hasAgency = true;
+        //     }
+        //     else {
+        //         this.hasAgency = false;
+        //     }
+        // },
+
+        hasAgency() {
+            if(this.user.agency_id != null) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        },
     },
     mounted() {
+        // ! Removed: check agency. Using computed property instead
+        // this.agencyCheck()
+
+        // handle filepond file upload
         let serverMessage = {};
         // let csrf_token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         let token = localStorage.getItem("sanctum_token");

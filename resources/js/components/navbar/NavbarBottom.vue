@@ -171,7 +171,7 @@
                         <v-checkbox
                             label="VİP"
                             v-model="searchQuery.vipCheckbox"
-                            class="vipCheckbox mt-0 mr-5 p-2"
+                            class="vipCheckbox mt-0 mr-2 p-2"
                             style="border: 1px solid #E5E5E5; background-color: #FAFAF9; display: inline-block;"
                             :hide-details="true"
                             :ripple="false"
@@ -181,7 +181,17 @@
                         <v-checkbox
                             label="Agentlik"
                             v-model="searchQuery.agencyCheckbox"
-                            class="agencyCheckbox mt-0 p-2"
+                            class="agencyCheckbox mt-0 mx-2 p-2"
+                            style="border: 1px solid #E5E5E5; background-color: #FAFAF9; display: inline-block;"
+                            :hide-details="true"
+                            :ripple="false"
+                        >
+                        </v-checkbox>
+
+                        <v-checkbox
+                            label="Xəritədə göstər"
+                            v-model="searchQuery.mapCheckbox"
+                            class="mapCheckbox mt-0 mx-2 p-2"
                             style="border: 1px solid #E5E5E5; background-color: #FAFAF9; display: inline-block;"
                             :hide-details="true"
                             :ripple="false"
@@ -249,6 +259,7 @@ export default {
                 floorMax: '',
                 vipCheckbox: false,
                 agencyCheckbox: false,
+                mapCheckbox: false
             },
 
             absolute: true,
@@ -304,7 +315,8 @@ export default {
                     'floorMin': this.searchQuery.floorMin,
                     'floorMax': this.searchQuery.floorMax,
                     'vipCheckbox': this.searchQuery.vipCheckbox,
-                    'agencyCheckbox': this.searchQuery.agencyCheckbox
+                    'agencyCheckbox': this.searchQuery.agencyCheckbox,
+                    'mapCheckbox': this.searchQuery.mapCheckbox
                 }
             }).catch(err => {})
         },
@@ -345,6 +357,10 @@ input::-webkit-inner-spin-button {
 }
 
 .agencyCheckbox > .v-input__control > .v-input__slot > label {
+    margin: 0px !important;
+}
+
+.mapCheckbox > .v-input__control > .v-input__slot > label {
     margin: 0px !important;
 }
 </style>
