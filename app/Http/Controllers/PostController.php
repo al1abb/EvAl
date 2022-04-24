@@ -223,8 +223,6 @@ class PostController extends Controller
         return response()->json($newPost, 200, [], JSON_PRETTY_PRINT);
     }
 
-    
-
     /**
      * Display the specified resource.
      *
@@ -337,6 +335,7 @@ class PostController extends Controller
             'floorMax' => 'nullable|integer',
             'vipCheckbox' => 'nullable|boolean',
             'agencyCheckbox' => 'nullable|boolean',
+            'mapCheckbox' => 'nullable|boolean'
         ]);
 
         if($fields['tradeType'] == 'Hamısı') {
@@ -401,8 +400,10 @@ class PostController extends Controller
 
         $vipCheckbox = $fields['vipCheckbox'];
         $agencyCheckbox = $fields['agencyCheckbox'];
+        $mapCheckbox = $fields['mapCheckbox'];
 
         // ALL POSTS
+        // ? Deleted inRandomOrder() from 3 below post collections
         $posts = Post::search($tradeType,
             $estateType,
             $roomCount,
@@ -414,8 +415,8 @@ class PostController extends Controller
             $floorMin,
             $floorMax,
             $vipCheckbox,
-            $agencyCheckbox
-        )->inRandomOrder();
+            $agencyCheckbox,
+        );
 
         // VIP POSTS
         $vipPosts = Post::search($tradeType,
@@ -429,8 +430,8 @@ class PostController extends Controller
             $floorMin,
             $floorMax,
             $vipCheckbox,
-            $agencyCheckbox
-        )->vipPosts()->inRandomOrder();
+            $agencyCheckbox,
+        )->vipPosts();
         
         // VOUCHER POSTS
         $voucherPosts = Post::search($tradeType,
@@ -444,14 +445,19 @@ class PostController extends Controller
             $floorMin,
             $floorMax,
             $vipCheckbox,
-            $agencyCheckbox
-        )->voucherPosts()->inRandomOrder();
+            $agencyCheckbox,
+        )->voucherPosts();
 
         $searchResult['allPostsCount'] = $posts->count();
         $searchResult['vipPostsCount'] = $vipPosts->count();
         $searchResult['voucherPostsCount'] = $voucherPosts->count();
 
-        $searchResult['allPosts'] = $posts->simplePaginate(20);
+        // Return all posts based on map
+
+        $mapCheckbox ? 
+            $searchResult['allPosts'] = $posts->get() : 
+            $searchResult['allPosts'] = $posts->simplePaginate(20);
+
         $searchResult['vipPosts'] = $vipPosts->simplePaginate(8);
         $searchResult['voucherPosts'] = $voucherPosts->simplePaginate(20);
 
