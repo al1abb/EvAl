@@ -40,7 +40,7 @@
 
             <NavbarLink
                 to="/isarelenmisler"
-                text="İşarələnmişlər"
+                title="İşarələnmişlər"
                 icon="mdi-bookmark"
             />
         </div>

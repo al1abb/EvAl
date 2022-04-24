@@ -1,7 +1,16 @@
 <template>
     <div class="container-sm">
 
+        <p style="font-size: 1.0rem; text-align: center; font-weight: 600;">
+            İşarələnmiş Elanlar
+        </p>
+
+        <hr>
+
         <div class="mt-5">
+            <div v-if="loading">
+                <p class="text-center">Yüklənir</p>
+            </div>
             <div class="postList">
                 <div
                     class="d-flex justify-content-center"
@@ -57,10 +66,6 @@
                     işarəsini klikləyin
                 </small>
             </div>
-        </div>
-
-        <div v-if="loading">
-            <p class="text-center">Yüklənir</p>
         </div>
 
     </div>
