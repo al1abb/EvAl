@@ -71,6 +71,9 @@ class PostController extends Controller
             'contact_phone_number' => 'string',
 
             'estate_type' => 'string',
+            
+            'latitude' => 'required',
+            'longitude' => 'required',
 
             'city' => 'string',
             'area' => 'integer',

@@ -37,6 +37,9 @@
                 :district="post.district"
                 :apartmentFloor="post.apartment_floor"
                 :totalFloors="post.total_floors"
+                :isVip="post.is_vip"
+                :isAgency="post.agency_id"
+                :realtorType="post.realtor_type"
             />
             
             <PostPageMid 
@@ -45,6 +48,28 @@
                 :phoneNumber="post.contact_phone_number"
                 :realtorType="post.realtor_type"
             />
+
+            <!-- Google Map Location for the post -->
+            <div class="container-sm">
+                <div class="py-5" style="">
+                    <h5 style="font-weight: 600;">Xəritədə ünvan:</h5>
+                    <div>
+                        <GmapMap
+                            :center="mapPosition"
+                            :zoom="16"
+                            map-type-id="terrain"
+                            style="height: 300px;"
+                            class="post-map"
+                        >
+                            <GmapMarker
+                                :position="mapPosition"
+                                :clickable="true"
+                                :draggable="true"
+                            />
+                        </GmapMap>
+                    </div>
+                </div>
+            </div>
 
             <div class="container-sm py-4">
                 <p style="font-weight: 600;">Baxışlar: </p>
@@ -63,16 +88,21 @@
 import PostPageSwiper from '../components/PostPageSwiper.vue';
 import PostPageTop from '../components/postpage/PostPageTop.vue';
 import PostPageMid from '../components/postpage/PostPageMid.vue';
+import { mapState } from 'vuex';
 export default {
     components: { PostPageSwiper, PostPageTop, PostPageMid },
     data() {
         return {
             post: {},
+
+            ownPost: null,
+
             loading: false,
         };
     },
     mounted() {
         this.fetchData();
+        this.checkIfOwnPost();
     },
     methods: {
         fetchData() {
@@ -92,8 +122,20 @@ export default {
                     this.loading = false;
                 });
         },
+
+        checkIfOwnPost() {
+            console.log(this.user, this.post.user)
+            if(this.user == this.post.user) {
+                console.log("MY POST");
+            }
+            else {
+                console.log("NOT MY POST");
+            }
+        }
     },
     computed: {
+        ...mapState(["user"]),
+
         formattedPrice() {
             return this.post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
         },
@@ -137,6 +179,18 @@ export default {
             const desc = this.post.description
             
             return desc
+        },
+        computedLat() {
+            return parseFloat(this.post.latitude)
+        },
+        computedLng() {
+            return parseFloat(this.post.longitude)
+        },
+        mapPosition() {
+            return {
+                lat: this.computedLat,
+                lng: this.computedLng
+            }
         }
     }
 };
@@ -146,5 +200,10 @@ export default {
 .postpage__price {
     font-size: 1.5rem;
     font-weight: bold;
+}
+
+.post-map > .vue-map {
+    border: 3px solid white;
+    border-radius: 15px;
 }
 </style>

@@ -96,11 +96,11 @@
                             <p class="postStats">
                                 <span v-if="roomCount">{{ roomCount }} rooms</span>
                                 <span v-if="area">
-                                    <span>•</span>
+                                    <span v-if="roomCount">•</span>
                                     {{ area }} m²
                                 </span>
                                 <span v-if="apartmentFloor && totalFloors">
-                                    <span>•</span>
+                                    <span v-if="area">•</span>
                                     {{ apartmentFloor }}/{{ totalFloors }} floor
                                 </span>
 
@@ -127,21 +127,46 @@
                 </div>
             </v-card>
 
-            <transition name="bookmark" mode="in-out">
+            <transition name="myTransition">
+                <!-- Removing this fixes transition -->
                 <div 
                     class="postLike"
                     @click="handleSave"
                     @mouseover="elevation=2"
-                    :style="isPostSaved ? '-webkit-text-fill-color: #77A43D;' : '-webkit-text-fill-color: #00000050;'"
+                    v-if="isPostSaved"
                 >
-                    <v-icon
-                        class="bookmark_icon"
-                        color="#00000090"
-                        :title="isPostSaved ? 'Yaddaşdan sil' : 'Yadda saxla'"
+                    <div
+                        :style="'text-fill-color: #77A43D;'"
                     >
-                        mdi-bookmark
-                    </v-icon>
+                        <v-icon
+                            class="bookmark_icon"
+                            color="#00000090"
+                            :title="'Yaddaşdan sil'"
+                        >
+                            mdi-bookmark
+                        </v-icon>
+                    </div>
                 </div>
+
+                <div 
+                    class="postLike"
+                    @click="handleSave"
+                    @mouseover="elevation=2"
+                    v-if="!isPostSaved"
+                >
+                    <div
+                        :style="'text-fill-color: #00000050;'"
+                    >
+                        <v-icon
+                            class="bookmark_icon"
+                            color="#00000090"
+                            :title="'Yadda saxla'"
+                        >
+                            mdi-bookmark
+                        </v-icon>
+                    </div>
+                </div>
+                
             </transition>
 
         </div>
@@ -324,5 +349,18 @@ export default {
 
     letter-spacing: 0px !important;
     color: #969595;
+}
+
+/* bookmark animation */
+.myTransition-enter-active {
+  transition: all 1s ease;
+}
+.myTransition-leave-active {
+  transition: all 8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.myTransition-enter, .myTransition-leave-to
+/* .slide-fade-leave-active for <2.1.8 */ {
+  transform: translateX(30px);
+  opacity: 0;
 }
 </style>
