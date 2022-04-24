@@ -1,9 +1,29 @@
 <template>
         <div class="container-sm d-flex flex-wrap justify-content-between align-items-center mt-5">
             <div class="my-3 w-100">
-                <div class="mb-3 d-flex flex-row" >
+
+                <p>
+                    <v-icon
+                        v-if="isVip"
+                        color="red"
+                        title="Elan VİP elandır"
+                    >
+                        mdi-crown
+                    </v-icon>
+                    <v-icon
+                        v-if="isAgency && realtorType=='agent'"
+                        color="primary"
+                    >
+                        mdi-domain
+                    </v-icon>
+                </p>
+
+                <div class="mb-3 d-flex flex-row">
+
                     <!-- Qiymət/Price -->
-                    <p class="postpage__price">{{ price }} AZN</p>
+                    <p class="postpage__price">
+                        {{ price }} AZN
+                    </p>
 
                     <div class="d-flex flex-row text-center ml-auto">
                         <div class="px-2">
@@ -77,7 +97,7 @@
                             </v-btn>
                         </template>
 
-                        <div class="bg-white">
+                        <div class="bg-white container">
                             <v-card-title>
                                 Elanı irəli çəkmək üçün aşağıdakı xidmətlərdən birini seçin
                             </v-card-title>
@@ -95,20 +115,14 @@
                                         :complete="stepper > 2"
                                         step="2"
                                     >
-                                        Ödəniş edin
-                                    </v-stepper-step>
-                                    <v-divider></v-divider>
-                                    <v-stepper-step
-                                        step="3"
-                                    >
-                                        Step 3
+                                        Ödəniş
                                     </v-stepper-step>
                                 </v-stepper-header>
                                 <v-stepper-items>
                                     <v-stepper-content
                                         step="1"
                                     >
-                                        <!-- Stepper 1 -->
+                                        <!-- Stepper 1. Choose service -->
                                         <div class="d-flex justify-content-around align-items-center">
                                             <v-radio-group
                                                 v-model="radioGroup"
@@ -131,15 +145,23 @@
                                         
                                     </v-stepper-content>
 
+                                    <!-- Stepper 2. Stripe Checkout -->
                                     <v-stepper-content
                                         step="2"
                                     >
                                         <div class="d-flex justify-content-around align-items-center">
-                                            Stripe checkout
+                                            <v-btn 
+                                                class="no-uppercase"
+                                                depressed 
+                                                @click="submitStripePayment"
+                                            >
+                                                Ödəniş et
+                                            </v-btn>
                                         </div>
                                         
                                     </v-stepper-content>
 
+                                    <!-- Stepper 3.  -->
                                     <v-stepper-content
                                         step="3"
                                     >
@@ -173,25 +195,18 @@
                             </v-stepper>
                         </div>
                     </v-dialog>
-
-                    <v-dialog
-                        v-model="makeVipDialog"
+                    
+                    <v-btn
+                        class="no-uppercase"
+                        outlined
+                        color="red"
+                        @click="makePostVIP"
                     >
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-btn
-                                class="no-uppercase"
-                                outlined
-                                color="red"
-                                v-bind="attrs"
-                                v-on="on"
-                            >
-                                <v-icon>
-                                    mdi-diamond-stone
-                                </v-icon>
-                                <p style="font-weight: 600;">Elanı VİP et</p>
-                            </v-btn>
-                        </template>
-                    </v-dialog>
+                        <v-icon>
+                            mdi-diamond-stone
+                        </v-icon>
+                        <p style="font-weight: 600;">Elanı VİP et</p>
+                    </v-btn>
                 </div>
 
                 <div>
@@ -204,10 +219,17 @@
 
 <script>
 import { mapActions, mapState } from 'vuex';
+// import { StripeCheckout } from "@vue-stripe/vue-stripe";
+import { loadStripe } from "@stripe/stripe-js";
+
+const localAuthToken = localStorage.getItem("sanctum_token")
+
 export default {
-    props: ["id", "price", "estate", "tradeOperation", "roomCount", "area", "district", "apartmentFloor", "totalFloors"],
+    props: ["id", "price", "estate", "tradeOperation", "roomCount", "area", "district", "apartmentFloor", "totalFloors", "isVip", "isAgency", "realtorType"],
     data() {
         return {
+            publishableKey: process.env.MIX_STRIPE_PK,
+
             SRImprovementDialog: false,
             makeVipDialog: false,
 
@@ -219,7 +241,49 @@ export default {
                 "5",
                 "10",
                 "20"
-            ]
+            ],
+
+            scoreProducts: [
+                {
+                    empty: "Empty object"
+                },
+
+                {
+                    price: "price_1Kmu69FTyLubqrgiBmJLPBYD",
+                    quantity: 1
+                },
+                {
+                    price: "price_1Kmu6rFTyLubqrgi8NJrRkO0",
+                    quantity: 1
+                },
+                {
+                    price: "price_1Kmu7TFTyLubqrgiS5OWr7Vf",
+                    quantity: 1
+                },
+                {
+                    price: "price_1Kmu82FTyLubqrgi5J4fHIds",
+                    quantity: 1
+                }
+            ],
+
+            checkoutOptions: {                
+                lineItems: [],
+                mode: "payment",
+                successUrl: `${window.location.origin}/post/${this.id}/successful-score-payment/1?token=${localAuthToken}`,
+                cancelUrl: `${window.location.origin}/post/${this.id}`
+            },
+
+            checkoutOptionsVip: {
+                lineItems: [
+                    {
+                        price: "price_1KoVDAFTyLubqrgiJnAJPKaX",
+                        quantity: 1
+                    }
+                ],
+                mode: "payment",
+                successUrl: `${window.location.origin}/post/${this.id}/make-vip?token=${localAuthToken}`,
+                cancelUrl: `${window.location.origin}/post/${this.id}`
+            }
         }
     },
     methods: {
@@ -233,12 +297,6 @@ export default {
                 this.unsavePost(this.id)
             }
         },
-
-        handleSRImprovement() {
-            console.log(this.radioGroup)
-
-
-        },
         stepperBack() {
             if(this.stepper > 1) {
                 this.stepper--;
@@ -248,6 +306,27 @@ export default {
             if(this.stepper != 3) {
                 this.stepper++;
             }
+        },
+        getStripe() {
+            const stripePromise = loadStripe(process.env.MIX_STRIPE_PK)
+            return stripePromise
+        },
+        async submitStripePayment() {
+            // this.$refs.checkoutRef.redirectToCheckout();
+            const stripe = await this.getStripe()
+            const { error } = await stripe.redirectToCheckout(this.checkoutOptions);
+            
+            if(error) {
+                console.log("Stripe checkout error: ", error)
+            }
+        },
+        async makePostVIP() {
+            const stripe = await this.getStripe()
+            const { error } = await stripe.redirectToCheckout(this.checkoutOptionsVip)
+
+            if(error) {
+                console.log("Stripe checkout error: ", error)
+            }
         }
     },
     computed: {
@@ -255,6 +334,10 @@ export default {
         
         isPostSaved() {
             return this.savedPosts.includes(this.id)
+        },
+
+        isPostVip() {
+            return this.isVip
         },
 
         SRRadioPrice() {
@@ -274,8 +357,37 @@ export default {
             if(this.radioGroup == 4) {
                 return "12,00 AZN"
             }
+        },
+
+        SRRadioPriceFormatted() {
+            // 1 dene
+            if(this.radioGroup == 1) {
+                return "1"
+            }
+            // 5 dene
+            if(this.radioGroup == 2) {
+                return "4"
+            }
+            // 10 dene
+            if(this.radioGroup == 3) {
+                return "7"
+            }
+            // 20 dene
+            if(this.radioGroup == 4) {
+                return "12"
+            }
         }
-    }
+    },
+    mounted() {
+        this.checkoutOptions.lineItems = [this.scoreProducts[1]]
+    },
+    watch: {
+        radioGroup() {
+            this.checkoutOptions.lineItems = [this.scoreProducts[this.radioGroup]]
+            this.checkoutOptions.successUrl = `${window.location.origin}/post/${this.id}/successful-score-payment/${this.radioGroup}?token=${localAuthToken}`
+            console.log(this.checkoutOptions.lineItems)
+        }
+    },
 }
 </script>
 

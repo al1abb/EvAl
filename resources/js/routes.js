@@ -10,6 +10,8 @@ import PostPage from './pages/PostPage.vue';
 import UserProfile from './pages/UserProfile.vue';
 import AgencyProfile from './pages/AgencyProfile.vue';
 import SavedPosts from './pages/SavedPosts.vue';
+import SuccessfulScorePayment from './pages/Success/SuccessfulScorePayment.vue';
+import SuccessfulVIPPayment from './pages/Success/SuccessfulVIPPayment.vue';
 
 const routes = [
     {
@@ -56,6 +58,26 @@ const routes = [
         path: '/post/:id',
         name: 'postPage',
         component: PostPage,
+        props: true
+    },
+    {
+        path: '/post/:id/successful-score-payment/:radioScore',
+        name: 'succesfulScorePayment',
+        component: SuccessfulScorePayment,
+        props: true,
+        // beforeEnter: (to, from, next) => {
+        //     console.log("TO")
+        //     console.log(to)
+        //     console.log("FROM")
+        //     console.log(from)
+        //     console.log("NEXT")
+        //     console.log(next)
+        // }
+    },
+    {
+        path: '/post/:id/make-vip',
+        name: 'vipPayment',
+        component: SuccessfulVIPPayment,
         props: true
     },
     {

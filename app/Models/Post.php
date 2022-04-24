@@ -92,6 +92,9 @@ class Post extends Model implements HasMedia
         if($agencyChecked) {
             $query->whereNotNull('agency_id')->where('realtor_type', 'agent');
         }
+
+        $query->orderBy('search_points', 'DESC');
+
         return $query;
             
             

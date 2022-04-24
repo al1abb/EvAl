@@ -25,6 +25,8 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "@stripe/stripe-js": "^1.27.0",
+        "@vue-stripe/vue-stripe": "^4.4.2",
         "dayjs": "^1.10.7",
         "epic-spinners": "^1.1.0",
         "filepond": "^4.30.3",
