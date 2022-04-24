@@ -457,4 +457,30 @@ class PostController extends Controller
         
         return response()->json($searchResult, 200, [/*headers here*/], JSON_PRETTY_PRINT);
     }
+
+    /**
+     * Increase search ranking score of a post by given value from request
+     */
+    public function increaseScore(Request $request) {
+
+        $post = Post::find($request->id);
+
+        $post->search_points += $request->score;
+
+        $post->save();
+
+        return response()->json($post, 200, [], JSON_PRETTY_PRINT);
+    }
+
+    /**
+     * Make a specified post a Vip post
+     */
+    public function makeVip(Request $request) {
+        $post = Post::find($request->id);
+
+        $post->is_vip = true;
+        $post->save();
+
+        return response()->json($post, 200, [], JSON_PRETTY_PRINT);
+    }
 }

@@ -24,6 +24,9 @@ class CreatePostsTable extends Migration
 
             $table->enum('estate_type', ['new_apartment', 'apartment', 'house_villa', 'office', 'garage', 'land']);
 
+            $table->decimal('latitude', 8, 6, true);
+            $table->decimal('longitude', 9, 6, true);
+
             $table->string('city');
             $table->integer('area');
             $table->enum('area_unit', ['room', 'land']);
