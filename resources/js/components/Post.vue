@@ -249,14 +249,16 @@ export default {
         },
 
         imageUrl() {
-            return this.postMedia.original_url;
+            return this.postMedia.original_url ?? `https://picsum.photos/id/${this.id}/200/300`;
         }
     },
     mounted() {
         // console.log(this.agency)
         // console.log(this.realtorType)
         // console.log(this.agency)
-        this.getPostMedia(this.id);
+        if(this.id < 100) {
+            this.getPostMedia(this.id);
+        }
     },
 }
 </script>

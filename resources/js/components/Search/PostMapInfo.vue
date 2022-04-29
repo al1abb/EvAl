@@ -55,6 +55,28 @@
                 </div>
 
                 <div>
+                    <v-btn
+                        @click="handlePostLinkCopy"
+                        icon
+                    >
+                        <v-icon
+                            title="Elan linkini kopyalayın"
+                        >
+                            mdi-content-copy
+                        </v-icon>
+
+                            <!-- <v-snackbar
+                                v-model="linkCopySnackbar"
+                                :timeout="3000"
+                                absolute
+                                bottom
+                                elevation="5"
+                                max-height="20px"
+                                class="no-uppercase"
+                            >
+                                Link kopyalandı
+                            </v-snackbar> -->
+                    </v-btn>
                     <v-btn 
                         @click="handleSave"
                         icon
@@ -90,10 +112,25 @@ export default {
             },
 
             loading: null,
+
+            // link copy, snackbar
+            linkCopySnackbar: false,
+            linkCopyStatus: '',
         }
     },
     methods: {
         ...mapActions(["savePost", "unsavePost"]),
+
+        handlePostLinkCopy() {
+            this.linkCopySnackbar = true
+             
+            let route = this.$router.resolve({
+                path: `/post/${this.postId}`
+            })
+
+            // window.navigator.clipboard.writeText(route);
+            // this.linkCopyStatus = 'copied'
+        },
 
         handleSave() {
             if(this.isPostSaved == false) {
@@ -125,7 +162,7 @@ export default {
                 path: `/post/${this.postId}`
             })
             window.open(route.href, '_blank')
-        }
+        },
     },
     mounted() {
         // this.getPostMedia(this.postId)
@@ -134,7 +171,7 @@ export default {
         ...mapState(["savedPosts"]),
 
         computedPostMedia() {
-            return this.postMedia
+            return this.postMedia ?? `https://picsum.photos/id/${this.postId}/200/300`
         },
 
         computedPostData() {

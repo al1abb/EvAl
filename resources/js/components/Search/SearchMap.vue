@@ -20,7 +20,7 @@
                 :key="index"
                 :position="gmp"
                 :clickable="true"
-                @mouseover="toggleInfoWindow(gmp,index)"
+                @mouseover="toggleInfoWindow(gmp, index)"
                 @click="toggleInfoWindow(gmp, index)"
             >
             </GmapMarker>
@@ -127,6 +127,8 @@ export default {
         },
 
         toggleInfoWindow(marker, idx) {
+            // this.postData = null;
+            
             if(this.loadingInfoMenu == false) {
                 console.log("MARKER", marker)
                 this.infoWindowPos = {

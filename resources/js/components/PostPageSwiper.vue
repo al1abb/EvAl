@@ -1,7 +1,7 @@
 <template>
     <div class="container-sm" style="max-width: 60rem;">
         <v-card class="responsiveImage">
-            <Swiper class="swiper" v-if="id>500" :options="swiperOption">
+            <Swiper class="swiper" v-if="postMedia.length" :options="swiperOption">
                 <SwiperSlide v-for="(item, i) in postMedia.length" :key="i">
                     <v-img
                         :src="postMedia[i].title"
@@ -18,7 +18,7 @@
                 <div class="swiper-button-next text-white" slot="button-next"></div>
             </Swiper>
 
-            <Swiper class="swiper" :options="swiperOption">
+            <Swiper class="swiper" v-if="!postMedia.length" :options="swiperOption">
                 <SwiperSlide v-for="(item, i) in 1" :key="i">
                     <!-- 'https://picsum.photos/id/' +
                                 Math.floor(id / 7+i) +
@@ -144,7 +144,7 @@ export default {
     },
     computed: {
         imageUrl() {
-            return this.postMedia.original_url;
+            return `https://picsum.photos/id/${this.id}/200/300`;
         }
     }
 }
