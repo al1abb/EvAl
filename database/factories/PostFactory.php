@@ -56,18 +56,25 @@ class PostFactory extends Factory
 
         if($rand_user->agency) {
             // give 50% chance to create own post if user is in agency
-            $realtorType = $this->faker->randomElement('self', 'agent');
+            $realtorType = $this->faker->randomElement(['self', 'agent']);
         }
         else {
             // if user does not have agency just create own post
-            $realtorType = $this->faker->randomElement('self');
+            $realtorType = $this->faker->randomElement(['self']);
         }
+
+        $latitude = $this->faker->randomFloat(3, 39.6, 41.17);
+        $longitude = $this->faker->randomFloat(3, 46.3, 49.8);
 
         return [
             'user_id' => $rand_user,
             'agency_id' => $rand_user->agency,
 
             'estate_type' => $estate_type,
+
+            'latitude' => $latitude,
+            'longitude' => $longitude,
+
             'city' => $this->faker->randomElement(['Bakı', 'Sumqayıt', 'Gəncə']),
             'area' => $this->faker->numberBetween($min = 10, $max = 500),
             'area_unit' => $area_unit,
