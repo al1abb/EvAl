@@ -34,6 +34,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::middleware('auth:sanctum')->get('/user/isadmin', function(Request $request) {
+    return $request->user()->hasRole('administrator');
+});
+
 /**
  * Public routes
  */
@@ -55,7 +59,7 @@ Route::get('/posts', [PostController::class, 'index']);
 Route::get('/post/{id}', [PostController::class, 'show']);
 Route::post('/posts/custom', [PostController::class, 'showSelected']);
 Route::put('/post/{id}', [PostController::class, 'update']);
-Route::delete('/post/{id}', [PostController::class, 'destroy']);
+
 
 // Post Media
 Route::get('/post/{id}/media', [PostMediaController::class, 'show']);
@@ -70,8 +74,8 @@ Route::get('/posts/vip/tarix', [PostController::class, 'vipPostsByPeriod']);
 Route::get('posts/agentlikler', [PostController::class, 'latestAgencyPosts']);
 
 // Agencies API routes
-Route::get('/agencies', [AgencyController::class, 'index']);
-Route::post('/agencies', [AgencyController::class, 'store']);
+
+
 Route::get('/agency/{id}', [AgencyController::class, 'show']);
 Route::put('/agency/{id}', [AgencyController::class, 'update']);
 Route::delete('/agency/{id}', [AgencyController::class, 'destroy']);
@@ -84,11 +88,10 @@ Route::delete('/agency/{id}', [AgencyController::class, 'destroy']);
 // Route::delete('/admin/{id}', [AdminController::class, 'destroy']);
 
 // Flag API routes
-Route::get('/flags', [FlagController::class, 'index']);
-Route::post('/flags', [FlagController::class, 'store']);
+
+
 Route::get('/flag/{id}', [FlagController::class, 'show']);
-Route::put('/flag/{id}', [FlagController::class, 'update']);
-Route::delete('/flag/{id}', [FlagController::class, 'destroy']);
+
 
 /**
  * Relationship routes (Hierarchical)
@@ -149,20 +152,31 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::group(['middleware' => ['auth:sanctum', 'role:user']], function () {
     Route::post('/posts', [PostController::class, 'store']);
     Route::post('/upload', [UploadController::class, 'store']);
+
+    // Flag
+    Route::post('/flags', [FlagController::class, 'store']);
 });
 
 /**
  * Moderator Group Functions
  */
 Route::group(['middleware' => ['auth:sanctum', 'role:moderator']], function () {
-
+    Route::post('/agencies', [AgencyController::class, 'store']);
 });
 
 /**
  * Administrator Group Functions
  */
 Route::group(['middleware' => ['auth:sanctum', 'role:administrator']], function () {
-    
+    Route::get('/flags', [FlagController::class, 'index']);
+    Route::put('/flag/{id}', [FlagController::class, 'update']);
+    Route::delete('/flag/{id}', [FlagController::class, 'destroy']);
+
+    // Agency
+    Route::get('/agencies', [AgencyController::class, 'index']);
+
+    // Post
+    Route::delete('/post/{id}', [PostController::class, 'destroy']);
 });
 
 /**

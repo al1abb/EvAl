@@ -12,6 +12,10 @@ import AgencyProfile from './pages/AgencyProfile.vue';
 import SavedPosts from './pages/SavedPosts.vue';
 import SuccessfulScorePayment from './pages/Success/SuccessfulScorePayment.vue';
 import SuccessfulVIPPayment from './pages/Success/SuccessfulVIPPayment.vue';
+import FlagsPage from './pages/FlagsPage.vue';
+import AgenciesPage from './pages/AgenciesPage.vue';
+import UsersPage from './pages/UsersPage.vue';
+import AddAgencyPage from './pages/AddAgencyPage.vue';
 
 const routes = [
     {
@@ -91,6 +95,26 @@ const routes = [
         name: 'agencyProfile',
         component: AgencyProfile,
         props: true,
+    },
+    {
+        path: '/flags',
+        name: 'flags',
+        component: FlagsPage
+    },
+    {
+        path: '/agencies',
+        name: 'agencies',
+        component: AgenciesPage
+    },
+    {
+        path: '/add-agency',
+        name: 'add-agency',
+        component: AddAgencyPage
+    },
+    {
+        path: '/users',
+        name: 'users',
+        component: UsersPage
     }
 ];
 
