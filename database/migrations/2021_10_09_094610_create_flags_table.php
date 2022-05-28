@@ -21,6 +21,7 @@ class CreateFlagsTable extends Migration
             ->onDelete('cascade');
 
             $table->foreignId('post_id')
+            ->nullable()
             ->constrained()
             ->onDelete('cascade');
 

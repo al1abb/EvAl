@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Flag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FlagController extends Controller
@@ -27,9 +28,12 @@ class FlagController extends Controller
     public function store(Request $request)
     {
         $attributes = $request->validate([
-            'flag_reason' => 'string'
+            'flag_reason' => 'string',
+            'post_id' => 'integer'
         ]);
 
+        $attributes['user_id'] = auth()->user()->id;
+        
         $newFlag = Flag::create($attributes);
 
         return response()->json($newFlag, 200, [], JSON_PRETTY_PRINT);
