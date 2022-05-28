@@ -1,9 +1,10 @@
 <template>
     <div>
         
-        <pre>
+        <!-- Render this to show form data json -->
+        <!-- <pre>
             {{ formData }}
-        </pre>
+        </pre> -->
 
         <!-- <pre>
             {{ image ? image : '' }}

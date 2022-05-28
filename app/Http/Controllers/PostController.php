@@ -311,6 +311,9 @@ class PostController extends Controller
         if(auth()->user() == $post->user()) {
             $post->delete();
         }
+        else if(auth()->user()->role == 'administrator') {
+            $post->delete();
+        }
         else {
             return response()->json('You do not have privileges', 403, [/*headers here*/], JSON_PRETTY_PRINT);
         }

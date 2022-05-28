@@ -22,7 +22,6 @@
                                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7JvxfS8YsVlqnRbNFNx3b7t5UUsl4p_8V2A&usqp=CAU"
                                     :size="10"
                                     color="#919191"
-                                    v-if="user.avatar == null"
                                 >
                                     <template v-slot:placeholder>
                                         <v-sheet>
@@ -34,13 +33,13 @@
                                         </v-sheet>
                                     </template>
                                 </v-img>
-                                <img
+                                <!-- <img
                                     v-if="user.avatar != null"
                                     :src="userProfileImage"
                                     :alt="`${user.name}`"
                                     width="50"
                                     height="50"
-                                >
+                                > -->
                             </v-avatar>
                             <p class="ml-1">{{ user.name }}</p>
                             <v-icon
@@ -56,8 +55,9 @@
                     </router-link>
                 </p>
                 <p class="post_realtor">{{ realtor }}</p>
-                <div v-if="realtor=='Agent' && userAgency.length">
-                    <p>Şirkət: 
+                <div v-if="realtor=='Agent'">
+                    <p>
+                        <b>Şirkət: </b>
                         <router-link
                             :to="`/agency/${user.agency_id}`"
                         >

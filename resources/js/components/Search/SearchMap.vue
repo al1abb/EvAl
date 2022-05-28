@@ -127,7 +127,7 @@ export default {
         },
 
         toggleInfoWindow(marker, idx) {
-            // this.postData = null;
+            this.postData = null;
             
             if(this.loadingInfoMenu == false) {
                 console.log("MARKER", marker)

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-if="!loading">
+        <div v-if="!loading && this.postData.price!=undefined">
             <div class="d-flex" @click="goToPostPage" style="cursor: pointer;">
                 <div>
                     <v-img 

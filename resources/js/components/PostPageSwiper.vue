@@ -1,10 +1,10 @@
 <template>
     <div class="container-sm" style="max-width: 60rem;">
         <v-card class="responsiveImage">
-            <Swiper class="swiper" v-if="postMedia.length" :options="swiperOption">
-                <SwiperSlide v-for="(item, i) in postMedia.length" :key="i">
+            <Swiper class="swiper" v-if="postMedia.original_url" :options="swiperOption">
+                <SwiperSlide >
                     <v-img
-                        :src="postMedia[i].title"
+                        :src="postMedia.original_url"
                         :aspect-ratio="16/9"
                         contain
                     >
@@ -18,7 +18,7 @@
                 <div class="swiper-button-next text-white" slot="button-next"></div>
             </Swiper>
 
-            <Swiper class="swiper" v-if="!postMedia.length" :options="swiperOption">
+            <Swiper class="swiper" v-if="!postMedia.original_url" :options="swiperOption">
                 <SwiperSlide v-for="(item, i) in 1" :key="i">
                     <!-- 'https://picsum.photos/id/' +
                                 Math.floor(id / 7+i) +
@@ -129,14 +129,19 @@ export default {
         
         // get post media from PostMediaController
         getPostMedia(postId) {
-            axios.get(`/api/post/${postId}/media`)
-                .then((res) => {
-                    this.postMedia = JSON.parse(JSON.stringify(res.data));
-                    console.log(this.postMedia)
-                })
-                .catch((err) => {
-                    console.log(err);
-                })
+            if(postId > 1000) {
+                axios.get(`/api/post/${postId}/media`)
+                    .then((res) => {
+                        this.postMedia = JSON.parse(JSON.stringify(res.data));
+
+                        console.log("POSTMEDIA")
+                        console.log(this.postMedia)
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    })
+
+            }
         }
     },
     mounted() {
@@ -144,7 +149,7 @@ export default {
     },
     computed: {
         imageUrl() {
-            return `https://picsum.photos/id/${this.id}/200/300`;
+            return this.postMedia.original_url ?? `https://picsum.photos/id/${this.id%200}/1920/1080`;
         }
     }
 }

@@ -26,7 +26,7 @@
                         </v-icon>
                     </div>
                     
-                    <div v-if="hasVoucher" class="d-flex" style="background-color: transparent;" title="Kupça var">
+                    <div v-if="hasVoucher" class="d-flex" style="background-color: transparent;" title="Çıxarış var">
                         <v-icon
                             color="orange"
                             size="25"
@@ -127,7 +127,16 @@
                 </div>
             </v-card>
 
-            <transition name="myTransition">
+            <div>
+                    <div v-if="userIsAdmin">
+                        <v-icon
+                            class="postDelete"
+                            color="red"
+                            @click="handlePostDelete"
+                        >
+                            mdi-delete
+                        </v-icon>
+                    </div>
                 <!-- Removing this fixes transition -->
                 <div 
                     class="postLike"
@@ -167,7 +176,7 @@
                     </div>
                 </div>
                 
-            </transition>
+            </div>
 
         </div>
     <!-- </router-link> -->
@@ -206,7 +215,9 @@ export default {
             elevation: 0,
             liked: false,
 
-            postMedia: {}
+            postMedia: {},
+
+            // localUser: {}
         }
     },
     methods: {
@@ -231,7 +242,38 @@ export default {
                 .catch((err) => {
                     console.log(err);
                 })
-        }
+        },
+
+        handlePostDelete() {
+            axios.delete(`/api/post/${this.id}`, {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem("sanctum_token")
+                }
+            })
+            .then((res) => {
+                console.log(res)
+
+                this.$router.go()
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        },
+
+        // fetchUser() {
+        //     axios.get(`/api/user`, {
+        //         headers: {
+        //             'Authorization': 'Bearer ' + localStorage.getItem("sanctum_token")
+        //         }
+        //     })
+        //     .then((res) => {
+        //         console.log(res.data)
+        //         this.localUser = res.data
+        //     })
+        //     .catch((err) => {
+        //         console.log(err)
+        //     })
+        // }
     },
     computed: {
         ...mapState(["savedPosts"]),
@@ -249,8 +291,12 @@ export default {
         },
 
         imageUrl() {
-            return this.postMedia.original_url ?? `https://picsum.photos/id/${this.id}/200/300`;
-        }
+            return this.postMedia.original_url ?? `https://picsum.photos/id/${this.id%200}/1920/1080`;
+        },
+        
+        userIsAdmin() {
+            return this.$store.state?.user?.role == 'administrator'
+        },
     },
     mounted() {
         // console.log(this.agency)
@@ -259,6 +305,8 @@ export default {
         if(this.id < 100) {
             this.getPostMedia(this.id);
         }
+
+        // this.fetchUser()
     },
 }
 </script>
@@ -288,6 +336,16 @@ export default {
     top: 7px;
     right: 7px;
     z-index: 1;
+}
+
+.postDelete {
+    position: absolute;
+    bottom: 25px;
+    right: -85%;
+    z-index: 1;
+
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 4px;
 }
 
 .bookmark-enter-active .bookmark-leave-active {
