@@ -1,7 +1,7 @@
 <template>
-    <div class="container-sm footerMain text-center mt-10">
+    <div class="container-sm footerMain primary-bg text-center mt-10">
         <p class="text-white">
-            This is a footer
+            Developed by Ali Abbasov
         </p>
     </div>
 </template>
@@ -14,7 +14,6 @@ export default {
 
 <style>
 .footerMain {
-    background-color: #19488A;
     padding-top: 200px;
     padding-bottom: 200px;
 }

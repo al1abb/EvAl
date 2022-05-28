@@ -9,6 +9,7 @@
         >
 
             <div class="selectItem">
+
                 <v-select
                     label="Ticarət növü"
                     :items="tradeTypes"
@@ -41,7 +42,7 @@
             
             <div class="selectItem">
                 <v-select
-                    placeholder="Otaq sayı"
+                    label="Otaq sayı"
                     :items="roomCounts"
                     v-model="searchQuery.roomCount"
                     solo
@@ -205,8 +206,8 @@
             <div>
                 <v-btn
                     class="no-uppercase"
+                    color="primary"
                     depressed
-                    color="primary" 
                     large
                     :min-width="formElementWidth"
                     min-height="3rem"
@@ -224,9 +225,9 @@
                 </v-btn>
             </div>
 
-            <div style="position: absolute; top: 0px;">
+            <!-- <div style="position: absolute; top: 0px;">
                 {{ searchQuery }}
-            </div>
+            </div> -->
 
         </v-form>
 

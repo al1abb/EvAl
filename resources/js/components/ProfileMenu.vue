@@ -20,7 +20,7 @@
                     <v-img
                         src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7JvxfS8YsVlqnRbNFNx3b7t5UUsl4p_8V2A&usqp=CAU"
                         color="#919191"
-                        v-if="user.avatar == null && !loading"
+                        v-if="!loading"
                     >
                         <template v-slot:placeholder>
                             <v-sheet>
@@ -31,11 +31,11 @@
                             </v-sheet>
                         </template>
                     </v-img>
-                    <v-img
+                    <!-- <v-img
                         :src="`/storage/${user.avatar}`" 
                         v-if="user.avatar != null && !loading"
                     >
-                    </v-img>
+                    </v-img> -->
 
                 </v-avatar>
 
@@ -50,9 +50,35 @@
                 </v-list-item>
 
                 <v-list-item
+                    v-if="userIsAdmin"
                     link
+                    @click="goToFlags"
                 >
-                    Settings
+                    Flags
+                </v-list-item>
+
+                <v-list-item
+                    v-if="userIsMod"
+                    link
+                    @click="goToAddAgency"
+                >
+                    Add agency
+                </v-list-item>
+
+                <v-list-item
+                    v-if="userIsAdmin"
+                    link
+                    @click="goToAgencies"
+                >
+                    Agencies
+                </v-list-item>
+
+                <v-list-item
+                    v-if="userIsAdmin"
+                    link
+                    @click="goToUsersPage"
+                >
+                    Users
                 </v-list-item>
 
                 <v-list-item
@@ -94,12 +120,64 @@ export default {
             this.loading = false
         },
 
+        goToFlags() {
+            this.loading = true
+
+            this.$router.push({
+                path: '/flags',
+            })
+
+            this.loading = false
+        },
+
+        goToAddAgency() {
+            this.loading = true
+
+            this.$router.push({
+                path: '/add-agency',
+            })
+
+            this.loading = false
+        },
+
+        goToAgencies() {
+            this.loading = true
+
+            this.$router.push({
+                path: '/agencies',
+            })
+
+            this.loading = false
+        },
+
+        goToUsersPage() {
+            this.loading = true
+
+            this.$router.push({
+                path: '/users',
+            })
+
+            this.loading = false
+        },
+
         logout() {
             this.loading = true
             this.signOut()
             this.loading = false
         }
     },
+    computed: {
+        userIsAdmin() {
+            return this.user.role == 'administrator'
+        },
+        userIsMod() {
+            return this.user.role == 'moderator'
+        }
+    },
+    // mounted() {
+    //     console.log("USER ROLE CHECK in profilemenu.vue")
+    //     this.user.role == 'admin' ? console.log("admin user") : console.log("user is not admin")
+    // }
 }
 </script>
 
