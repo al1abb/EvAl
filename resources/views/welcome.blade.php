@@ -6,6 +6,7 @@
 
         <title>EvAl, Real Estate platform</title>
 
+        {{-- Favicon --}}
         {{-- CSRF Token --}}
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
