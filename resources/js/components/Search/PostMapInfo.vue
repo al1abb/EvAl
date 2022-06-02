@@ -36,7 +36,7 @@
             <div class="d-flex justify-content-between">
                 <div class="d-flex align-items-center">
                     <v-icon 
-                        v-if="computedPostData.is_vip"
+                        v-if="computedPostIsVip"
                         class="mx-1" 
                         color="red"
                         title="VİP Post"
@@ -45,7 +45,7 @@
                     </v-icon>
 
                     <v-icon 
-                        v-if="computedPostData.agency_id && computedPostData.realtor_type == 'agent'"
+                        v-if="computedPostHasAgency"
                         class="mx-1" 
                         color="primary"
                         title="Agentlik"
@@ -141,10 +141,10 @@ export default {
             }
         },
 
-        getPostMedia(id) {
+        getPostMedia() {
             this.loading = true
 
-            axios.get(`/api/post/${id}/media`)
+            axios.get(`/api/post/${this.postId}/media`)
             .then((res) => {
                 console.log(res)
                 this.postMedia = res.data.original_url

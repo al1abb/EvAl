@@ -57,25 +57,44 @@
                 title="VİP Elanlar"
                 :responseData="searchResponse.vipPosts.data"
                 :loading="searchLoading"
+                :isVip="true"
+                :isAgency="false"
             />
             <hr style="border: none; margin-top: 5rem; margin-bottom: 5rem" />
             <PostSection
                 title="Bütün Elanlar"
                 :responseData="searchResponse.allPosts.data"
                 :loading="searchLoading"
+                :isVip="false"
+                :isAgency="false"
             />
             <hr style="border: none; margin-top: 5rem; margin-bottom: 5rem" />
             <PostSection
-                title="Kupçalı Əmlaklar"
+                title="Çıxarışlı Əmlaklar"
                 :responseData="searchResponse.voucherPosts.data"
                 :loading="searchLoading"
+                :isVip="false"
+                :isAgency="false"
             />
+
+            <!-- <div class="my-10">
+                {{ lastPage }}
+                <v-pagination
+                    v-model="currentPageDefault"
+                    :length="lastPage"
+                    total-visible="10"
+                    :disabled="searchLoading" 
+                >
+                </v-pagination>
+            </div> -->
+
         </div>
+
     </div>
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapActions, mapState } from "vuex";
 import PostSection from "../components/PostSection.vue";
 import SearchMap from "../components/Search/SearchMap.vue";
 
@@ -84,9 +103,21 @@ export default {
     data() {
         return {
             searchResponse: {},
+
+            currentPageDefault: 1,
+            lastPage: 0,
+
+            isFirstPage: true,
+            isLastPage: false,
+
+            loading: null,
         };
     },
     methods: {
+        ...mapActions([
+            "search"
+        ]),
+
         handleSearch() {
             console.log("in handleSearch");
             // this.$store.commit('setSearchLoading', true)
@@ -97,13 +128,42 @@ export default {
             console.log("this is search page query");
             console.log(this.$route.query);
 
+            // console.log("aaa")
             this.searchResponse = this.searchData.data;
+
+            this.lastPage = this.searchResponse.allPosts.last_page
+
             console.log("this is searchResponse");
             console.log(this.searchResponse);
         },
+
+        async handleSearchListings() {
+            this.loading = true
+            this.$store.commit('setSearchLoading', true)
+
+            const res = await this.search(this.searchQueryStore, currentPageDefault)
+
+            this.$store.commit('setSearchData', res)
+
+            this.loading = false
+            this.$store.commit('setSearchLoading', false)
+        },
+
+        prevPage() {
+            this.currentPageDefault--
+            this.handleSearchListings()
+        },
+        nextPage() {
+            this.currentPageDefault++
+            this.handleSearchListings()
+        },
+
+        scrollToTop() {
+            window.scrollTo(0,0);
+        }
     },
     computed: {
-        ...mapState(["searchLoading", "searchData"]),
+        ...mapState(["searchLoading", "searchQueryStore", "searchData"]),
 
         totalPostCount() {
             if (this.searchResponse.allPosts) {
@@ -149,6 +209,11 @@ export default {
         searchData() {
             this.searchResponse = this.searchData.data;
         },
+
+        // currentPageDefault: function() {
+        //     this.handleSearchListings()
+        //     this.scrollToTop()
+        // },
     },
 };
 </script>

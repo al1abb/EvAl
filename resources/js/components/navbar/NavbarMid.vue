@@ -61,6 +61,13 @@
                 </v-icon>
             </v-btn>
 
+            
+            <!-- <NavbarLink
+                to="/isarelenmisler"
+                title="İşarələnmişlər"
+                icon="mdi-bookmark"
+            /> -->
+
         </div>
     </div>
 </template>

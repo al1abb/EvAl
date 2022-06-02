@@ -288,7 +288,7 @@ export default {
             this.loading = true
             this.$store.commit('setSearchLoading', true)
             this.pushToSearch()
-            const res = await this.search(this.searchQuery)
+            const res = await this.search(this.searchQuery, 1)
             
             this.$store.commit('setSearchQueryStore', this.searchQuery)
 
