@@ -63,8 +63,8 @@ class PostFactory extends Factory
             $realtorType = $this->faker->randomElement(['self']);
         }
 
-        $latitude = $this->faker->randomFloat(3, 39.6, 41.17);
-        $longitude = $this->faker->randomFloat(3, 46.3, 49.8);
+        $latitude = $this->faker->randomFloat(3, 39.6, 41.17); // yuxari-asagi
+        $longitude = $this->faker->randomFloat(3, 46.3, 49.8); // sol-sag
 
         return [
             'user_id' => $rand_user,
@@ -101,7 +101,7 @@ class PostFactory extends Factory
             'views_total' => $this->faker->numberBetween($min = 10, $max = 100),
             'views_today' => $this->faker->numberBetween($min = 0, $max = 10),
             
-            'updated_at' => $this->faker->date(),
+            'updated_at' => $this->faker->dateTimeBetween($startDate='-5 years', $endDate='now'),
             'created_at' => $this->faker->dateTimeBetween($startDate='-5 years', $endDate='now'),
         ];
     }
