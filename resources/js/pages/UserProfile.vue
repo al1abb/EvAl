@@ -36,7 +36,7 @@
                                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7JvxfS8YsVlqnRbNFNx3b7t5UUsl4p_8V2A&usqp=CAU"
                                 :size="avatarSize"
                                 color="#919191"
-                                v-if="localUser.avatar == null && !loading"
+                                v-if="!loading"
                                 :style="authorized && hover ? 'filter: brightness(50%);' : ''"
                             >
                                 <template v-slot:placeholder>
@@ -50,7 +50,8 @@
                                 </template>
                             </v-img>
 
-                            <v-img
+                            <!-- User image -->
+                            <!-- <v-img
                                 :src="`/storage/${localUser.avatar}`" 
                                 :size="avatarSize"
                                 color="#919191"
@@ -66,7 +67,7 @@
                                         </v-skeleton-loader>
                                     </v-sheet>
                                 </template>
-                            </v-img>
+                            </v-img> -->
 
                             <!-- <v-skeleton-loader
                                 v-if="loading"
