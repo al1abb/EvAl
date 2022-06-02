@@ -19,6 +19,7 @@ return [
         // ],
         'administrator' => [
             'users' => 'c',
+            'post' => 'c, r, u, d',
             'flag' => 'r,d'
         ],
         'moderator' => [
