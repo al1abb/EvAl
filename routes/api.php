@@ -144,6 +144,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     // Posts
     Route::patch('/post/{id}/increase-score', [PostController::class, 'increaseScore']);
     Route::patch('/post/{id}/make-vip', [PostController::class, 'makeVip']);
+
+    // Verify email
+    // Route::post('/email/verification-notification', [AuthController::class, 'sendVerificationEmail']);
+    // Route::get('/verify-email/{id}/{hash}', [AuthController::class, 'verify'])->name('verification.verify');
 });
 
 /**

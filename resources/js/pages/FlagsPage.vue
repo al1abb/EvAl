@@ -7,7 +7,7 @@
 
             <div v-else>
                 <div class="container-sm">
-                    <div v-for="(flag, i) in flags.data" :key="i">
+                    <div class="my-5" v-for="(flag, i) in flags.data" :key="i">
                         <Flag :flag="flag" />
                     </div>
 

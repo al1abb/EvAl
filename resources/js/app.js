@@ -152,9 +152,9 @@ const store = new Vuex.Store({
         },
 
         // TODO: Change POST request to GET request
-        async search({ commit }, credentials) {
+        async search({ commit }, credentials, page) {
             commit('setSearchLoading', true);
-            const res = await axios.post('/api/search', credentials);
+            const res = await axios.post(`/api/search?page=${page}`, credentials);
             commit('setSearchData', res);
             commit('setSearchLoading', false);
 
