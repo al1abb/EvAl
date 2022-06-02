@@ -4,7 +4,23 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>EvAl, Real Estate platform</title>
+        {{-- Title --}}
+        <title>EvAl, Real Estate Advertisement Platform</title>
+
+        {{-- Meta Tags --}}
+        <meta name="description" content="Daşınmaz əmlak elanları veb səhifəsi. Azərbaycanda ən son ev elanları.">
+        <meta name="keywords" content="Ev elanlari, Yeni evler, Dasinmaz emlak, Azerbaycanda ev almaq, Kiraye evler, EvAl">
+        <meta name="author" content="Ali Abbasov">
+        <meta name="robots" content="index, follow">
+
+        {{-- Google Search Console tag --}}
+        <meta name="google-site-verification" content="UZSBghFlJPn9EQOEjp_Ulg3jjBis48XkXFaKpOEwrgc" />
+
+        {{-- OpenGraph meta tags --}}
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="EvAl">
+        <meta property="og:description" content="Daşınmaz əmlak elanları veb səhifəsi.">
+        <meta property="og:site_name" content="EvAl" >
 
         {{-- Favicon --}}
         <link rel="icon" href="{{ url('logo.ico') }}">
@@ -24,6 +40,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+
         {{-- Icons --}}
         <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css" rel="stylesheet">
 
