@@ -70,13 +70,13 @@ export default {
                 return 1;
             }
             if(this.$route.params.radioScore == 2) {
-                return 4;
+                return 5;
             }
             if(this.$route.params.radioScore == 3) {
-                return 7;
+                return 10;
             }
             if(this.$route.params.radioScore == 4) {
-                return 12;
+                return 20;
             }
         },
     }
