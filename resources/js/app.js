@@ -146,6 +146,16 @@ const store = new Vuex.Store({
         async register({ dispatch }, credentials) {
             await axios.get('/sanctum/csrf-cookie');
             const res = await axios.post('/api/register', credentials);
+
+            if(res.data.token) {
+                const verifyEmail = await axios.post('/api/email/verification-notification', {}, {
+                    headers: {
+                        'Authorization': 'Bearer ' + res.data.token,
+                        'Content-Type': 'application/json'
+                    }
+                });
+            }
+            
             localStorage.setItem('sanctum_token', res.data.token);
 
             return dispatch('me');
