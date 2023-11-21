@@ -146,8 +146,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::patch('/post/{id}/make-vip', [PostController::class, 'makeVip']);
 
     // Verify email
-    // Route::post('/email/verification-notification', [AuthController::class, 'sendVerificationEmail']);
-    // Route::get('/verify-email/{id}/{hash}', [AuthController::class, 'verify'])->name('verification.verify');
+    Route::post('/email/verification-notification', [AuthController::class, 'sendVerificationEmail']);
+    Route::get('/verify-email/{id}/{hash}', [AuthController::class, 'verify'])->name('verification.verify');
 });
 
 /**
