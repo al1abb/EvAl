@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
@@ -101,5 +102,39 @@ class AuthController extends Controller
         $user->tokens()->delete();
 
         return response()->json(['token' => $user->createToken('refreshToken')->plainTextToken]);
+    }
+
+    /**
+     * Sending verification email
+     */
+    public function sendVerificationEmail(Request $request) {
+        if($request->user()->hasVerifiedEmail()) {
+            return [
+                'message' => 'Already Verified'
+            ];
+        }
+
+        $request->user()->sendEmailVerificationNotification();
+
+        return ['status' => 'verification-link-sent'];
+    }
+
+    /**
+     * Email verification
+     */
+    public function verify(Request $request) {
+        if($request->user()->hasVerifiedEmail()) {
+            return [
+                'message' => 'Email is already verified'
+            ];
+        }
+
+        if($request->user()->markEmailAsVerified()) {
+            event(new Verified($request->user()));
+        }
+
+        return [
+            'message' => 'Email has been verified'
+        ];
     }
 }
