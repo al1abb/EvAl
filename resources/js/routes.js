@@ -14,8 +14,9 @@ import SuccessfulScorePayment from './pages/Success/SuccessfulScorePayment.vue';
 import SuccessfulVIPPayment from './pages/Success/SuccessfulVIPPayment.vue';
 import FlagsPage from './pages/FlagsPage.vue';
 import AgenciesPage from './pages/AgenciesPage.vue';
-import UsersPage from './pages/UsersPage.vue';
 import AddAgencyPage from './pages/AddAgencyPage.vue';
+import UsersPage from './pages/UsersPage.vue';
+import EmailVerifyPage from './pages/EmailVerifyPage.vue';
 
 const routes = [
     {
@@ -115,7 +116,12 @@ const routes = [
         path: '/users',
         name: 'users',
         component: UsersPage
-    }
+    },
+    {
+        path: '/email-verify',
+        name: 'email-verify',
+        component: EmailVerifyPage
+    },
 ];
 
 const router = new VueRouter({
